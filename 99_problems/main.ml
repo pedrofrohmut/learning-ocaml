@@ -67,3 +67,48 @@ let rec my_reverse xs =
     match _last xs with
     | None -> []
     | (Some y) -> y :: my_reverse (_without_last (x :: xs))
+
+(*
+  6. Find out whether a list is a palindrome. (easy)
+*)
+
+let rec my_is_palindrome xs =
+  let rec _last ys =
+    match ys with
+    | [] -> None
+    | [y] -> (Some y)
+    | _ :: ys -> _last ys
+  in
+
+  let rec _without_last ys =
+    match ys with
+    | [] -> []
+    | [_] -> []
+    | y :: ys -> y :: _without_last ys
+  in
+
+  match xs with
+  | [] -> true
+  | [_] -> true
+  | y :: ys ->
+    match (_last ys) with
+    | None -> false
+    | (Some z) -> if z = y then my_is_palindrome (_without_last ys) else false
+
+(* 7. Flatten a nested list structure. (medium) *)
+
+(* 8. Eliminate consecutive duplicates of list elements. (medium) *)
+
+(* 9. Pack consecutive duplicates of list elements into sublists. (medium) *)
+
+(* 10. Run-length encoding of a list. (easy) *)
+
+(* 10. Run-length encoding of a list. (easy) *)
+
+(* 12. Decode a run-length encoded list. (medium) *)
+
+(* 13. Run-length encoding of a list (direct solution). (medium) *)
+
+(* 14. Duplicate the elements of a list. (easy) *)
+
+(* 15. Replicate the elements of a list a given number of times. (medium) *)

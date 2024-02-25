@@ -73,3 +73,26 @@ let () = run_test_tt_main (
           assert_equal [6; 5; 4; 3; 2; 1] (my_reverse [1; 2; 3; 4; 5; 6]));
     ]
   )
+
+
+let () = run_test_tt_main (
+    "Tests for problem 06" >::: [
+      "Empty list" >:: (fun _ ->
+          assert_equal true (my_is_palindrome []));
+
+      "One elem list" >:: (fun _ ->
+          assert_equal true (my_is_palindrome [1]));
+
+      "Two elem list" >:: (fun _ ->
+          assert_equal true (my_is_palindrome [1; 1]));
+
+      "Two elem list but different" >:: (fun _ ->
+          assert_equal false (my_is_palindrome [1; 2]));
+
+      "Six elem list" >:: (fun _ ->
+          assert_equal true (my_is_palindrome [1; 2; 3; 3; 2; 1]));
+
+      "Six elem list but different" >:: (fun _ ->
+          assert_equal false (my_is_palindrome [1; 2; 3; 4; 5; 6]));
+    ]
+  )
