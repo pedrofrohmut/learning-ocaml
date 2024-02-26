@@ -51,19 +51,19 @@ let () = run_test_tt_main tests2
 let tests3 =
   "Tests for problem 03" >::: [
     "Empty list and position 1" >:: (fun _ ->
-        assert_equal None (Lists.at [] 1));
+        assert_equal None (Lists.at 1 []));
 
     "One elem list and pos 1" >:: (fun _ ->
-        assert_equal None (Lists.at [1] 1));
+        assert_equal None (Lists.at 1 [1]));
 
     "Two elem list and pos 1" >:: (fun _ ->
-        assert_equal (Some 2) (Lists.at [1; 2] 1));
+        assert_equal (Some 2) (Lists.at 1 [1; 2]));
 
     "More than two elem list pos 1" >:: (fun _ ->
-        assert_equal (Some 2) (Lists.at [1; 2; 3; 4; 5] 1));
+        assert_equal (Some 2) (Lists.at 1 [1; 2; 3; 4; 5]));
 
     "More than two elem list pos 3" >:: (fun _ ->
-        assert_equal (Some 4) (Lists.at [1; 2; 3; 4; 5] 3))
+        assert_equal (Some 4) (Lists.at 3 [1; 2; 3; 4; 5]))
   ]
 
 let () = run_test_tt_main tests3

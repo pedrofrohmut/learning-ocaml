@@ -8,14 +8,12 @@
     - : 'a option = None
 *)
 
-let rec last (xs : 'a list) : 'a option =
-  match xs with
+let rec last = function
   | [] -> None
   | [x] -> Some x
   | _ :: xs -> last xs
 
-let rec penultimate (xs : 'a list) : 'a option =
-  match xs with
+let rec penultimate = function
   | [] | [_] -> None
   | x :: [_] -> Some x
   | _ :: xs -> penultimate xs
@@ -29,8 +27,7 @@ let rec penultimate (xs : 'a list) : 'a option =
     - : (string * string) option = None
 *)
 
-let rec last_two list =
-  match list with
+let rec last_two = function
   | [] | [_] -> None
   | [x; y]   -> Some (x, y)
   | _ :: xs  -> last_two xs
@@ -52,10 +49,9 @@ let rec last_two list =
     Exception: Failure "nth".
 *)
 
-let rec at (xs: 'a list) (i: int) : 'a option =
-  match xs with
+let rec at i = function
   | [] -> None
-  | x :: xs -> if i = 0 then (Some x) else at xs (i - 1)
+  | x :: xs -> if i = 0 then Some x else at (i - 1) xs
 
 (*
     4. Find the number of elements of a list. (easy)
@@ -69,15 +65,11 @@ let rec at (xs: 'a list) (i: int) : 'a option =
     - : int = 0
 *)
 
-let length (xs: 'a list) : int =
-
-  let rec len (ys : 'a list) (i : int) : int =
-    match ys with
+let length list =
+  let rec len i = function
     | [] -> i
-    | _ :: ys -> len ys (i + 1)
-  in
-
-  len xs 0
+    | _ :: xs -> len (i + 1) xs
+  in len 0 list
 
 (*
     5. Reverse a list. (easy)
@@ -88,29 +80,32 @@ let length (xs: 'a list) : int =
     - : string list = ["c"; "b"; "a"]
 *)
 
-let rec reverse xs =
-
-  let rec _last ys =
-    match ys with
+let rec reverse list =
+  let rec _last = function
     | [] -> None
-    | [y] -> (Some y)
-    | _ :: ys -> _last ys
+    | x :: [] -> Some x
+    | _ :: xs -> _last xs
   in
 
-  let rec _without_last ys =
-    match ys with
+  let rec _without_last = function
     | [] -> []
-    | [_] -> []
-    | y :: ys -> y :: _without_last ys
+    | _ :: [] -> []
+    | x :: xs -> x :: _without_last xs
   in
 
-  match xs with
+  match list with
   | [] -> []
-  | [x] -> [x]
+  | x :: [] -> [x]
   | x :: xs ->
     match _last xs with
     | None -> []
-    | (Some y) -> y :: reverse (_without_last (x :: xs))
+    | Some y -> y :: reverse (_without_last (x :: xs))
+
+let reverse' list =
+  let rec aux acc = function
+    | [] -> acc
+    | x :: xs -> aux (x :: acc) xs
+  in aux [] list
 
 (*
     6. Find out whether a list is a palindrome. (easy)
@@ -123,28 +118,29 @@ let rec reverse xs =
     - : bool = true
 *)
 
-let rec is_palindrome xs =
-  let rec _last ys =
-    match ys with
+let rec is_palindrome list =
+  let rec _last = function
     | [] -> None
-    | [y] -> (Some y)
-    | _ :: ys -> _last ys
+    | x :: [] -> Some x
+    | _ :: xs -> _last xs
   in
 
-  let rec _without_last ys =
-    match ys with
+  let rec _without_last = function
     | [] -> []
-    | [_] -> []
-    | y :: ys -> y :: _without_last ys
+    | _ :: [] -> []
+    | x :: xs -> x :: _without_last xs
   in
 
-  match xs with
+  match list with
   | [] -> true
-  | [_] -> true
-  | y :: ys ->
-    match (_last ys) with
+  | _ :: [] -> true
+  | x :: xs ->
+    match _last xs with
     | None -> false
-    | (Some z) -> if z = y then is_palindrome (_without_last ys) else false
+    | Some y -> if y = x then is_palindrome (_without_last xs) else false
+
+let is_palindrome' list =
+  list = List.rev list
 
 (*
     7. Flatten a nested list structure. (medium)
@@ -171,22 +167,17 @@ type 'a node =
   | Many of 'a node list
 
 let flatten my_list =
-
   let rec _append list1 list2 =
     match list1 with
     | [] -> list2
     | x :: xs -> x :: _append xs list2
   in
 
-  let rec _flatten result list =
-    match list with
+  let rec _flatten result = function
     | [] -> result
-    | x :: xs -> match x with
-      | (One y)   -> _flatten (_append result [y]) xs
-      | (Many ys) -> _flatten (_flatten result ys) xs
-  in
-
-  _flatten [] my_list
+    | One y   :: xs -> _flatten (_append result [y]) xs
+    | Many ys :: xs -> _flatten (_flatten result ys) xs
+  in _flatten [] my_list
 
 (*
     8. Eliminate consecutive duplicates of list elements. (medium)
