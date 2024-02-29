@@ -186,6 +186,21 @@ let flatten my_list =
     - : string list = ["a"; "b"; "c"; "a"; "d"; "e"]
 *)
 
+let compress list =
+  let rec aux acc curr list =
+    match list with
+    | [] -> acc
+    | x :: xs ->
+      if x = curr
+      then aux acc curr xs
+      else aux (x::acc) x xs
+  in
+
+  match list with
+  | [] -> []
+  | x::[] -> [x]
+  | x::xs -> List.rev (aux [x] x xs)
+
 (*
     9. Pack consecutive duplicates of list elements into sublists. (medium)
 

@@ -139,3 +139,28 @@ let tests7 =
 
 
 let () = run_test_tt_main tests7
+
+let tests8 =
+  "Test for problem 08" >::: [
+    "Empty list" >:: (fun _ ->
+        assert_equal [] (Lists.compress []));
+
+    "One elem list" >:: (fun _ ->
+        assert_equal [1] (Lists.compress [1]));
+
+    "Two elem list diff" >:: (fun _ ->
+        assert_equal [1; 2] (Lists.compress [1; 2]));
+
+    "Two elem list equal" >:: (fun _ ->
+        assert_equal [1] (Lists.compress [1; 1]));
+
+    "Six elem list diff" >:: (fun _ ->
+        assert_equal [1;2;3;4;5;6] (Lists.compress [1;2;3;4;5;6]));
+
+    "Sample from 99 problems site:" >:: (fun _ ->
+        assert_equal
+        ["a"; "b"; "c"; "a"; "d"; "e"]
+        (Lists.compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]));
+  ]
+
+let () = run_test_tt_main tests8
