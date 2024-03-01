@@ -8,21 +8,29 @@
     - : 'a option = None
 *)
 
-let rec last list =
+let rec last (list : 'a list) : 'a option =
   match list with
   | [] -> None
   | x::[] -> Some x
   | _::xs -> last xs
 
 (*
+    2. Find the last but one (last and penultimate) elements of a list. (easy)
 
-2. Find the last but one (last and penultimate) elements of a list. (easy)
+    # last_two ["a"; "b"; "c"; "d"];;
+    - : (string * string) option = Some ("c", "d")
+    # last_two ["a"];;
+    - : (string * string) option = None
+*)
 
-# last_two ["a"; "b"; "c"; "d"];;
-- : (string * string) option = Some ("c", "d")
-# last_two ["a"];;
-- : (string * string) option = None
+let rec last_two (list : 'a list) : 'a list option =
+  match list with
+  | [] -> None
+  | _::[] -> None
+  | x::y::[] -> Some [x; y]
+  | _::xs -> last_two xs
 
+(*
 3. Find the K'th element of a list. (easy)
 
 # at 3 ["a"; "b"; "c"; "d"; "e"];;
