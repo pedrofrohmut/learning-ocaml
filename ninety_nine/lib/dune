@@ -1,2 +1,3 @@
 (library
- (name ninety_nine))
+ (name ninety_nine)
+ (modules hello lists))
