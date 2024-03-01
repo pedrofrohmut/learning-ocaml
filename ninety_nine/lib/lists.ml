@@ -31,20 +31,35 @@ let rec last_two (list : 'a list) : 'a list option =
   | _::xs -> last_two xs
 
 (*
-3. Find the K'th element of a list. (easy)
+    3. Find the K'th element of a list. (easy)
 
-# at 3 ["a"; "b"; "c"; "d"; "e"];;
-- : string option = Some "c"
-# at 3 ["a"];;
-- : string option = None
+    # at 3 ["a"; "b"; "c"; "d"; "e"];;
+    - : string option = Some "c"
+    # at 3 ["a"];;
+    - : string option = None
 
-REMARK: OCaml has List.nth which numbers elements from 0 and raises an exception if the index is out of bounds.
+    REMARK: OCaml has List.nth which numbers elements from 0 and raises an
+    exception if the index is out of bounds.
 
-# List.nth ["a"; "b"; "c"; "d"; "e"] 2;;
-- : string = "c"
-# List.nth ["a"] 2;;
-Exception: Failure "nth".
+    # List.nth ["a"; "b"; "c"; "d"; "e"] 2;;
+    - : string = "c"
+    # List.nth ["a"] 2;;
+    Exception: Failure "nth".
+*)
 
+(* Raises exception if index out of bounds list passed  *)
+let rec at (pos : int) (list : 'a list) : 'a =
+  match list with
+  | [] -> failwith "Index out of bounds"
+  | x::xs -> if pos > 0 then at (pos - 1) xs else x
+
+(* Does not fail. Just returns None if index out of bounds *)
+let rec at' (pos : int) (list : 'a list) : 'a option =
+  match list with
+  | [] -> None
+  | x::xs -> if pos > 0 then at' (pos - 1) xs else Some x
+
+(*
 4. Find the number of elements of a list. (easy)
 
 OCaml standard library has List.length but we ask that you reimplement it. Bonus for a tail recursive solution.
