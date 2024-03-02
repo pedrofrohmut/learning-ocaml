@@ -41,3 +41,14 @@ let () = run_test_tt_main (
           assert_equal (Some 4) (Lists.at' 3 [1; 2; 3; 4; 5]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 04" >:::
+    [ "length on a empty list" >:: (fun _ ->
+          assert_equal 0 (Lists.length []))
+    ; "length on a 1 elem list" >:: (fun _ ->
+          assert_equal 1 (Lists.length [1]))
+    ;  "length on a 5 elem list" >:: (fun _ ->
+          assert_equal 5 (Lists.length [1; 2; 3; 4; 5]))
+    ]
+  )

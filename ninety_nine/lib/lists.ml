@@ -68,7 +68,17 @@ OCaml standard library has List.length but we ask that you reimplement it. Bonus
 - : int = 3
 # length [];;
 - : int = 0
+*)
 
+let length (list: 'a list) : int =
+  let rec aux n list' =
+    match list' with
+    | [] -> n
+    | _::xs -> aux (n + 1) xs
+  in
+  aux 0 list
+
+(*
 5. Reverse a list. (easy)
 
 OCaml standard library has List.rev but we ask that you reimplement it.
