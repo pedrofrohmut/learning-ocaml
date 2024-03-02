@@ -143,6 +143,7 @@ let flatten (list : 'a node list) : 'a list =
     - : string list = ["a"; "b"; "c"; "a"; "d"; "e"]
 *)
 
+(* TODO: check if it works with == instead of a single = *)
 let compress (list : 'a list) : 'a list =
   let rec aux curr list' =
     match list' with
@@ -161,7 +162,23 @@ let compress (list : 'a list) : 'a list =
 - : string list list =
 [["a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"];
  ["e"; "e"; "e"; "e"]]
+*)
 
+let pack (list : 'a list) : 'a list list =
+  let rec aux curr_acc curr list' =
+    match list' with
+    | [] -> curr_acc :: []
+    | x::xs ->
+        if x = curr
+        then aux (x::curr_acc) curr xs
+        else curr_acc :: aux [x] x xs
+  in
+  match list with
+  | [] -> []
+  | x::[] -> [[x]]
+  | x::xs -> aux [x] x xs
+
+(*
 10. Run-length encoding of a list. (easy)
 
 If you need so, refresh your memory about run-length encoding.

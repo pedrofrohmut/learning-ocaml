@@ -100,13 +100,32 @@ let () = run_test_tt_main (
           assert_equal [] (Lists.compress []))
     ; "compress on a 1 elem list" >:: (fun _ ->
           assert_equal [1] (Lists.compress [1]))
-    ; "compress on a 5 elem list" >:: (fun _ ->
-          assert_equal [1; 2; 3; 4; 5] (Lists.compress [1; 2; 3; 4; 5]))
     ; "compress on a 2 elem list with repeated values" >:: (fun _ ->
           assert_equal [1] (Lists.compress [1; 1]))
+    ; "compress on a 5 elem list" >:: (fun _ ->
+          assert_equal [1; 2; 3; 4; 5] (Lists.compress [1; 2; 3; 4; 5]))
     ; "compress on a more complex example" >:: (fun _ ->
           assert_equal
             ["a"; "b"; "c"; "a"; "d"; "e"]
             (Lists.compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+    ]
+  )
+
+let () = run_test_tt_main (
+    "Lists: Problem 09" >:::
+    [ "pack on a empty list" >:: (fun _ ->
+          assert_equal [] (Lists.pack []))
+    ; "pack on a 1 elem list" >:: (fun _ ->
+          assert_equal [[1]] (Lists.pack [1]))
+    ; "pack on a 3 elem list" >:: (fun _ ->
+          assert_equal [[1]; [2]; [3]] (Lists.pack [1; 2; 3]))
+    ; "pack on a 2 elem list with repeated values" >:: (fun _ ->
+          assert_equal [[1; 1]] (Lists.pack [1; 1]))
+    ; "pack on a 5 elem list with repeated values" >:: (fun _ ->
+          assert_equal [[1; 1]; [2; 2; 2]] (Lists.pack [1; 1; 2; 2; 2]))
+    ; "pack on a more complex example" >:: (fun _ ->
+          assert_equal
+            [["a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"]; ["e"; "e"; "e"; "e"]]
+            (Lists.pack ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e"]))
     ]
   )
