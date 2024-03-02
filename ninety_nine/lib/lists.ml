@@ -60,14 +60,15 @@ let rec at' (pos : int) (list : 'a list) : 'a option =
   | x::xs -> if pos > 0 then at' (pos - 1) xs else Some x
 
 (*
-4. Find the number of elements of a list. (easy)
+    4. Find the number of elements of a list. (easy)
 
-OCaml standard library has List.length but we ask that you reimplement it. Bonus for a tail recursive solution.
+    OCaml standard library has List.length but we ask that you reimplement
+    it. Bonus for a tail recursive solution.
 
-# length ["a"; "b"; "c"];;
-- : int = 3
-# length [];;
-- : int = 0
+    # length ["a"; "b"; "c"];;
+    - : int = 3
+    # length [];;
+    - : int = 0
 *)
 
 let length (list: 'a list) : int =
@@ -79,12 +80,12 @@ let length (list: 'a list) : int =
   aux 0 list
 
 (*
-5. Reverse a list. (easy)
+    5. Reverse a list. (easy)
 
-OCaml standard library has List.rev but we ask that you reimplement it.
+    OCaml standard library has List.rev but we ask that you reimplement it.
 
-# rev ["a"; "b"; "c"];;
-- : string list = ["c"; "b"; "a"]
+    # rev ["a"; "b"; "c"];;
+    - : string list = ["c"; "b"; "a"]
 *)
 
 let rev (list : 'a list) : 'a list =
@@ -97,15 +98,19 @@ let rev (list : 'a list) : 'a list =
 
 
 (*
-6. Find out whether a list is a palindrome. (easy)
+    6. Find out whether a list is a palindrome. (easy)
 
-HINT: a palindrome is its own reverse.
+    HINT: a palindrome is its own reverse.
 
-# is_palindrome ["x"; "a"; "m"; "a"; "x"];;
-- : bool = true
-# not (is_palindrome ["a"; "b"]);;
-- : bool = true
+    # is_palindrome ["x"; "a"; "m"; "a"; "x"];;
+    - : bool = true
+    # not (is_palindrome ["a"; "b"]);;
+    - : bool = true
+*)
 
+let is_palindrome (list : 'a list) : bool = list = rev list
+
+(*
 7. Flatten a nested list structure. (medium)
 
 # (* There is no nested list type in OCaml, so we need to define one
@@ -118,7 +123,9 @@ type 'a node = One of 'a | Many of 'a node list
 
 # flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]];;
 - : string list = ["a"; "b"; "c"; "d"; "e"]
+*)
 
+(*
 8. Eliminate consecutive duplicates of list elements. (medium)
 
 # compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;

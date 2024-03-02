@@ -63,3 +63,16 @@ let () = run_test_tt_main (
           assert_equal [5; 4; 3; 2; 1] (Lists.rev [1; 2; 3; 4; 5]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 06" >:::
+    [ "is_palindrome on a empty list" >:: (fun _ ->
+          assert_equal true (Lists.is_palindrome []))
+    ; "is_palindrome on a 1 elem list" >:: (fun _ ->
+          assert_equal true (Lists.is_palindrome [1]))
+    ; "is_palindrome on a 5 elem palindrome list" >:: (fun _ ->
+          assert_equal true (Lists.is_palindrome [1; 2; 3; 2; 1]))
+    ; "is_palindrome on a 2 elem not palindrome list" >:: (fun _ ->
+          assert_equal false (Lists.is_palindrome [1; 2]))
+    ]
+  )
