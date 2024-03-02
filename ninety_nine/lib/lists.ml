@@ -85,7 +85,18 @@ OCaml standard library has List.rev but we ask that you reimplement it.
 
 # rev ["a"; "b"; "c"];;
 - : string list = ["c"; "b"; "a"]
+*)
 
+let rev (list : 'a list) : 'a list =
+  let rec aux acc list' =
+    match list' with
+    | [] -> acc
+    | x::xs -> aux (x::acc) xs
+  in
+  aux [] list
+
+
+(*
 6. Find out whether a list is a palindrome. (easy)
 
 HINT: a palindrome is its own reverse.

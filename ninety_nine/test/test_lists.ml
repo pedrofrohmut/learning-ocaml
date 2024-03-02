@@ -52,3 +52,14 @@ let () = run_test_tt_main (
           assert_equal 5 (Lists.length [1; 2; 3; 4; 5]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 05" >:::
+    [ "rev on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.rev []))
+    ; "rev on 1 elem list" >:: (fun _ ->
+          assert_equal [1] (Lists.rev [1]))
+    ; "rev on 5 elem list" >:: (fun _ ->
+          assert_equal [5; 4; 3; 2; 1] (Lists.rev [1; 2; 3; 4; 5]))
+    ]
+  )
