@@ -111,18 +111,18 @@ let rev (list : 'a list) : 'a list =
 let is_palindrome (list : 'a list) : bool = list = rev list
 
 (*
-7. Flatten a nested list structure. (medium)
+    7. Flatten a nested list structure. (medium)
 
-# (* There is no nested list type in OCaml, so we need to define one
-     first. A node of a nested list is either an element, or a list of
-     nodes. *)
-  type 'a node =
-    | One of 'a
-    | Many of 'a node list;;
-type 'a node = One of 'a | Many of 'a node list
+    # (* There is no nested list type in OCaml, so we need to define one
+        first. A node of a nested list is either an element, or a list of
+        nodes. *)
+    type 'a node =
+        | One of 'a
+        | Many of 'a node list;;
+    type 'a node = One of 'a | Many of 'a node list
 
-# flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]];;
-- : string list = ["a"; "b"; "c"; "d"; "e"]
+    # flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]];;
+    - : string list = ["a"; "b"; "c"; "d"; "e"]
 *)
 
 type 'a node = One of 'a | Many of 'a node list
@@ -137,11 +137,24 @@ let flatten (list : 'a node list) : 'a list =
   rev (aux [] list)
 
 (*
-8. Eliminate consecutive duplicates of list elements. (medium)
+    8. Eliminate consecutive duplicates of list elements. (medium)
 
-# compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;
-- : string list = ["a"; "b"; "c"; "a"; "d"; "e"]
+    # compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;
+    - : string list = ["a"; "b"; "c"; "a"; "d"; "e"]
+*)
 
+let compress (list : 'a list) : 'a list =
+  let rec aux curr list' =
+    match list' with
+    | [] -> []
+    | x::xs -> if x = curr then aux curr xs else x :: aux x xs
+  in
+  match list with
+  | [] -> []
+  | x::[] -> [x]
+  | x::xs -> x :: aux x xs
+
+(*
 9. Pack consecutive duplicates of list elements into sublists. (medium)
 
 # pack ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e"];;

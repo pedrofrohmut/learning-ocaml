@@ -93,3 +93,20 @@ let () = run_test_tt_main (
             (Lists.flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 08" >:::
+    [ "compress on a empty list" >:: (fun _ ->
+          assert_equal [] (Lists.compress []))
+    ; "compress on a 1 elem list" >:: (fun _ ->
+          assert_equal [1] (Lists.compress [1]))
+    ; "compress on a 5 elem list" >:: (fun _ ->
+          assert_equal [1; 2; 3; 4; 5] (Lists.compress [1; 2; 3; 4; 5]))
+    ; "compress on a 2 elem list with repeated values" >:: (fun _ ->
+          assert_equal [1] (Lists.compress [1; 1]))
+    ; "compress on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["a"; "b"; "c"; "a"; "d"; "e"]
+            (Lists.compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+    ]
+  )
