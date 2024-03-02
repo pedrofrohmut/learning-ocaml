@@ -76,3 +76,20 @@ let () = run_test_tt_main (
           assert_equal false (Lists.is_palindrome [1; 2]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 07" >:::
+    [ "flatten on a empty list" >:: (fun _ ->
+          assert_equal [] (Lists.flatten []))
+    ; "flatten on a 1 elem list with One x" >:: (fun _ ->
+          assert_equal [1] (Lists.flatten [One 1]))
+    ; "flatten on a 5 elem list with Many (One x; ...)" >:: (fun _ ->
+          assert_equal
+            [1; 2; 3; 4; 5]
+            (Lists.flatten [Many [One 1; One 2; One 3; One 4; One 5]]))
+    ; "flatten on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["a"; "b"; "c"; "d"; "e"]
+            (Lists.flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]]))
+    ]
+  )

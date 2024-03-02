@@ -125,6 +125,17 @@ type 'a node = One of 'a | Many of 'a node list
 - : string list = ["a"; "b"; "c"; "d"; "e"]
 *)
 
+type 'a node = One of 'a | Many of 'a node list
+
+let flatten (list : 'a node list) : 'a list =
+  let rec aux acc list' =
+    match list' with
+    | [] -> acc
+    | (One value)::xs -> aux (value::acc) xs
+    | (Many value)::xs -> aux (aux acc value) xs
+  in
+  rev (aux [] list)
+
 (*
 8. Eliminate consecutive duplicates of list elements. (medium)
 
