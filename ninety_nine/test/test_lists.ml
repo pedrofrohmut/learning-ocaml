@@ -129,3 +129,22 @@ let () = run_test_tt_main (
             (Lists.pack ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 10" >:::
+    [ "encode on a empty list" >:: (fun _ ->
+          assert_equal [] (Lists.encode []))
+    ; "encode on a 1 elem list" >:: (fun _ ->
+          assert_equal [(1, "a")] (Lists.encode ["a"]))
+    ; "encode on a 3 elem list with different values" >:: (fun _ ->
+          assert_equal [(1, "a"); (1, "b"); (1, "c")] (Lists.encode ["a"; "b"; "c"]))
+    ; "encode on a 3 elem list with same values" >:: (fun _ ->
+          assert_equal [(3, "a")] (Lists.encode ["a"; "a"; "a"]))
+    ; "encode on a 5 elem list with 2 values but they repeats" >:: (fun _ ->
+          assert_equal [(3, "a"); (2, "b")] (Lists.encode ["a"; "a"; "a"; "b"; "b"]))
+    ; "encode on a more complex example" >:: (fun _ ->
+          assert_equal
+            [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
+            (Lists.encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+    ]
+  )

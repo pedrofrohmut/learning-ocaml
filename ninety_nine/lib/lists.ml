@@ -148,7 +148,7 @@ let compress (list : 'a list) : 'a list =
   let rec aux curr list' =
     match list' with
     | [] -> []
-    | x::xs -> if x = curr then aux curr xs else x :: aux x xs
+    | x::xs -> if x == curr then aux curr xs else x :: aux x xs
   in
   match list with
   | [] -> []
@@ -156,12 +156,12 @@ let compress (list : 'a list) : 'a list =
   | x::xs -> x :: aux x xs
 
 (*
-9. Pack consecutive duplicates of list elements into sublists. (medium)
+    9. Pack consecutive duplicates of list elements into sublists. (medium)
 
-# pack ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e"];;
-- : string list list =
-[["a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"];
- ["e"; "e"; "e"; "e"]]
+    # pack ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e"];;
+    - : string list list =
+    [["a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"];
+    ["e"; "e"; "e"; "e"]]
 *)
 
 let pack (list : 'a list) : 'a list list =
@@ -169,7 +169,7 @@ let pack (list : 'a list) : 'a list list =
     match list' with
     | [] -> curr_acc :: []
     | x::xs ->
-        if x = curr
+        if x == curr
         then aux (x::curr_acc) curr xs
         else curr_acc :: aux [x] x xs
   in
@@ -179,16 +179,31 @@ let pack (list : 'a list) : 'a list list =
   | x::xs -> aux [x] x xs
 
 (*
-10. Run-length encoding of a list. (easy)
+    10. Run-length encoding of a list. (easy)
 
-If you need so, refresh your memory about run-length encoding.
+    If you need so, refresh your memory about run-length encoding.
 
-Here is an example:
+    Here is an example:
 
-# encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;
-- : (int * string) list =
-[(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
+    # encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;
+    - : (int * string) list =
+    [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
+*)
 
+let encode (list : 'a list) : (int * 'a) list =
+  let rec aux n curr list' =
+    match list' with
+    | [] -> (n, curr) :: []
+    | x::xs ->
+      if x == curr
+      then aux (n + 1) curr xs
+      else (n, curr) :: aux 1 x xs
+  in
+  match list with
+  | [] -> []
+  | x::xs -> aux 0 x (x::xs)
+
+(*
 11. Modified run-length encoding. (easy)
 
 Modify the result of the previous problem in such a way that if an element has no duplicates it is simply copied into the result list. Only elements with duplicates are transferred as (N E) lists.
