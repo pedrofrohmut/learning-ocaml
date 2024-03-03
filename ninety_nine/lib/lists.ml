@@ -11,8 +11,8 @@
 let rec last (list : 'a list) : 'a option =
   match list with
   | [] -> None
-  | x::[] -> Some x
-  | _::xs -> last xs
+  | x :: [] -> Some x
+  | _ :: xs -> last xs
 
 (*
     2. Find the last but one (last and penultimate) elements of a list. (easy)
@@ -26,9 +26,9 @@ let rec last (list : 'a list) : 'a option =
 let rec last_two (list : 'a list) : ('a * 'a) option =
   match list with
   | [] -> None
-  | _::[] -> None
-  | x::y::[] -> Some (x, y)
-  | _::xs -> last_two xs
+  | _ :: [] -> None
+  | x :: y :: [] -> Some (x, y)
+  | _ :: xs -> last_two xs
 
 (*
     3. Find the K'th element of a list. (easy)
@@ -51,13 +51,13 @@ let rec last_two (list : 'a list) : ('a * 'a) option =
 let rec at (pos : int) (list : 'a list) : 'a =
   match list with
   | [] -> failwith "Index out of bounds"
-  | x::xs -> if pos > 0 then at (pos - 1) xs else x
+  | x :: xs -> if pos > 0 then at (pos - 1) xs else x
 
 (* Does not fail. Just returns None if index out of bounds *)
 let rec at_opt (pos : int) (list : 'a list) : 'a option =
   match list with
   | [] -> None
-  | x::xs -> if pos > 0 then at_opt (pos - 1) xs else Some x
+  | x :: xs -> if pos > 0 then at_opt (pos - 1) xs else Some x
 
 (*
     4. Find the number of elements of a list. (easy)
@@ -75,7 +75,7 @@ let length (list: 'a list) : int =
   let rec aux n list' =
     match list' with
     | [] -> n
-    | _::xs -> aux (n + 1) xs
+    | _ :: xs -> aux (n + 1) xs
   in
   aux 0 list
 
@@ -92,7 +92,7 @@ let rev (list : 'a list) : 'a list =
   let rec aux acc list' =
     match list' with
     | [] -> acc
-    | x::xs -> aux (x::acc) xs
+    | x :: xs -> aux (x :: acc) xs
   in
   aux [] list
 
@@ -131,10 +131,10 @@ let flatten (list : 'a node list) : 'a list =
   let rec aux acc list' =
     match list' with
     | [] -> acc
-    | (One value)::xs -> aux (value::acc) xs
-    | (Many value)::xs -> aux (aux acc value) xs
+    | One value :: xs -> aux (value :: acc) xs
+    | Many value :: xs -> aux (aux acc value) xs
   in
-  rev (aux [] list)
+  list |> aux [] |> rev
 
 (*
     8. Eliminate consecutive duplicates of list elements. (medium)
@@ -143,17 +143,16 @@ let flatten (list : 'a node list) : 'a list =
     - : string list = ["a"; "b"; "c"; "a"; "d"; "e"]
 *)
 
-(* TODO: check if it works with == instead of a single = *)
 let compress (list : 'a list) : 'a list =
   let rec aux curr list' =
     match list' with
     | [] -> []
-    | x::xs -> if x == curr then aux curr xs else x :: aux x xs
+    | x :: xs -> if x == curr then aux curr xs else x :: aux x xs
   in
   match list with
   | [] -> []
-  | x::[] -> [x]
-  | x::xs -> x :: aux x xs
+  | x :: [] -> [x]
+  | x :: xs -> x :: aux x xs
 
 (*
     9. Pack consecutive duplicates of list elements into sublists. (medium)
@@ -165,18 +164,18 @@ let compress (list : 'a list) : 'a list =
 *)
 
 let pack (list : 'a list) : 'a list list =
-  let rec aux curr_acc curr list' =
+  let rec aux acc curr list' =
     match list' with
-    | [] -> curr_acc :: []
-    | x::xs ->
+    | [] -> acc :: []
+    | x :: xs ->
         if x == curr
-        then aux (x::curr_acc) curr xs
-        else curr_acc :: aux [x] x xs
+        then aux (x :: acc) curr xs
+        else acc :: aux [x] x xs
   in
   match list with
   | [] -> []
-  | x::[] -> [[x]]
-  | x::xs -> aux [x] x xs
+  | x :: [] -> [[x]]
+  | x :: xs -> aux [x] x xs
 
 (*
     10. Run-length encoding of a list. (easy)
@@ -191,17 +190,17 @@ let pack (list : 'a list) : 'a list list =
 *)
 
 let encode (list : 'a list) : (int * 'a) list =
-  let rec aux n curr list' =
+  let rec aux i curr list' =
     match list' with
-    | [] -> (n, curr) :: []
-    | x::xs ->
+    | [] -> (i, curr) :: []
+    | x :: xs ->
       if x == curr
-      then aux (n + 1) curr xs
-      else (n, curr) :: aux 1 x xs
+      then aux (i + 1) curr xs
+      else (i, curr) :: aux 1 x xs
   in
   match list with
   | [] -> []
-  | x::xs -> aux 0 x (x::xs)
+  | x :: xs -> aux 0 x (x :: xs)
 
 (*
 11. Modified run-length encoding. (easy)
@@ -219,7 +218,9 @@ type 'a rle = One of 'a | Many of int * 'a
 - : string rle list =
 [Many (4, "a"); One "b"; Many (2, "c"); Many (2, "a"); One "d";
  Many (4, "e")]
+*)
 
+(*
 12. Decode a run-length encoded list. (medium)
 
 Given a run-length code list generated as specified in the previous problem, construct its uncompressed version.
