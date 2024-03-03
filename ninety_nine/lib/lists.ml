@@ -205,9 +205,12 @@ let encode (list : 'a list) : (int * 'a) list =
 (*
 11. Modified run-length encoding. (easy)
 
-Modify the result of the previous problem in such a way that if an element has no duplicates it is simply copied into the result list. Only elements with duplicates are transferred as (N E) lists.
+Modify the result of the previous problem in such a way that if an element has no
+duplicates it is simply copied into the result list. Only elements with
+duplicates are transferred as (N E) lists.
 
-Since OCaml lists are homogeneous, one needs to define a type to hold both single elements and sub-lists.
+Since OCaml lists are homogeneous, one needs to define a type to hold both single
+elements and sub-lists.
 
 # type 'a rle =
     | One of 'a
@@ -219,6 +222,25 @@ type 'a rle = One of 'a | Many of int * 'a
 [Many (4, "a"); One "b"; Many (2, "c"); Many (2, "a"); One "d";
  Many (4, "e")]
 *)
+
+type 'a encode_t = EncOne of 'a | EncMany of (int * 'a)
+
+let encode2 (list : 'a list) : 'a encode_t list =
+  let rec aux i curr list' =
+    match list' with
+    | [] ->
+      let last_elem = if i == 1 then EncOne curr else EncMany (i, curr) in
+      last_elem :: []
+    | x :: xs ->
+      if x == curr
+        then aux (i + 1) curr xs
+        else
+          let new_elem = if i <= 1 then EncOne curr else EncMany (i, curr) in
+          new_elem :: aux 1 x xs
+  in
+  match list with
+  | [] -> []
+  | x::xs -> aux 1 x xs
 
 (*
 12. Decode a run-length encoded list. (medium)

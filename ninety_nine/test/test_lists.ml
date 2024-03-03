@@ -3,7 +3,7 @@ open Ninety_nine
 
 let () = run_test_tt_main (
     "Lists Problem 01" >:::
-    [ "last on empty list" >:: (fun _ ->
+    [ "last on an empty list" >:: (fun _ ->
           assert_equal None (Lists.last []))
     ; "last on 1 elem list" >:: (fun _ ->
           assert_equal (Some 1) (Lists.last [1]))
@@ -14,7 +14,7 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 02" >:::
-    [ "last_two on empty list" >:: (fun _ ->
+    [ "last_two on an empty list" >:: (fun _ ->
           assert_equal None (Lists.last_two []))
     ; "last_two on 1 elem list" >:: (fun _ ->
           assert_equal None (Lists.last_two [1]))
@@ -27,13 +27,13 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 03" >:::
-    [ "at on empty list pos 3" >:: (fun _ ->
+    [ "at on an empty list pos 3" >:: (fun _ ->
           assert_raises (Failure "Index out of bounds") (fun () -> Lists.at 3 []))
     ; "at on 2 elem list pos 3" >:: (fun _ ->
           assert_raises (Failure "Index out of bounds") (fun () -> Lists.at 3 [1; 2]))
     ; "at on 5 elem list pos 3" >:: (fun _ ->
           assert_equal 4 (Lists.at 3 [1; 2; 3; 4; 5]))
-    ; "at' on empty list pos 3" >:: (fun _ ->
+    ; "at' on an empty list pos 3" >:: (fun _ ->
           assert_equal None (Lists.at_opt 3 []))
     ; "at' on 2 elem list pos 3" >:: (fun _ ->
           assert_equal None (Lists.at_opt 3 [1; 2]))
@@ -44,7 +44,7 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 04" >:::
-    [ "length on a empty list" >:: (fun _ ->
+    [ "length on an empty list" >:: (fun _ ->
           assert_equal 0 (Lists.length []))
     ; "length on a 1 elem list" >:: (fun _ ->
           assert_equal 1 (Lists.length [1]))
@@ -66,7 +66,7 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 06" >:::
-    [ "is_palindrome on a empty list" >:: (fun _ ->
+    [ "is_palindrome on an empty list" >:: (fun _ ->
           assert_equal true (Lists.is_palindrome []))
     ; "is_palindrome on a 1 elem list" >:: (fun _ ->
           assert_equal true (Lists.is_palindrome [1]))
@@ -79,7 +79,7 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 07" >:::
-    [ "flatten on a empty list" >:: (fun _ ->
+    [ "flatten on an empty list" >:: (fun _ ->
           assert_equal [] (Lists.flatten []))
     ; "flatten on a 1 elem list with One x" >:: (fun _ ->
           assert_equal [1] (Lists.flatten [One 1]))
@@ -96,7 +96,7 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 08" >:::
-    [ "compress on a empty list" >:: (fun _ ->
+    [ "compress on an empty list" >:: (fun _ ->
           assert_equal [] (Lists.compress []))
     ; "compress on a 1 elem list" >:: (fun _ ->
           assert_equal [1] (Lists.compress [1]))
@@ -113,7 +113,7 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 09" >:::
-    [ "pack on a empty list" >:: (fun _ ->
+    [ "pack on an empty list" >:: (fun _ ->
           assert_equal [] (Lists.pack []))
     ; "pack on a 1 elem list" >:: (fun _ ->
           assert_equal [[1]] (Lists.pack [1]))
@@ -132,7 +132,7 @@ let () = run_test_tt_main (
 
 let () = run_test_tt_main (
     "Lists: Problem 10" >:::
-    [ "encode on a empty list" >:: (fun _ ->
+    [ "encode on an empty list" >:: (fun _ ->
           assert_equal [] (Lists.encode []))
     ; "encode on a 1 elem list" >:: (fun _ ->
           assert_equal [(1, "a")] (Lists.encode ["a"]))
@@ -140,11 +140,30 @@ let () = run_test_tt_main (
           assert_equal [(1, "a"); (1, "b"); (1, "c")] (Lists.encode ["a"; "b"; "c"]))
     ; "encode on a 3 elem list with same values" >:: (fun _ ->
           assert_equal [(3, "a")] (Lists.encode ["a"; "a"; "a"]))
-    ; "encode on a 5 elem list with 2 values but they repeats" >:: (fun _ ->
+    ; "encode on a 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
           assert_equal [(3, "a"); (2, "b")] (Lists.encode ["a"; "a"; "a"; "b"; "b"]))
     ; "encode on a more complex example" >:: (fun _ ->
           assert_equal
             [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
             (Lists.encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+    ]
+  )
+
+let () = run_test_tt_main (
+    let open Lists in
+    "Lists: Problem 11" >:::
+    [ "encode2 on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.encode2 []))
+    ; "encode2 on 1 elem list" >:: (fun _ ->
+          assert_equal [EncOne 1] (Lists.encode2 [1]))
+    ; "encode2 on 3 elem list no repeated values" >:: (fun _ ->
+          assert_equal [EncOne 1; EncOne 2; EncOne 3] (Lists.encode2 [1; 2; 3]))
+
+    ; "encode2 on 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
+          assert_equal [EncMany (3, "a"); EncMany (2, "b")] (Lists.encode2 ["a"; "a"; "a"; "b"; "b"]))
+    ; "encode2 on a more complex example" >:: (fun _ ->
+          assert_equal
+            [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a"); EncOne "d"; EncMany (4, "e")]
+            (Lists.encode2 ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
     ]
   )
