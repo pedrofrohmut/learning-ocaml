@@ -23,11 +23,11 @@ let rec last (list : 'a list) : 'a option =
     - : (string * string) option = None
 *)
 
-let rec last_two (list : 'a list) : 'a list option =
+let rec last_two (list : 'a list) : ('a * 'a) option =
   match list with
   | [] -> None
   | _::[] -> None
-  | x::y::[] -> Some [x; y]
+  | x::y::[] -> Some (x, y)
   | _::xs -> last_two xs
 
 (*
@@ -54,10 +54,10 @@ let rec at (pos : int) (list : 'a list) : 'a =
   | x::xs -> if pos > 0 then at (pos - 1) xs else x
 
 (* Does not fail. Just returns None if index out of bounds *)
-let rec at' (pos : int) (list : 'a list) : 'a option =
+let rec at_opt (pos : int) (list : 'a list) : 'a option =
   match list with
   | [] -> None
-  | x::xs -> if pos > 0 then at' (pos - 1) xs else Some x
+  | x::xs -> if pos > 0 then at_opt (pos - 1) xs else Some x
 
 (*
     4. Find the number of elements of a list. (easy)

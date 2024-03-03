@@ -19,9 +19,9 @@ let () = run_test_tt_main (
     ; "last_two on 1 elem list" >:: (fun _ ->
           assert_equal None (Lists.last_two [1]))
     ; "last_two on 2 elem list" >:: (fun _ ->
-          assert_equal (Some [1; 2]) (Lists.last_two [1; 2]))
+          assert_equal (Some (1, 2)) (Lists.last_two [1; 2]))
     ;  "last_two on 5 elem list" >:: (fun _ ->
-          assert_equal (Some [4;  5]) (Lists.last_two [1; 2; 3; 4; 5]))
+          assert_equal (Some (4, 5)) (Lists.last_two [1; 2; 3; 4; 5]))
     ]
   )
 
@@ -34,11 +34,11 @@ let () = run_test_tt_main (
     ; "at on 5 elem list pos 3" >:: (fun _ ->
           assert_equal 4 (Lists.at 3 [1; 2; 3; 4; 5]))
     ; "at' on empty list pos 3" >:: (fun _ ->
-          assert_equal None (Lists.at' 3 []))
+          assert_equal None (Lists.at_opt 3 []))
     ; "at' on 2 elem list pos 3" >:: (fun _ ->
-          assert_equal None (Lists.at' 3 [1; 2]))
+          assert_equal None (Lists.at_opt 3 [1; 2]))
     ; "at' on 5 elem list pos 3" >:: (fun _ ->
-          assert_equal (Some 4) (Lists.at' 3 [1; 2; 3; 4; 5]))
+          assert_equal (Some 4) (Lists.at_opt 3 [1; 2; 3; 4; 5]))
     ]
   )
 
