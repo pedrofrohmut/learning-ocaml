@@ -158,12 +158,31 @@ let () = run_test_tt_main (
           assert_equal [EncOne 1] (Lists.encode2 [1]))
     ; "encode2 on 3 elem list no repeated values" >:: (fun _ ->
           assert_equal [EncOne 1; EncOne 2; EncOne 3] (Lists.encode2 [1; 2; 3]))
-
     ; "encode2 on 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
           assert_equal [EncMany (3, "a"); EncMany (2, "b")] (Lists.encode2 ["a"; "a"; "a"; "b"; "b"]))
     ; "encode2 on a more complex example" >:: (fun _ ->
           assert_equal
             [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a"); EncOne "d"; EncMany (4, "e")]
             (Lists.encode2 ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+    ]
+  )
+
+let () = run_test_tt_main (
+    "Lists: Problem 12" >:::
+    [ "decode on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.decode []))
+    ; "decode on a 1 elem list with EncOne 1" >:: (fun _ ->
+          assert_equal [1] (Lists.decode [EncOne 1]))
+    ; "decode on a 1 elem list with EncMany (3, 1)" >:: (fun _ ->
+          assert_equal [1; 1; 1] (Lists.decode [EncMany (3, 1)]))
+    ; "decode on a 3 elem list of EncOne" >:: (fun _ ->
+          assert_equal [1; 2; 3] (Lists.decode [EncOne 1; EncOne 2; EncOne 3]))
+    ; "decode on a 2 elem list of EncMany" >:: (fun _ ->
+          assert_equal ["a"; "a"; "a"; "b"; "b"] (Lists.decode [EncMany (3, "a"); EncMany (2, "b")]))
+    ; "decode on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]
+            (Lists.decode [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a");
+                           EncOne "d"; EncMany (4, "e")]))
     ]
   )

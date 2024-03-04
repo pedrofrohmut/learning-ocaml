@@ -250,7 +250,20 @@ Given a run-length code list generated as specified in the previous problem, con
 # decode [Many (4, "a"); One "b"; Many (2, "c"); Many (2, "a"); One "d"; Many (4, "e")];;
 - : string list =
 ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]
+*)
 
+let rec decode (list: 'a encode_t list) : 'a list =
+  let rec decode_elem elem =
+    match elem with
+    | EncOne x -> [x]
+    | EncMany (0, _) -> []
+    | EncMany (i, x) -> x :: decode_elem (EncMany ((i - 1), x))
+  in
+  match list with
+  | [] -> []
+  | x :: xs -> decode_elem x @ decode xs
+
+(*
 13. Run-length encoding of a list (direct solution). (medium)
 
 Implement the so-called run-length encoding data compression method directly. I.e. don't explicitly create the sublists containing the duplicates, as in problem "Pack consecutive duplicates of list elements into sublists", but only count them. As in problem "Modified run-length encoding", simplify the result list by replacing the singleton lists (1 X) by X.
