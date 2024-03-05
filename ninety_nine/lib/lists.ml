@@ -326,11 +326,21 @@ let rec replicate (n : int) (list : 'a list) : 'a list =
   | x :: xs -> replicate_elem 3 x @ replicate n xs
 
 (*
-16. Drop every N'th element from a list. (medium)
+    16. Drop every N'th element from a list. (medium)
 
-# drop ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"] 3;;
-- : string list = ["a"; "b"; "d"; "e"; "g"; "h"; "j"]
+    # drop ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"] 3;;
+    - : string list = ["a"; "b"; "d"; "e"; "g"; "h"; "j"]
+*)
 
+let drop (n : int) (list : 'a list) : 'a list =
+  let rec aux i n list =
+    match list with
+    | [] -> []
+    | x :: xs -> if i == 1 then aux n n xs else x :: aux (i - 1) n xs
+  in
+  aux n n list
+
+(*
 17. Split a list into two parts; the length of the first part is given. (easy)
 
 If the length of the first part is longer than the entire list, then the first part is the list and the second part is empty.

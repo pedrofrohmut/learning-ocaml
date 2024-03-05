@@ -218,3 +218,20 @@ let () = run_test_tt_main (
             (Lists.replicate 3 ["a"; "b"; "c"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 16" >:::
+    [ "drop 3 on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.drop 3 []))
+    ; "drop 3 on 1 elem list" >:: (fun _ ->
+          assert_equal [1] (Lists.drop 3 [1]))
+    ; "drop 3 on 3 elem list" >:: (fun _ ->
+          assert_equal [1; 2] (Lists.drop 3 [1; 2; 3]))
+    ; "drop 3 on 6 elem list" >:: (fun _ ->
+          assert_equal [1; 2; 4; 5] (Lists.drop 3 [1; 2; 3; 4; 5; 6]))
+    ; "drop on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["a"; "b"; "d"; "e"; "g"; "h"; "j"]
+            (Lists.drop 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
+    ]
+  )
