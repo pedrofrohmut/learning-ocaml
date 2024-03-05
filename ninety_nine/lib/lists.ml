@@ -298,11 +298,19 @@ let encode3 (list : 'a list) : 'a encode_t list =
   | x::xs -> aux 1 x xs
 
 (*
-14. Duplicate the elements of a list. (easy)
+    14. Duplicate the elements of a list. (easy)
 
-# duplicate ["a"; "b"; "c"; "c"; "d"];;
-- : string list = ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"]
+    # duplicate ["a"; "b"; "c"; "c"; "d"];;
+    - : string list = ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"]
+*)
 
+let rec duplicate (list : 'a list) : 'a list =
+  match list with
+  | [] -> []
+  | x :: xs -> x :: x :: duplicate xs
+
+
+(*
 15. Replicate the elements of a list a given number of times. (medium)
 
 # replicate ["a"; "b"; "c"] 3;;

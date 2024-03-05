@@ -186,3 +186,20 @@ let () = run_test_tt_main (
                            EncOne "d"; EncMany (4, "e")]))
     ]
   )
+
+(* Skipped the problem 13 *)
+
+let () = run_test_tt_main (
+    "Lists: Problem 14" >:::
+    [ "duplicate on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.duplicate []))
+    ; "duplicate on 1 elem list" >:: (fun _ ->
+          assert_equal [1; 1] (Lists.duplicate [1]))
+    ; "duplicate on a 3 elem" >:: (fun _ ->
+          assert_equal [1; 1; 2; 2; 3;  3] (Lists.duplicate [1; 2; 3]))
+    ; "duplicate on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"]
+            (Lists.duplicate ["a"; "b"; "c"; "c"; "d"]))
+    ]
+  )
