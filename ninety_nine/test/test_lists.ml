@@ -203,3 +203,18 @@ let () = run_test_tt_main (
             (Lists.duplicate ["a"; "b"; "c"; "c"; "d"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 15" >:::
+    [ "replicate on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.replicate 3 []))
+    ; "replicate on 1 elem list times 3" >:: (fun _ ->
+          assert_equal [1; 1; 1] (Lists.replicate 3 [1]))
+    ; "replicate on 3 elem list times 3" >:: (fun _ ->
+          assert_equal [1; 1; 1; 2; 2; 2; 3; 3; 3] (Lists.replicate 3 [1; 2; 3]))
+    ; "replicate on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"]
+            (Lists.replicate 3 ["a"; "b"; "c"]))
+    ]
+  )

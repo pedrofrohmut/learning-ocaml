@@ -311,11 +311,21 @@ let rec duplicate (list : 'a list) : 'a list =
 
 
 (*
-15. Replicate the elements of a list a given number of times. (medium)
+    15. Replicate the elements of a list a given number of times. (medium)
 
-# replicate ["a"; "b"; "c"] 3;;
-- : string list = ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"]
+    # replicate ["a"; "b"; "c"] 3;;
+    - : string list = ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"]
+*)
 
+let rec replicate (n : int) (list : 'a list) : 'a list =
+  let rec replicate_elem i elem =
+    if i == 0 then [] else elem :: replicate_elem (i - 1) elem
+  in
+  match list with
+  | [] -> []
+  | x :: xs -> replicate_elem 3 x @ replicate n xs
+
+(*
 16. Drop every N'th element from a list. (medium)
 
 # drop ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"] 3;;
