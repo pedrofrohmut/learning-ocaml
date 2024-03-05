@@ -341,16 +341,27 @@ let drop (n : int) (list : 'a list) : 'a list =
   aux n n list
 
 (*
-17. Split a list into two parts; the length of the first part is given. (easy)
+    17. Split a list into two parts; the length of the first part is given. (easy)
 
-If the length of the first part is longer than the entire list, then the first part is the list and the second part is empty.
+    If the length of the first part is longer than the entire list, then the
+    first part is the list and the second part is empty.
 
-# split ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"] 3;;
-- : string list * string list =
-(["a"; "b"; "c"], ["d"; "e"; "f"; "g"; "h"; "i"; "j"])
-# split ["a"; "b"; "c"; "d"] 5;;
-- : string list * string list = (["a"; "b"; "c"; "d"], [])
+    # split ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"] 3;;
+    - : string list * string list = (["a"; "b"; "c"], ["d"; "e"; "f"; "g"; "h"; "i"; "j"])
 
+    # split ["a"; "b"; "c"; "d"] 5;;
+    - : string list * string list = (["a"; "b"; "c"; "d"], [])
+*)
+
+let split (n : int) (list: 'a list) : ('a list * 'a list) =
+  let rec aux acc i list =
+    match list with
+    | [] -> (rev acc, [])
+    | x :: xs -> if i > 0 then aux (x :: acc) (i - 1) xs else (rev acc, x :: xs)
+  in
+  aux [] n list
+
+(*
 18. Extract a slice from a list. (medium)
 
 Given two indices, i and k, the slice is the list containing the elements between the i'th and k'th element of the original list (both limits included). Start counting the elements with 0 (this is the way the List module numbers elements).

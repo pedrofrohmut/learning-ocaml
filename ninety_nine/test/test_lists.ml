@@ -235,3 +235,24 @@ let () = run_test_tt_main (
             (Lists.drop 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 17" >:::
+    [ "split 3 on an empty list" >:: (fun _ ->
+          assert_equal ([], []) (Lists.split 3 []))
+    ; "split 3 on a 1 elem list" >:: (fun _ ->
+          assert_equal ([1], []) (Lists.split 3 [1]))
+    ; "split 3 on a 3 elem list" >:: (fun _ ->
+          assert_equal ([1; 2; 3], []) (Lists.split 3 [1; 2; 3]))
+    ; "split 3 on a 6 elem list" >:: (fun _ ->
+          assert_equal ([1; 2; 3], [4; 5; 6]) (Lists.split 3 [1; 2; 3; 4; 5; 6]))
+    ; "split 3 on a more complex example" >:: (fun _ ->
+          assert_equal
+            (["a"; "b"; "c"], ["d"; "e"; "f"; "g"; "h"; "i"; "j"])
+            (Lists.split 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
+    ; "split 5 on a more complex example" >:: (fun _ ->
+          assert_equal
+            (["a"; "b"; "c"; "d"], [])
+            (Lists.split 5 ["a"; "b"; "c"; "d"]))
+    ]
+  )
