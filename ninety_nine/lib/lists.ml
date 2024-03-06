@@ -449,15 +449,26 @@ let insert_at (n : int) (elem: 'a) (list : 'a list) : 'a list =
   aux 0 n elem list
 
 (*
-22. Create a list containing all integers within a given range. (easy)
+    22. Create a list containing all integers within a given range. (easy)
 
-If first argument is greater than second, produce a list in decreasing order.
+    If first argument is greater than second, produce a list in decreasing order.
 
-# range 4 9;;
-- : int list = [4; 5; 6; 7; 8; 9]
-# range 9 4;;
-- : int list = [9; 8; 7; 6; 5; 4]
+    # range 4 9;;
+    - : int list = [4; 5; 6; 7; 8; 9]
 
+    # range 9 4;;
+    - : int list = [9; 8; 7; 6; 5; 4]
+*)
+
+let rec range (first: int) (last: int) : 'a list =
+  if first == last
+    then last :: []
+    else
+      if first > last
+        then first :: range (first - 1) last
+        else first :: range (first + 1) last
+
+(*
 23. Extract a given number of randomly selected elements from a list. (medium)
 
 The selected items shall be returned in a list. We use the Random module but do not initialize it with Random.self_init for reproducibility.

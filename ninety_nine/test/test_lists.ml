@@ -320,3 +320,12 @@ let () = run_test_tt_main (
           assert_equal [666; 1; 2; 3; 4] (Lists.insert_at 0 666 [1; 2; 3; 4]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 22" >:::
+    [ "range 4 9" >:: (fun _ ->
+          assert_equal [4; 5; 6; 7; 8; 9] (Lists.range 4 9))
+    ; "range 9 4" >:: (fun _ ->
+          assert_equal [9; 8; 7; 6; 5; 4] (Lists.range 9 4))
+    ]
+  )
