@@ -383,13 +383,26 @@ let slice (first : int) (last : int) (list : 'a list) : 'a list =
   aux 0 first last list
 
 (*
-19. Rotate a list N places to the left. (medium)
+    19. Rotate a list N places to the left. (medium)
 
-# rotate ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;;
-- : string list = ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"]
-# rotate ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] (-2);;
-- : string list = ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"]
+    # rotate ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;;
+    - : string list = ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"]
 
+    # rotate ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] (-2);;
+    - : string list = ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"]
+*)
+
+let rotate (n : int) (list : 'a list) : 'a list =
+  let split_pos = if n < 0 then (length list) + n else n in
+  let rec aux acc i n list =
+    match list with
+    | [] -> acc
+    | x :: xs when i < n -> aux (x :: acc) (i + 1) n xs
+    | xs -> xs @ (rev acc)
+  in
+  aux [] 0 split_pos list
+
+(*
 20. Remove the K'th element from a list. (easy)
 
 The first element of the list is numbered 0, the second 1,...

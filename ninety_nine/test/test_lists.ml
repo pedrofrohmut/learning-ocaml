@@ -273,3 +273,20 @@ let () = run_test_tt_main (
             (Lists.slice 2 6 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 19" >:::
+    [ "rotate 2 on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.rotate 2 []))
+    ; "rotate 2 on a 1 elem list" >:: (fun _ ->
+          assert_equal [1] (Lists.rotate 2 [1]))
+    ; "rotate on a more complex example (positive)" >:: (fun _ ->
+          assert_equal
+            ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"]
+            (Lists.rotate 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"]))
+    ; "rotate on a more complex example (negative)" >:: (fun _ ->
+          assert_equal
+            ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"]
+            (Lists.rotate (-2) ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"]))
+    ]
+  )
