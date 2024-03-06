@@ -256,3 +256,20 @@ let () = run_test_tt_main (
             (Lists.split 5 ["a"; "b"; "c"; "d"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 18" >:::
+    [ "slice 0 2 on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.slice 0 3 []))
+    ; "slice 0 2 on a 5 elem list (first 3)" >:: (fun _ ->
+          assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3; 4; 5]))
+    ; "slice 2 4 on a 6 elem list (middle elems)" >:: (fun _ ->
+          assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5; 6]))
+    ; "slice 2 4 on a 3 elem list (end out of bounds)" >:: (fun _ ->
+          assert_equal [3] (Lists.slice 2 4 [1; 2; 3]))
+    ; "slice on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["c"; "d"; "e"; "f"; "g"]
+            (Lists.slice 2 6 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
+    ]
+  )

@@ -362,13 +362,27 @@ let split (n : int) (list: 'a list) : ('a list * 'a list) =
   aux [] n list
 
 (*
-18. Extract a slice from a list. (medium)
+    18. Extract a slice from a list. (medium)
 
-Given two indices, i and k, the slice is the list containing the elements between the i'th and k'th element of the original list (both limits included). Start counting the elements with 0 (this is the way the List module numbers elements).
+    Given two indices, i and k, the slice is the list containing the elements
+    between the i'th and k'th element of the original list (both limits
+    included). Start counting the elements with 0 (this is the way the List
+    module numbers elements).
 
-# slice ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"] 2 6;;
-- : string list = ["c"; "d"; "e"; "f"; "g"]
+    # slice ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"] 2 6;;
+    - : string list = ["c"; "d"; "e"; "f"; "g"]
+*)
 
+let slice (first : int) (last : int) (list : 'a list) : 'a list =
+  let rec aux i first last list =
+    match list with
+    | (_ :: xs) when i < first -> aux (i + 1) first last xs
+    | (x :: xs) when i <= last -> x :: aux (i + 1) first last xs
+    | _ -> []
+  in
+  aux 0 first last list
+
+(*
 19. Rotate a list N places to the left. (medium)
 
 # rotate ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;;
