@@ -4,6 +4,7 @@
 
     # last ["a" ; "b" ; "c" ; "d"];;
     - : string option = Some "d"
+
     # last [];;
     - : 'a option = None
 *)
@@ -19,6 +20,7 @@ let rec last (list : 'a list) : 'a option =
 
     # last_two ["a"; "b"; "c"; "d"];;
     - : (string * string) option = Some ("c", "d")
+
     # last_two ["a"];;
     - : (string * string) option = None
 *)
@@ -35,6 +37,7 @@ let rec last_two (list : 'a list) : ('a * 'a) option =
 
     # at 3 ["a"; "b"; "c"; "d"; "e"];;
     - : string option = Some "c"
+
     # at 3 ["a"];;
     - : string option = None
 
@@ -43,17 +46,16 @@ let rec last_two (list : 'a list) : ('a * 'a) option =
 
     # List.nth ["a"; "b"; "c"; "d"; "e"] 2;;
     - : string = "c"
+
     # List.nth ["a"] 2;;
     Exception: Failure "nth".
 *)
 
-(* Raises exception if index out of bounds list passed  *)
 let rec at (pos : int) (list : 'a list) : 'a =
   match list with
   | [] -> failwith "Index out of bounds"
   | x :: xs -> if pos > 0 then at (pos - 1) xs else x
 
-(* Does not fail. Just returns None if index out of bounds *)
 let rec at_opt (pos : int) (list : 'a list) : 'a option =
   match list with
   | [] -> None
@@ -67,6 +69,7 @@ let rec at_opt (pos : int) (list : 'a list) : 'a option =
 
     # length ["a"; "b"; "c"];;
     - : int = 3
+
     # length [];;
     - : int = 0
 *)
@@ -113,12 +116,9 @@ let is_palindrome (list : 'a list) : bool = list = rev list
 (*
     7. Flatten a nested list structure. (medium)
 
-    # (* There is no nested list type in OCaml, so we need to define one
-        first. A node of a nested list is either an element, or a list of
-        nodes. *)
-    type 'a node =
-        | One of 'a
-        | Many of 'a node list;;
+    There is no nested list type in OCaml, so we need to define one first. A node
+    of a nested list is either an element, or a list of nodes.
+
     type 'a node = One of 'a | Many of 'a node list
 
     # flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]];;
@@ -149,6 +149,7 @@ let compress (list : 'a list) : 'a list =
     | [] -> []
     | x :: xs -> if x == curr then aux curr xs else x :: aux x xs
   in
+
   match list with
   | [] -> []
   | x :: [] -> [x]
@@ -168,9 +169,10 @@ let pack (list : 'a list) : 'a list list =
     match list' with
     | [] -> acc :: []
     | x :: xs ->
-        if x == curr
-        then aux (x :: acc) curr xs
-        else acc :: aux [x] x xs
+      if x == curr then
+        aux (x :: acc) curr xs
+      else
+        acc :: aux [x] x xs
   in
   match list with
   | [] -> []
@@ -194,9 +196,10 @@ let encode (list : 'a list) : (int * 'a) list =
     match list' with
     | [] -> (i, curr) :: []
     | x :: xs ->
-      if x == curr
-      then aux (i + 1) curr xs
-      else (i, curr) :: aux 1 x xs
+      if x == curr then
+        aux (i + 1) curr xs
+      else
+        (i, curr) :: aux 1 x xs
   in
   match list with
   | [] -> []
@@ -232,9 +235,9 @@ let encode2 (list : 'a list) : 'a encode_t list =
       let last_elem = if i == 1 then EncOne curr else EncMany (i, curr) in
       last_elem :: []
     | x :: xs ->
-      if x == curr
-        then aux (i + 1) curr xs
-        else
+      if x == curr then
+        aux (i + 1) curr xs
+      else
           let new_elem = if i <= 1 then EncOne curr else EncMany (i, curr) in
           new_elem :: aux 1 x xs
   in
@@ -287,9 +290,9 @@ let encode3 (list : 'a list) : 'a encode_t list =
       let last_elem = if i == 1 then EncOne curr else EncMany (i, curr) in
       last_elem :: []
     | x :: xs ->
-      if x == curr
-        then aux (i + 1) curr xs
-        else
+      if x == curr then
+        aux (i + 1) curr xs
+      else
           let new_elem = if i <= 1 then EncOne curr else EncMany (i, curr) in
           new_elem :: aux 1 x xs
   in
@@ -319,7 +322,10 @@ let rec duplicate (list : 'a list) : 'a list =
 
 let rec replicate (n : int) (list : 'a list) : 'a list =
   let rec replicate_elem i elem =
-    if i == 0 then [] else elem :: replicate_elem (i - 1) elem
+    if i == 0 then
+      []
+    else
+      elem :: replicate_elem (i - 1) elem
   in
   match list with
   | [] -> []
@@ -336,7 +342,11 @@ let drop (n : int) (list : 'a list) : 'a list =
   let rec aux i n list =
     match list with
     | [] -> []
-    | x :: xs -> if i == 1 then aux n n xs else x :: aux (i - 1) n xs
+    | x :: xs ->
+      if i == 1 then
+        aux n n xs
+      else
+        x :: aux (i - 1) n xs
   in
   aux n n list
 
@@ -357,7 +367,11 @@ let split (n : int) (list: 'a list) : ('a list * 'a list) =
   let rec aux acc i list =
     match list with
     | [] -> (rev acc, [])
-    | x :: xs -> if i > 0 then aux (x :: acc) (i - 1) xs else (rev acc, x :: xs)
+    | x :: xs ->
+      if i > 0 then
+        aux (x :: acc) (i - 1) xs
+      else
+        (rev acc, x :: xs)
   in
   aux [] n list
 
@@ -441,8 +455,8 @@ let insert_at (n : int) (elem: 'a) (list : 'a list) : 'a list =
   let rec aux i n elem list =
     match list with
     | [] -> []
-    | x :: [] when i == (n - 1) -> x :: elem :: []
-    | x :: [] when i == n -> elem :: x :: []
+    | x :: [] when i == (n - 1) -> x :: elem :: [] (* special case: append *)
+    | x :: [] when i == n -> elem :: x :: [] (* special case: prepend *)
     | x :: xs when i == n -> elem :: x :: xs
     | x :: xs -> x :: aux (i + 1) n elem xs
   in
@@ -461,12 +475,12 @@ let insert_at (n : int) (elem: 'a) (list : 'a list) : 'a list =
 *)
 
 let rec range (first: int) (last: int) : 'a list =
-  if first == last
-    then last :: []
-    else
-      if first > last
-        then first :: range (first - 1) last
-        else first :: range (first + 1) last
+  if first == last then
+    last :: []
+  else if first > last then
+    first :: range (first - 1) last
+  else
+    first :: range (first + 1) last
 
 (*
     23. Extract a given number of randomly selected elements from a list. (medium)
