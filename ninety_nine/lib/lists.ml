@@ -502,12 +502,40 @@ let rand_select (n : int) (list : 'a list) : 'a list =
   aux 0 n list
 
 (*
-24. Lotto: Draw N different random numbers from the set 1..M. (easy)
+    24. Lotto: Draw N different random numbers from the set 1..M. (easy)
 
-The selected numbers shall be returned in a list.
+    The selected numbers shall be returned in a list.
 
-# lotto_select 6 49;;
-- : int list = [10; 20; 44; 22; 41; 2]
+    # lotto_select 6 49;;
+    - : int list = [10; 20; 44; 22; 41; 2]
+*)
+
+let lotto (seed : int) (amt: int) (limit: int) : int list =
+  Random.init seed;
+
+  let rec get_unique_rnd acc limit =
+    let rnd = Random.int limit in
+    let is_in_list = List.exists (fun x -> x == rnd) acc in
+    if not is_in_list then
+      rnd
+    else
+      get_unique_rnd acc limit
+  in
+
+  let rec aux acc i size limit =
+    if i < size then
+      let unq = get_unique_rnd acc limit in
+      aux (unq :: acc) (i + 1) size limit
+    else
+      acc
+  in
+
+  if amt > limit then
+    failwith "Amount out of reach"
+  else
+    rev (aux [] 0 amt limit)
+
+(*
 
 25. Generate a random permutation of the elements of a list. (easy)
 

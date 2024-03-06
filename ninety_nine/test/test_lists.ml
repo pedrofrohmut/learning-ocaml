@@ -351,3 +351,23 @@ let () = run_test_tt_main (
             (fun () -> Lists.rand_select 11 [1; 2; 3; 4; 5; 6; 7; 8; 9; 0]))
     ]
   )
+
+let () = run_test_tt_main (
+    let seed = 1 in
+    let limit = 10 in
+    (* With 'Random.init 1' the first results for
+       Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *)
+    (* All the test here are base on the Random.init 1 *)
+    "Lists: Problem 24" >:::
+    [ "lotto seed 1 10" >:: (fun _ ->
+          assert_equal [4] (Lists.lotto seed 1 limit))
+    ; "lotto seed 3 10" >:: (fun _ ->
+          assert_equal [4; 2; 1] (Lists.lotto seed 3 limit))
+    ; "lotto seed 5 10" >:: (fun _ ->
+          assert_equal [4; 2; 1; 8; 6] (Lists.lotto seed 5 limit))
+    ; "lotto seed 10 10" >:: (fun _ ->
+          assert_equal [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] (Lists.lotto seed 10 limit))
+    ; "lotto seed 11 10" >:: (fun _ ->
+          assert_raises (Failure "Amount out of reach") (fun _ -> Lists.lotto seed 11 limit))
+    ]
+  )
