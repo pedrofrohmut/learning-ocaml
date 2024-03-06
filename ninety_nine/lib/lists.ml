@@ -421,17 +421,34 @@ let remove_at (n : int) (list : 'a list) : 'a list =
   aux 0 n list
 
 (*
-21. Insert an element at a given position into a list. (easy)
+    21. Insert an element at a given position into a list. (easy)
 
-Start counting list elements with 0. If the position is larger or equal to the length of the list, insert the element at the end. (The behavior is unspecified if the position is negative.)
+    Start counting list elements with 0. If the position is larger or equal to
+    the length of the list, insert the element at the end. (The behavior is
+    unspecified if the position is negative.)
 
-# insert_at "alfa" 1 ["a"; "b"; "c"; "d"];;
-- : string list = ["a"; "alfa"; "b"; "c"; "d"]
-# insert_at "alfa" 3 ["a"; "b"; "c"; "d"];;
-- : string list = ["a"; "b"; "c"; "alfa"; "d"]
-# insert_at "alfa" 4 ["a"; "b"; "c"; "d"];;
-- : string list = ["a"; "b"; "c"; "d"; "alfa"]
+    # insert_at "alfa" 1 ["a"; "b"; "c"; "d"];;
+    - : string list = ["a"; "alfa"; "b"; "c"; "d"]
 
+    # insert_at "alfa" 3 ["a"; "b"; "c"; "d"];;
+    - : string list = ["a"; "b"; "c"; "alfa"; "d"]
+
+    # insert_at "alfa" 4 ["a"; "b"; "c"; "d"];;
+    - : string list = ["a"; "b"; "c"; "d"; "alfa"]
+*)
+
+let insert_at (n : int) (elem: 'a) (list : 'a list) : 'a list =
+  let rec aux i n elem list =
+    match list with
+    | [] -> []
+    | x :: [] when i == (n - 1) -> x :: elem :: []
+    | x :: [] when i == n -> elem :: x :: []
+    | x :: xs when i == n -> elem :: x :: xs
+    | x :: xs -> x :: aux (i + 1) n elem xs
+  in
+  aux 0 n elem list
+
+(*
 22. Create a list containing all integers within a given range. (easy)
 
 If first argument is greater than second, produce a list in decreasing order.

@@ -305,3 +305,18 @@ let () = run_test_tt_main (
             (Lists.remove_at 1 ["a"; "b"; "c"; "d"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 21" >:::
+    [ "insert_at 3 666 on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.insert_at 3 666 []))
+    ; "insert_at 3 666 on a 1 elem list" >:: (fun _ ->
+          assert_equal [1] (Lists.insert_at 3 666 [1]))
+    ; "insert_at 3 666 on a 5 elem list" >:: (fun _ ->
+          assert_equal [1; 2; 3; 666; 4; 5; 6] (Lists.insert_at 3 666 [1; 2; 3; 4; 5; 6]))
+    ; "insert_at 4 666 on a 4 elem list (insert_at used as append)" >:: (fun _ ->
+          assert_equal [1; 2; 3; 4; 666] (Lists.insert_at 4 666 [1; 2; 3; 4]))
+    ; "insert_at 0 666 on a 4 elem list (insert_at used as prepend)" >:: (fun _ ->
+          assert_equal [666; 1; 2; 3; 4] (Lists.insert_at 0 666 [1; 2; 3; 4]))
+    ]
+  )
