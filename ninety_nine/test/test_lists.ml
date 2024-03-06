@@ -331,24 +331,26 @@ let () = run_test_tt_main (
   )
 
 let () = run_test_tt_main (
+    let seed = 1 in
+    let list = [1; 2; 3; 4; 5; 6; 7; 8; 9; 0] in
     (* With 'Random.init 1' the first results for
        Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *)
     (* All the test here are base on the Random.init 1 *)
     "Lists: Problem 23" >:::
     [ "rand_select 1 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5] (Lists.rand_select 1 [1; 2; 3; 4; 5; 6; 7; 8; 9; 0]))
+          assert_equal [5] (Lists.rand_select seed 1 list))
     ; "rand_select 3 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9] (Lists.rand_select 3 [1; 2; 3; 4; 5; 6; 7; 8; 9; 0]))
+          assert_equal [5; 6; 9] (Lists.rand_select seed 3 list))
     ; "rand_select 5 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9; 0; 3] (Lists.rand_select 5 [1; 2; 3; 4; 5; 6; 7; 8; 9; 0]))
+          assert_equal [5; 6; 9; 0; 3] (Lists.rand_select seed 5 list))
     ; "rand_select 9 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1] (Lists.rand_select 9 [1; 2; 3; 4; 5; 6; 7; 8; 9; 0]))
+          assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1] (Lists.rand_select seed 9 list))
     ; "rand_select 10 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1; 2] (Lists.rand_select 10 [1; 2; 3; 4; 5; 6; 7; 8; 9; 0]))
+          assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1; 2] (Lists.rand_select seed 10 list))
     ; "rand_select 11 on a 10 elem list" >:: (fun _ ->
           assert_raises
             (Failure "Number of elements out of bounds to the list")
-            (fun () -> Lists.rand_select 11 [1; 2; 3; 4; 5; 6; 7; 8; 9; 0]))
+            (fun () -> Lists.rand_select seed 11 list))
     ]
   )
 
@@ -356,7 +358,8 @@ let () = run_test_tt_main (
     let seed = 1 in
     let limit = 10 in
     (* With 'Random.init 1' the first results for
-       Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *)
+       Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1
+       Unique list is [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] *)
     (* All the test here are base on the Random.init 1 *)
     "Lists: Problem 24" >:::
     [ "lotto seed 1 10" >:: (fun _ ->

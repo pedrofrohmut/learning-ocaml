@@ -478,17 +478,19 @@ let rec range (first: int) (last: int) : 'a list =
     - : string list = ["g"; "d"; "a"]
 *)
 
-let get_rnd_from_list (list : 'a list) : ('a * 'a list) =
-  match list with
-  | [] -> failwith "Cannot get random elem from an empty list"
-  | xs ->
-    let rnd = Random.int (length xs) in
-    let elem = at rnd xs in
-    let rest = remove_at rnd xs in
-    (elem, rest)
 
-let rand_select (n : int) (list : 'a list) : 'a list =
-  Random.init 1; (* Makes predicable random *)
+let rand_select (seed : int) (n : int) (list : 'a list) : 'a list =
+  Random.init seed; (* Makes predicable random *)
+
+  let get_rnd_from_list (list : 'a list) : ('a * 'a list) =
+    match list with
+    | [] -> failwith "Cannot get random elem from an empty list"
+    | xs ->
+      let rnd = Random.int (length xs) in
+      let elem = at rnd xs in
+      let rest = remove_at rnd xs in
+      (elem, rest)
+  in
 
   let rec aux i n list =
     match list with
@@ -511,7 +513,7 @@ let rand_select (n : int) (list : 'a list) : 'a list =
 *)
 
 let lotto (seed : int) (amt: int) (limit: int) : int list =
-  Random.init seed;
+  Random.init seed;  (* Makes predicable random *)
 
   let rec get_unique_rnd acc limit =
     let rnd = Random.int limit in
