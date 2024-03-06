@@ -469,13 +469,39 @@ let rec range (first: int) (last: int) : 'a list =
         else first :: range (first + 1) last
 
 (*
-23. Extract a given number of randomly selected elements from a list. (medium)
+    23. Extract a given number of randomly selected elements from a list. (medium)
 
-The selected items shall be returned in a list. We use the Random module but do not initialize it with Random.self_init for reproducibility.
+    The selected items shall be returned in a list. We use the Random module but
+    do not initialize it with Random.self_init for reproducibility.
 
-# rand_select ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;;
-- : string list = ["g"; "d"; "a"]
+    # rand_select ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;;
+    - : string list = ["g"; "d"; "a"]
+*)
 
+let get_rnd_from_list (list : 'a list) : ('a * 'a list) =
+  match list with
+  | [] -> failwith "Cannot get random elem from an empty list"
+  | xs ->
+    let rnd = Random.int (length xs) in
+    let elem = at rnd xs in
+    let rest = remove_at rnd xs in
+    (elem, rest)
+
+let rand_select (n : int) (list : 'a list) : 'a list =
+  Random.init 1; (* Makes predicable random *)
+
+  let rec aux i n list =
+    match list with
+    | [] when i < n -> failwith "Number of elements out of bounds to the list"
+    | xs when i < n ->
+      let (rnd_elem, rest) = get_rnd_from_list xs in
+      rnd_elem :: aux (i + 1) n rest
+    | _ -> []
+  in
+
+  aux 0 n list
+
+(*
 24. Lotto: Draw N different random numbers from the set 1..M. (easy)
 
 The selected numbers shall be returned in a list.
