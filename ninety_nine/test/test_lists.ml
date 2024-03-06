@@ -290,3 +290,18 @@ let () = run_test_tt_main (
             (Lists.rotate (-2) ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"]))
     ]
   )
+
+let () = run_test_tt_main (
+    "Lists: Problem 20" >:::
+    [ "remove_at 3 on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.remove_at 3 []))
+    ; "remove_at 3 on a 1 elem list (out of bounds)" >:: (fun _ ->
+          assert_equal [1] (Lists.remove_at 3 [1]))
+    ; "remove_at 3 on a 6 elem list" >:: (fun _ ->
+          assert_equal [1; 2; 3; 5; 6] (Lists.remove_at 3 [1; 2; 3; 4; 5; 6]))
+    ; "remove_at on a more complex example" >:: (fun _ ->
+          assert_equal
+            ["a"; "c"; "d"]
+            (Lists.remove_at 1 ["a"; "b"; "c"; "d"]))
+    ]
+  )

@@ -403,13 +403,24 @@ let rotate (n : int) (list : 'a list) : 'a list =
   aux [] 0 split_pos list
 
 (*
-20. Remove the K'th element from a list. (easy)
+    20. Remove the K'th element from a list. (easy)
 
-The first element of the list is numbered 0, the second 1,...
+    The first element of the list is numbered 0, the second 1,...
 
-# remove_at 1 ["a"; "b"; "c"; "d"];;
-- : string list = ["a"; "c"; "d"]
+    # remove_at 1 ["a"; "b"; "c"; "d"];;
+    - : string list = ["a"; "c"; "d"]
+*)
 
+let remove_at (n : int) (list : 'a list) : 'a list =
+  let rec aux i n list =
+    match list with
+    | [] -> []
+    | x :: xs when i < n -> x :: aux (i + 1) n xs
+    | _ :: xs -> xs
+  in
+  aux 0 n list
+
+(*
 21. Insert an element at a given position into a list. (easy)
 
 Start counting list elements with 0. If the position is larger or equal to the length of the list, insert the element at the end. (The behavior is unspecified if the position is negative.)
