@@ -552,11 +552,36 @@ let lotto (seed : int) (amt: int) (limit: int) : int list =
     rev (aux [] 0 amt limit)
 
 (*
+    25. Generate a random permutation of the elements of a list. (easy)
 
-25. Generate a random permutation of the elements of a list. (easy)
+    # permutation ["a"; "b"; "c"; "d"; "e"; "f"];;
+    - : string list = ["a"; "e"; "f"; "b"; "d"; "c"]
+*)
 
-# permutation ["a"; "b"; "c"; "d"; "e"; "f"];;
-- : string list = ["a"; "e"; "f"; "b"; "d"; "c"]
+let permutation (seed : int) (list : 'a list) : 'a list =
+  Random.init seed;
+
+  let rec extract acc pos list =
+    match (pos, list) with
+    | (_, []) -> failwith "Out of bounds"
+    | (0, x :: xs) -> (x, (rev acc) @ xs)
+    | (_, x :: xs) -> extract (x :: acc) (pos - 1) xs
+  in
+
+  let get_rnd_elem_and_rest list =
+    let rnd_pos = Random.int (length list) in
+    extract [] rnd_pos list
+  in
+
+  let rec aux list =
+    match list with
+    | [] -> []
+    | xs -> let (elem, rest) = get_rnd_elem_and_rest xs in elem :: aux rest
+  in
+
+  aux list
+
+(*
 
 26. Generate the combinations of K distinct objects chosen from the N elements of a list. (medium)
 

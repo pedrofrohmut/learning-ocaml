@@ -374,3 +374,20 @@ let () = run_test_tt_main (
           assert_raises (Failure "Amount out of reach") (fun _ -> Lists.lotto seed 11 limit))
     ]
   )
+
+(* This is random an hard to test. Fewer tests here *)
+let () = run_test_tt_main (
+    let seed = 1 in
+    "Lists: Problem 25" >:::
+    [ "permutation on an empty list" >:: (fun _ ->
+          assert_equal [] (Lists.permutation seed []))
+    ; "permutation on 1 elem list" >:: (fun _ ->
+          assert_equal [1] (Lists.permutation seed [1]))
+    ; "permutation on 6 elem list" >:: (fun _ ->
+          (* Random order for seed == 1 is: 2, 4, 2, 2, 0, 0 *)
+          assert_equal
+            ["c"; "f"; "d"; "e"; "a"; "b"]
+            (Lists.permutation seed ["a"; "b"; "c"; "d"; "e"; "f"]))
+
+    ]
+  )
