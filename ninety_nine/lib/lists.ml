@@ -52,14 +52,16 @@ let rec last_two (list : 'a list) : ('a * 'a) option =
 *)
 
 let rec at (pos : int) (list : 'a list) : 'a =
-  match list with
-  | [] -> failwith "Index out of bounds"
-  | x :: xs -> if pos > 0 then at (pos - 1) xs else x
+  match (pos, list) with
+  | (_, []) -> failwith "Index out of bounds"
+  | (0, x :: _ ) -> x
+  | (_, _ :: xs) -> at (pos - 1) xs
 
 let rec at_opt (pos : int) (list : 'a list) : 'a option =
-  match list with
-  | [] -> None
-  | x :: xs -> if pos > 0 then at_opt (pos - 1) xs else Some x
+  match (pos, list) with
+  | (_, []) -> None
+  | (0, x :: _) -> Some x
+  | (_, _ :: xs) -> at_opt (pos - 1) xs
 
 (*
     4. Find the number of elements of a list. (easy)
@@ -75,8 +77,8 @@ let rec at_opt (pos : int) (list : 'a list) : 'a option =
 *)
 
 let length (list: 'a list) : int =
-  let rec aux n list' =
-    match list' with
+  let rec aux n list =
+    match list with
     | [] -> n
     | _ :: xs -> aux (n + 1) xs
   in
@@ -92,8 +94,8 @@ let length (list: 'a list) : int =
 *)
 
 let rev (list : 'a list) : 'a list =
-  let rec aux acc list' =
-    match list' with
+  let rec aux acc list =
+    match list with
     | [] -> acc
     | x :: xs -> aux (x :: acc) xs
   in
@@ -128,13 +130,13 @@ let is_palindrome (list : 'a list) : bool = list = rev list
 type 'a node = One of 'a | Many of 'a node list
 
 let flatten (list : 'a node list) : 'a list =
-  let rec aux acc list' =
-    match list' with
+  let rec aux acc list =
+    match list with
     | [] -> acc
     | One value :: xs -> aux (value :: acc) xs
     | Many value :: xs -> aux (aux acc value) xs
   in
-  list |> aux [] |> rev
+  rev (aux [] list)
 
 (*
     8. Eliminate consecutive duplicates of list elements. (medium)
@@ -144,15 +146,15 @@ let flatten (list : 'a node list) : 'a list =
 *)
 
 let compress (list : 'a list) : 'a list =
-  let rec aux curr list' =
-    match list' with
+  let rec aux curr list =
+    match list with
     | [] -> []
     | x :: xs -> if x == curr then aux curr xs else x :: aux x xs
   in
 
   match list with
   | [] -> []
-  | x :: [] -> [x]
+  | x :: [] -> x :: []
   | x :: xs -> x :: aux x xs
 
 (*
@@ -165,8 +167,8 @@ let compress (list : 'a list) : 'a list =
 *)
 
 let pack (list : 'a list) : 'a list list =
-  let rec aux acc curr list' =
-    match list' with
+  let rec aux acc curr list =
+    match list with
     | [] -> acc :: []
     | x :: xs ->
       if x == curr then
@@ -192,8 +194,8 @@ let pack (list : 'a list) : 'a list list =
 *)
 
 let encode (list : 'a list) : (int * 'a) list =
-  let rec aux i curr list' =
-    match list' with
+  let rec aux i curr list =
+    match list with
     | [] -> (i, curr) :: []
     | x :: xs ->
       if x == curr then
@@ -229,8 +231,8 @@ let encode (list : 'a list) : (int * 'a) list =
 type 'a encode_t = EncOne of 'a | EncMany of (int * 'a)
 
 let encode2 (list : 'a list) : 'a encode_t list =
-  let rec aux i curr list' =
-    match list' with
+  let rec aux i curr list =
+    match list with
     | [] ->
       let last_elem = if i == 1 then EncOne curr else EncMany (i, curr) in
       last_elem :: []
@@ -284,8 +286,8 @@ let rec decode (list: 'a encode_t list) : 'a list =
 
 (* Already did this in Problem 11. Just copying *)
 let encode3 (list : 'a list) : 'a encode_t list =
-  let rec aux i curr list' =
-    match list' with
+  let rec aux i curr list =
+    match list with
     | [] ->
       let last_elem = if i == 1 then EncOne curr else EncMany (i, curr) in
       last_elem :: []
@@ -322,14 +324,14 @@ let rec duplicate (list : 'a list) : 'a list =
 
 let rec replicate (n : int) (list : 'a list) : 'a list =
   let rec replicate_elem i elem =
-    if i == 0 then
-      []
-    else
-      elem :: replicate_elem (i - 1) elem
+    match i with
+    | 0 -> []
+    | _ -> elem :: replicate_elem (i - 1) elem
   in
+
   match list with
   | [] -> []
-  | x :: xs -> replicate_elem 3 x @ replicate n xs
+  | x :: xs -> replicate_elem n x @ replicate n xs
 
 (*
     16. Drop every N'th element from a list. (medium)
@@ -340,13 +342,10 @@ let rec replicate (n : int) (list : 'a list) : 'a list =
 
 let drop (n : int) (list : 'a list) : 'a list =
   let rec aux i n list =
-    match list with
-    | [] -> []
-    | x :: xs ->
-      if i == 1 then
-        aux n n xs
-      else
-        x :: aux (i - 1) n xs
+    match (i, list) with
+    | (_, []) -> []
+    | (1, _ :: xs) -> aux n n xs
+    | (_, x :: xs) -> x :: aux (i - 1) n xs
   in
   aux n n list
 
@@ -365,13 +364,10 @@ let drop (n : int) (list : 'a list) : 'a list =
 
 let split (n : int) (list: 'a list) : ('a list * 'a list) =
   let rec aux acc i list =
-    match list with
-    | [] -> (rev acc, [])
-    | x :: xs ->
-      if i > 0 then
-        aux (x :: acc) (i - 1) xs
-      else
-        (rev acc, x :: xs)
+    match (i, list) with
+    | (_, []) -> (rev acc, [])
+    | (0, xs) -> (rev acc, xs)
+    | (_, x :: xs) -> aux (x :: acc) (i - 1) xs
   in
   aux [] n list
 
@@ -387,7 +383,15 @@ let split (n : int) (list: 'a list) : ('a list * 'a list) =
     - : string list = ["c"; "d"; "e"; "f"; "g"]
 *)
 
-let slice (first : int) (last : int) (list : 'a list) : 'a list =
+let rec slice (first : int) (last : int) (list : 'a list) : 'a list =
+  match (first, last, list) with
+  | (_, _, []) -> []
+  | (0, 0, x :: _ ) -> x :: []
+  | (0, _, x :: xs) -> x :: slice 0 (last - 1) xs
+  | (_, _, _ :: xs) -> slice (first - 1) (last - 1) xs
+
+
+let slice_old (first : int) (last : int) (list : 'a list) : 'a list =
   let rec aux i first last list =
     match list with
     | (_ :: xs) when i < first -> aux (i + 1) first last xs
@@ -408,13 +412,15 @@ let slice (first : int) (last : int) (list : 'a list) : 'a list =
 
 let rotate (n : int) (list : 'a list) : 'a list =
   let split_pos = if n < 0 then (length list) + n else n in
-  let rec aux acc i n list =
-    match list with
-    | [] -> acc
-    | x :: xs when i < n -> aux (x :: acc) (i + 1) n xs
-    | xs -> xs @ (rev acc)
+
+  let rec aux acc i list =
+    match (i, list) with
+    | (_, []) -> acc
+    | (0, xs) -> xs @ (rev acc)
+    | (_, x :: xs) -> aux (x :: acc) (i - 1) xs
   in
-  aux [] 0 split_pos list
+
+  aux [] split_pos list
 
 (*
     20. Remove the K'th element from a list. (easy)
@@ -425,14 +431,11 @@ let rotate (n : int) (list : 'a list) : 'a list =
     - : string list = ["a"; "c"; "d"]
 *)
 
-let remove_at (n : int) (list : 'a list) : 'a list =
-  let rec aux i n list =
-    match list with
-    | [] -> []
-    | x :: xs when i < n -> x :: aux (i + 1) n xs
-    | _ :: xs -> xs
-  in
-  aux 0 n list
+let rec remove_at (n : int) (list : 'a list) : 'a list =
+  match (n, list) with
+  | (_, []) -> []
+  | (0, _ :: xs) -> xs
+  | (_, x :: xs) -> x :: remove_at (n - 1) xs
 
 (*
     21. Insert an element at a given position into a list. (easy)
@@ -450,6 +453,8 @@ let remove_at (n : int) (list : 'a list) : 'a list =
     # insert_at "alfa" 4 ["a"; "b"; "c"; "d"];;
     - : string list = ["a"; "b"; "c"; "d"; "alfa"]
 *)
+
+(* TODO: review 21 and foward *)
 
 let insert_at (n : int) (elem: 'a) (list : 'a list) : 'a list =
   let rec aux i n elem list =
@@ -582,14 +587,22 @@ let permutation (seed : int) (list : 'a list) : 'a list =
   aux list
 
 (*
+    26. Generate the combinations of K distinct objects chosen from the N
+    elements of a list. (medium)
 
-26. Generate the combinations of K distinct objects chosen from the N elements of a list. (medium)
+    In how many ways can a committee of 3 be chosen from a group of 12 people? We
+    all know that there are C(12,3) = 220 possibilities (C(N,K) denotes the
+    well-known binomial coefficients). For pure mathematicians, this result may
+    be great. But we want to really generate all the possibilities in a list.
 
-In how many ways can a committee of 3 be chosen from a group of 12 people? We all know that there are C(12,3) = 220 possibilities (C(N,K) denotes the well-known binomial coefficients). For pure mathematicians, this result may be great. But we want to really generate all the possibilities in a list.
+    # extract 2 ["a"; "b"; "c"; "d"];;
+    - : string list list =
+    [["a"; "b"]; ["a"; "c"]; ["a"; "d"]; ["b"; "c"]; ["b"; "d"]; ["c"; "d"]]
+*)
 
-# extract 2 ["a"; "b"; "c"; "d"];;
-- : string list list =
-[["a"; "b"]; ["a"; "c"]; ["a"; "d"]; ["b"; "c"]; ["b"; "d"]; ["c"; "d"]]
+(* let extract (pos : int) (list: 'a list) : 'a list list = [[]] *)
+
+(*
 
 27. Group the elements of a set into disjoint subsets. (medium)
 
