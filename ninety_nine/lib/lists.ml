@@ -588,7 +588,22 @@ let lotto_old (seed : int) (amt: int) (limit: int) : int list =
     - : string list = ["a"; "e"; "f"; "b"; "d"; "c"]
 *)
 
+(* Can't be recursive or the random seed is reseted *)
 let permutation (seed : int) (list : 'a list) : 'a list =
+  Random.init seed;
+  let rec aux list =
+    if list == [] then
+      []
+    else
+      let rnd_pos = Random.int @@ length list in
+      let rnd_elem = at rnd_pos list in
+      let rest = remove_at rnd_pos list in
+      rnd_elem :: aux rest
+  in
+  aux list
+
+(* Can't be recursive or the random seed is reseted *)
+let permutation_old (seed : int) (list : 'a list) : 'a list =
   Random.init seed;
 
   let rec extract acc pos list =

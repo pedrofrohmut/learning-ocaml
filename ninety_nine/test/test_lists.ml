@@ -381,7 +381,7 @@ let () = run_test_tt_main (
           assert_raises (Failure "Amount is negative") (fun _ -> Lists.lotto seed (-1) limit))
     ]
   )
-    10
+
 (* This is random an hard to test. Fewer tests here *)
 let () = run_test_tt_main (
     let seed = 1 in
