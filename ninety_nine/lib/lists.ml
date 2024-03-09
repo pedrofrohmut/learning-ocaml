@@ -487,8 +487,6 @@ let insert_at_old (n : int) (elem: 'a) (list : 'a list) : 'a list =
     - : int list = [9; 8; 7; 6; 5; 4]
 *)
 
-(* TODO: review 22 and foward *)
-
 let rec range (first: int) (last: int) : 'a list =
   if first == last then
     last :: []
@@ -507,30 +505,24 @@ let rec range (first: int) (last: int) : 'a list =
     - : string list = ["g"; "d"; "a"]
 *)
 
-
-let rand_select (seed : int) (n : int) (list : 'a list) : 'a list =
-  Random.init seed; (* Makes predicable random *)
-
-  let get_rnd_from_list (list : 'a list) : ('a * 'a list) =
-    match list with
-    | [] -> failwith "Cannot get random elem from an empty list"
-    | xs ->
-      let rnd = Random.int (length xs) in
-      let elem = at rnd xs in
-      let rest = remove_at rnd xs in
-      (elem, rest)
-  in
-
-  let rec aux i n list =
-    match list with
-    | [] when i < n -> failwith "Number of elements out of bounds to the list"
-    | xs when i < n ->
-      let (rnd_elem, rest) = get_rnd_from_list xs in
-      rnd_elem :: aux (i + 1) n rest
-    | _ -> []
-  in
-
-  aux 0 n list
+(* Can't be recursive or the random seed is reseted *)
+let rand_select (seed : int) (amt : int) (list : 'a list) : 'a list =
+  Random.init seed;
+  if amt < 0  || amt > (length list) then
+    failwith "Invalid amount. Amount should be a integer from 0 to list length - 1"
+  else if amt == 0 then
+    []
+  else
+    let rec aux n list =
+      if n == 0 then
+        []
+      else
+        let rnd_pos = Random.int (length list) in
+        let elem = at rnd_pos list in
+        let rest = remove_at rnd_pos list in
+        elem :: aux (n - 1) rest
+    in
+    aux amt list
 
 (*
     24. Lotto: Draw N different random numbers from the set 1..M. (easy)

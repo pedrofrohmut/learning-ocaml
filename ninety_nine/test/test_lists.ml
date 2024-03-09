@@ -354,7 +354,7 @@ let () = run_test_tt_main (
           assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1; 2] (Lists.rand_select seed 10 list))
     ; "rand_select 11 on a 10 elem list" >:: (fun _ ->
           assert_raises
-            (Failure "Number of elements out of bounds to the list")
+            (Failure "Invalid amount. Amount should be a integer from 0 to list length - 1")
             (fun () -> Lists.rand_select seed 11 list))
     ]
   )
