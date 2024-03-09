@@ -307,17 +307,22 @@ let () = run_test_tt_main (
   )
 
 let () = run_test_tt_main (
+    let list4 = [1; 2; 3; 4] in
     "Lists: Problem 21" >:::
-    [ "insert_at 3 666 on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.insert_at 3 666 []))
+    [ "insert_at 0 666 on an empty list (init the list)" >:: (fun _ ->
+          assert_equal [666] (Lists.insert_at 0 666 []))
     ; "insert_at 3 666 on a 1 elem list" >:: (fun _ ->
-          assert_equal [1] (Lists.insert_at 3 666 [1]))
-    ; "insert_at 3 666 on a 5 elem list" >:: (fun _ ->
-          assert_equal [1; 2; 3; 666; 4; 5; 6] (Lists.insert_at 3 666 [1; 2; 3; 4; 5; 6]))
+          assert_raises (Failure "Insert position out of bounds") (fun _ -> Lists.insert_at 3 666 [1]))
+    ; "insert_at 3 666 on a 4 elem list" >:: (fun _ ->
+          assert_equal [1; 2; 3; 666; 4] (Lists.insert_at 3 666 list4))
     ; "insert_at 4 666 on a 4 elem list (insert_at used as append)" >:: (fun _ ->
-          assert_equal [1; 2; 3; 4; 666] (Lists.insert_at 4 666 [1; 2; 3; 4]))
+          assert_equal (list4 @ [666]) (Lists.insert_at 4 666 list4))
     ; "insert_at 0 666 on a 4 elem list (insert_at used as prepend)" >:: (fun _ ->
-          assert_equal [666; 1; 2; 3; 4] (Lists.insert_at 0 666 [1; 2; 3; 4]))
+          assert_equal (666 :: list4) (Lists.insert_at 0 666 list4))
+    ; "insert_at (-1) 666 on a 4 elem list (exception case negative position)" >:: (fun _ ->
+          assert_raises
+            (Failure "Negative value provided as a list position")
+            (fun _ -> Lists.insert_at (-1) 666 list4))
     ]
   )
 

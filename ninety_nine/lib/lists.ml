@@ -454,9 +454,17 @@ let rec remove_at (n : int) (list : 'a list) : 'a list =
     - : string list = ["a"; "b"; "c"; "d"; "alfa"]
 *)
 
-(* TODO: review 21 and foward *)
+let rec insert_at (n : int) (elem : 'a) (list : 'a list) : 'a list =
+  if n < 0 then
+    failwith "Negative value provided as a list position"
+  else
+    match (n, list) with
+    | (0, []) -> elem :: []
+    | (_, []) -> failwith "Insert position out of bounds"
+    | (0, xs) -> elem :: xs
+    | (_, x :: xs) -> x :: insert_at (n - 1) elem xs
 
-let insert_at (n : int) (elem: 'a) (list : 'a list) : 'a list =
+let insert_at_old (n : int) (elem: 'a) (list : 'a list) : 'a list =
   let rec aux i n elem list =
     match list with
     | [] -> []
@@ -478,6 +486,8 @@ let insert_at (n : int) (elem: 'a) (list : 'a list) : 'a list =
     # range 9 4;;
     - : int list = [9; 8; 7; 6; 5; 4]
 *)
+
+(* TODO: review 22 and foward *)
 
 let rec range (first: int) (last: int) : 'a list =
   if first == last then
