@@ -377,9 +377,11 @@ let () = run_test_tt_main (
           assert_equal [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] (Lists.lotto seed 10 limit))
     ; "lotto seed 11 10" >:: (fun _ ->
           assert_raises (Failure "Amount out of reach") (fun _ -> Lists.lotto seed 11 limit))
+    ; "lotto seed (-1) 10" >:: (fun _ ->
+          assert_raises (Failure "Amount is negative") (fun _ -> Lists.lotto seed (-1) limit))
     ]
   )
-
+    10
 (* This is random an hard to test. Fewer tests here *)
 let () = run_test_tt_main (
     let seed = 1 in

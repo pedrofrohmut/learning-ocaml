@@ -533,7 +533,30 @@ let rand_select (seed : int) (amt : int) (list : 'a list) : 'a list =
     - : int list = [10; 20; 44; 22; 41; 2]
 *)
 
-let lotto (seed : int) (amt: int) (limit: int) : int list =
+(* Can't be recursive or the random seed is reseted *)
+let lotto (seed : int) (amt : int) (limit : int) : int list =
+  Random.init seed; (* Makes predicable random *)
+  if amt < 0 then
+    failwith "Amount is negative"
+  else if amt > limit then
+    failwith "Amount out of reach"
+  else if amt == 0 then
+    []
+  else
+    let rec aux acc n limit =
+      if n == 0 then
+        acc
+      else
+        let rnd_num = Random.int limit in
+        let is_in_list = List.exists (fun x -> x == rnd_num) acc in
+        if not is_in_list then
+            aux (rnd_num :: acc) (n - 1) limit
+        else
+            aux acc n limit
+    in
+    rev @@ aux [] amt limit
+
+let lotto_old (seed : int) (amt: int) (limit: int) : int list =
   Random.init seed;  (* Makes predicable random *)
 
   let rec get_unique_rnd acc limit =
