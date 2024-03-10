@@ -145,7 +145,26 @@ let flatten (list : 'a node list) : 'a list =
     - : string list = ["a"; "b"; "c"; "a"; "d"; "e"]
 *)
 
+(* With tail call optimization *)
 let compress (list : 'a list) : 'a list =
+  let rec aux acc list =
+    match list with
+    | [] -> []
+    | x :: [] -> x :: []
+    | x :: y :: [] ->
+      if x == y then
+        x :: acc
+      else
+        y :: x :: acc
+    | x :: y :: xs ->
+      if x == y then
+        aux acc (y :: xs)
+      else
+        aux (x :: acc) (y :: xs)
+  in
+  rev @@ aux [] list
+
+let compress_notco (list : 'a list) : 'a list =
   let rec aux curr list =
     match list with
     | [] -> []
@@ -166,7 +185,19 @@ let compress (list : 'a list) : 'a list =
     ["e"; "e"; "e"; "e"]]
 *)
 
+(* With TCO *)
 let pack (list : 'a list) : 'a list list =
+  let rec aux res acc list =
+    match acc, list with
+    | [], [] -> []
+    | _, [] -> rev (acc :: res)
+    | [], y :: ys -> aux res (y :: acc) ys
+    | x :: _, y :: ys when x == y -> aux res (y :: acc) ys
+    | _, y :: ys -> aux (acc :: res) [] (y :: ys)
+  in
+  aux [] [] list
+
+let pack_notco (list : 'a list) : 'a list list =
   let rec aux acc curr list =
     match list with
     | [] -> acc :: []
@@ -193,7 +224,17 @@ let pack (list : 'a list) : 'a list list =
     [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
 *)
 
+(* With TCO *)
 let encode (list : 'a list) : (int * 'a) list =
+  let rec aux res acc list =
+    match acc, list with
+    | _, [] -> rev (acc :: res)
+    | (n, x), y :: ys when x == y -> aux res (n + 1, x) ys
+    | _, y :: ys -> aux (acc :: res) (1, y) ys
+  in
+  match list with [] -> [] | x :: xs -> aux [] (1, x) xs
+
+let encode_notco (list : 'a list) : (int * 'a) list =
   let rec aux i curr list =
     match list with
     | [] -> (i, curr) :: []
