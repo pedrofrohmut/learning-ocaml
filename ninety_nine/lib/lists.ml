@@ -263,7 +263,13 @@ let encode_notco (list : 'a list) : (int * 'a) list =
     | Many of int * 'a;;
     type 'a rle = One of 'a | Many of int * 'a
 
-    # encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;
+  |---- RESULT from previous exercise -------------------------------------------
+  | # encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;
+  | - : (int * string) list =
+  | [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
+  |---- RESULT from previous exercise -------------------------------------------
+
+    # encode2 ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"];;
     - : string rle list =
     [Many (4, "a"); One "b"; Many (2, "c"); Many (2, "a"); One "d";
     Many (4, "e")]
@@ -272,6 +278,16 @@ let encode_notco (list : 'a list) : (int * 'a) list =
 type 'a encode_t = EncOne of 'a | EncMany of (int * 'a)
 
 let encode2 (list : 'a list) : 'a encode_t list =
+  let result = encode list in
+  let rec aux (acc : 'a encode_t list) (list : (int * 'a) list) : 'a encode_t list =
+    match list with
+    | [] -> rev acc
+    | (1, x) :: xs -> aux (EncOne x :: acc) xs
+    | (n, x) :: xs -> aux (EncMany (n, x) :: acc) xs
+  in
+  aux [] result
+
+let encode2_notco (list : 'a list) : 'a encode_t list =
   let rec aux i curr list =
     match list with
     | [] ->
@@ -299,7 +315,18 @@ let encode2 (list : 'a list) : 'a encode_t list =
     ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]
 *)
 
-let rec decode (list: 'a encode_t list) : 'a list =
+(* With TCO *)
+let decode (list : 'a encode_t list) : 'a list =
+  let rec aux acc list =
+    match list with
+    | [] -> rev acc
+    | EncOne x :: xs -> aux (x :: acc) xs
+    | EncMany (1, x) :: xs -> aux (x :: acc) xs
+    | EncMany (n, x) :: xs -> aux (x :: acc) (EncMany ((n - 1), x) :: xs)
+  in
+  aux [] list
+
+let rec decode_notco (list: 'a encode_t list) : 'a list =
   let rec decode_elem elem =
     match elem with
     | EncOne x -> [x]
@@ -308,7 +335,7 @@ let rec decode (list: 'a encode_t list) : 'a list =
   in
   match list with
   | [] -> []
-  | x :: xs -> decode_elem x @ decode xs
+  | x :: xs -> decode_elem x @ decode_notco xs
 
 (*
     13. Run-length encoding of a list (direct solution). (medium)
@@ -325,8 +352,23 @@ let rec decode (list: 'a encode_t list) : 'a list =
     Many (4, "e")]
 *)
 
-(* Already did this in Problem 11. Just copying *)
+(* With TCO *)
 let encode3 (list : 'a list) : 'a encode_t list =
+  let rec aux acc i list =
+    match list with
+    | [] -> []
+
+    | x :: [] when i == 1 -> rev @@ EncOne x :: acc
+    | x :: [] -> rev @@ EncMany (i + 1, x) :: acc
+
+    | x :: y :: rest when x == y -> aux acc (i + 1) (y :: rest)
+    | x :: y :: rest when i == 1 -> aux (EncOne x :: acc) 1 (y :: rest)
+    | x :: y :: rest -> aux (EncMany (i, x) :: acc) 1 (y :: rest)
+  in
+  aux [] 0 list
+
+(* Already did this in Problem 11. Just copying *)
+let encode3_notco (list : 'a list) : 'a encode_t list =
   let rec aux i curr list =
     match list with
     | [] ->
