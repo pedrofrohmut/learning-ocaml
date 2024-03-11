@@ -288,21 +288,14 @@ let encode2 (list : 'a list) : 'a encode_t list =
   aux [] result
 
 let encode2_notco (list : 'a list) : 'a encode_t list =
-  let rec aux i curr list =
+  let result = encode list in
+  let rec aux list =
     match list with
-    | [] ->
-      let last_elem = if i == 1 then EncOne curr else EncMany (i, curr) in
-      last_elem :: []
-    | x :: xs ->
-      if x == curr then
-        aux (i + 1) curr xs
-      else
-          let new_elem = if i <= 1 then EncOne curr else EncMany (i, curr) in
-          new_elem :: aux 1 x xs
+    | [] -> []
+    | (1, x) :: xs -> EncOne x :: aux xs
+    | (n, x) :: xs -> EncMany (n, x) :: aux xs
   in
-  match list with
-  | [] -> []
-  | x::xs -> aux 1 x xs
+  aux result
 
 (*
     12. Decode a run-length encoded list. (medium)
@@ -367,7 +360,6 @@ let encode3 (list : 'a list) : 'a encode_t list =
   in
   aux [] 0 list
 
-(* Already did this in Problem 11. Just copying *)
 let encode3_notco (list : 'a list) : 'a encode_t list =
   let rec aux i curr list =
     match list with
@@ -392,11 +384,18 @@ let encode3_notco (list : 'a list) : 'a encode_t list =
     - : string list = ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"]
 *)
 
-let rec duplicate (list : 'a list) : 'a list =
+let duplicate (list : 'a list) : 'a list =
+  let rec aux acc list =
+    match list with
+    | [] -> rev acc
+    | x :: xs -> aux (x :: x :: acc) xs
+  in
+  aux [] list
+
+let rec duplicate_notco (list : 'a list) : 'a list =
   match list with
   | [] -> []
-  | x :: xs -> x :: x :: duplicate xs
-
+  | x :: xs -> x :: x :: duplicate_notco xs
 
 (*
     15. Replicate the elements of a list a given number of times. (medium)
@@ -405,16 +404,24 @@ let rec duplicate (list : 'a list) : 'a list =
     - : string list = ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"]
 *)
 
-let rec replicate (n : int) (list : 'a list) : 'a list =
+let replicate (n : int) (list : 'a list) : 'a list =
+  let rec aux acc i n list =
+    match i, list with
+    | _, [] -> rev acc
+    | 1, x :: xs -> aux (x :: acc) n n xs
+    | _, x :: xs -> aux (x :: acc) (i - 1) n (x :: xs)
+  in
+  aux [] n n list
+
+let rec replicate_notco (n : int) (list : 'a list) : 'a list =
   let rec replicate_elem i elem =
     match i with
     | 0 -> []
     | _ -> elem :: replicate_elem (i - 1) elem
   in
-
   match list with
   | [] -> []
-  | x :: xs -> replicate_elem n x @ replicate n xs
+  | x :: xs -> replicate_elem n x @ replicate_notco n xs
 
 (*
     16. Drop every N'th element from a list. (medium)
@@ -424,6 +431,15 @@ let rec replicate (n : int) (list : 'a list) : 'a list =
 *)
 
 let drop (n : int) (list : 'a list) : 'a list =
+  let rec aux acc i n list =
+    match i, list with
+    | _, [] -> rev acc
+    | 1, _ :: xs -> aux acc n n xs
+    | _, x :: xs -> aux (x :: acc) (i - 1) n xs
+  in
+  aux [] n n list
+
+let drop_notco (n : int) (list : 'a list) : 'a list =
   let rec aux i n list =
     match (i, list) with
     | (_, []) -> []
@@ -472,7 +488,6 @@ let rec slice (first : int) (last : int) (list : 'a list) : 'a list =
   | (0, 0, x :: _ ) -> x :: []
   | (0, _, x :: xs) -> x :: slice 0 (last - 1) xs
   | (_, _, _ :: xs) -> slice (first - 1) (last - 1) xs
-
 
 let slice_old (first : int) (last : int) (list : 'a list) : 'a list =
   let rec aux i first last list =
