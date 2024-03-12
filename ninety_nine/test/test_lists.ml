@@ -190,248 +190,222 @@ let suite13 =
   ]
 
 
-(* (\* Skipped the problem 13 *\) *)
+let suite14 =
+  "Lists: Problem 14" >:::
+  [ "duplicate on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.duplicate []))
+  ; "duplicate on 1 elem list" >:: (fun _ ->
+        assert_equal [1; 1] (Lists.duplicate [1]))
+  ; "duplicate on a 3 elem" >:: (fun _ ->
+        assert_equal [1; 1; 2; 2; 3;  3] (Lists.duplicate [1; 2; 3]))
+  ; "duplicate on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"]
+          (Lists.duplicate ["a"; "b"; "c"; "c"; "d"]))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     "Lists: Problem 14" >::: *)
-(*     [ "duplicate on an empty list" >:: (fun _ -> *)
-(*           assert_equal [] (Lists.duplicate [])) *)
-(*     ; "duplicate on 1 elem list" >:: (fun _ -> *)
-(*           assert_equal [1; 1] (Lists.duplicate [1])) *)
-(*     ; "duplicate on a 3 elem" >:: (fun _ -> *)
-(*           assert_equal [1; 1; 2; 2; 3;  3] (Lists.duplicate [1; 2; 3])) *)
-(*     ; "duplicate on a more complex example" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"] *)
-(*             (Lists.duplicate ["a"; "b"; "c"; "c"; "d"])) *)
-(*     ] *)
-(*   ) *)
+let suite15 =
+  "Lists: Problem 15" >:::
+  [ "replicate on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.replicate 3 []))
+  ; "replicate on 1 elem list times 3" >:: (fun _ ->
+        assert_equal [1; 1; 1] (Lists.replicate 3 [1]))
+  ; "replicate on 3 elem list times 3" >:: (fun _ ->
+        assert_equal [1; 1; 1; 2; 2; 2; 3; 3; 3] (Lists.replicate 3 [1; 2; 3]))
+  ; "replicate on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"]
+          (Lists.replicate 3 ["a"; "b"; "c"]))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     "Lists: Problem 15" >::: *)
-(*     [ "replicate on an empty list" >:: (fun _ -> *)
-(*           assert_equal [] (Lists.replicate 3 [])) *)
-(*     ; "replicate on 1 elem list times 3" >:: (fun _ -> *)
-(*           assert_equal [1; 1; 1] (Lists.replicate 3 [1])) *)
-(*     ; "replicate on 3 elem list times 3" >:: (fun _ -> *)
-(*           assert_equal [1; 1; 1; 2; 2; 2; 3; 3; 3] (Lists.replicate 3 [1; 2; 3])) *)
-(*     ; "replicate on a more complex example" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"] *)
-(*             (Lists.replicate 3 ["a"; "b"; "c"])) *)
-(*     ] *)
-(*   ) *)
+let suite16 =
+  "Lists: Problem 16" >:::
+  [ "drop 3 on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.drop 3 []))
+  ; "drop 3 on 1 elem list" >:: (fun _ ->
+        assert_equal [1] (Lists.drop 3 [1]))
+  ; "drop 3 on 3 elem list" >:: (fun _ ->
+        assert_equal [1; 2] (Lists.drop 3 [1; 2; 3]))
+  ; "drop 3 on 6 elem list" >:: (fun _ ->
+        assert_equal [1; 2; 4; 5] (Lists.drop 3 [1; 2; 3; 4; 5; 6]))
+  ; "drop on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["a"; "b"; "d"; "e"; "g"; "h"; "j"]
+          (Lists.drop 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     "Lists: Problem 16" >::: *)
-(*     [ "drop 3 on an empty list" >:: (fun _ -> *)
-(*           assert_equal [] (Lists.drop 3 [])) *)
-(*     ; "drop 3 on 1 elem list" >:: (fun _ -> *)
-(*           assert_equal [1] (Lists.drop 3 [1])) *)
-(*     ; "drop 3 on 3 elem list" >:: (fun _ -> *)
-(*           assert_equal [1; 2] (Lists.drop 3 [1; 2; 3])) *)
-(*     ; "drop 3 on 6 elem list" >:: (fun _ -> *)
-(*           assert_equal [1; 2; 4; 5] (Lists.drop 3 [1; 2; 3; 4; 5; 6])) *)
-(*     ; "drop on a more complex example" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             ["a"; "b"; "d"; "e"; "g"; "h"; "j"] *)
-(*             (Lists.drop 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"])) *)
-(*     ] *)
-(*   ) *)
+let suite17 =
+  "Lists: Problem 17" >:::
+  [ "split 3 on an empty list" >:: (fun _ ->
+        assert_equal ([], []) (Lists.split 3 []))
+  ; "split 3 on a 1 elem list" >:: (fun _ ->
+        assert_equal ([1], []) (Lists.split 3 [1]))
+  ; "split 3 on a 3 elem list" >:: (fun _ ->
+        assert_equal ([1; 2; 3], []) (Lists.split 3 [1; 2; 3]))
+  ; "split 3 on a 6 elem list" >:: (fun _ ->
+        assert_equal ([1; 2; 3], [4; 5; 6]) (Lists.split 3 [1; 2; 3; 4; 5; 6]))
+  ; "split 3 on a more complex example" >:: (fun _ ->
+        assert_equal
+          (["a"; "b"; "c"], ["d"; "e"; "f"; "g"; "h"; "i"; "j"])
+          (Lists.split 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
+  ; "split 5 on a more complex example" >:: (fun _ ->
+        assert_equal
+          (["a"; "b"; "c"; "d"], [])
+          (Lists.split 5 ["a"; "b"; "c"; "d"]))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     "Lists: Problem 17" >::: *)
-(*     [ "split 3 on an empty list" >:: (fun _ -> *)
-(*           assert_equal ([], []) (Lists.split 3 [])) *)
-(*     ; "split 3 on a 1 elem list" >:: (fun _ -> *)
-(*           assert_equal ([1], []) (Lists.split 3 [1])) *)
-(*     ; "split 3 on a 3 elem list" >:: (fun _ -> *)
-(*           assert_equal ([1; 2; 3], []) (Lists.split 3 [1; 2; 3])) *)
-(*     ; "split 3 on a 6 elem list" >:: (fun _ -> *)
-(*           assert_equal ([1; 2; 3], [4; 5; 6]) (Lists.split 3 [1; 2; 3; 4; 5; 6])) *)
-(*     ; "split 3 on a more complex example" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             (["a"; "b"; "c"], ["d"; "e"; "f"; "g"; "h"; "i"; "j"]) *)
-(*             (Lists.split 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"])) *)
-(*     ; "split 5 on a more complex example" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             (["a"; "b"; "c"; "d"], []) *)
-(*             (Lists.split 5 ["a"; "b"; "c"; "d"])) *)
-(*     ] *)
-(*   ) *)
+let suite18 =
+  "Lists: Problem 18" >:::
+  [ "slice 0 2 on an empty list (error list is empty)" >:: (fun _ ->
+        assert_raises (Failure "List is empty") (fun _ -> Lists.slice 0 2 []))
+  ; "slice 0 2 on a 3 elem list (slice is all the list)" >:: (fun _ ->
+        assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3]))
+  ; "slice 0 2 on a 5 elem list (slice the beggining)" >:: (fun _ ->
+        assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3; 4; 5]))
+  ; "slice 2 4 on a 5 elem list (slice the end)" >:: (fun _ ->
+        assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5]))
+  ; "slice 2 4 on a 6 elem list (middle elems)" >:: (fun _ ->
+        assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5; 6]))
+  ; "slice 2 4 on a 3 elem list (last out of bounds)" >:: (fun _ ->
+        assert_raises
+          (Failure "Last position is out of bounds")
+          (fun _ -> Lists.slice 2 4 [1; 2; 3]))
+  ; "slice on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["c"; "d"; "e"; "f"; "g"]
+          (Lists.slice 2 6 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
+  ; "slice -1 2 on a 5 elem list (first negative)" >:: (fun _ ->
+        assert_raises
+          (Failure "First position must be bigger than zero")
+          (fun _ -> Lists.slice (-1) 2 [1; 2; 3; 4; 5]))
+  ; "slice 0 -2 on a 5 elem list (last negative)" >:: (fun _ ->
+        assert_raises
+          (Failure "Last position must be bigger than zero")
+          (fun _ -> Lists.slice 0 (-2) [1; 2; 3; 4; 5]))
+  ; "slice 3 2 on a 5 elem list (first bigger than last)" >:: (fun _ ->
+        assert_raises
+          (Failure "First position cannot be bigger than last position")
+          (fun _ -> Lists.slice 3 2 [1; 2; 3; 4; 5]))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     "Lists: Problem 18" >::: *)
-(*     [ "slice 0 2 on an empty list (error list is empty)" >:: (fun _ -> *)
-(*           assert_raises (Failure "List is empty") (fun _ -> Lists.slice 0 2 [])) *)
-(*     ; "slice 0 2 on a 3 elem list (slice is all the list)" >:: (fun _ -> *)
-(*           assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3])) *)
-(*     ; "slice 0 2 on a 5 elem list (slice the beggining)" >:: (fun _ -> *)
-(*           assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3; 4; 5])) *)
-(*     ; "slice 2 4 on a 5 elem list (slice the end)" >:: (fun _ -> *)
-(*           assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5])) *)
-(*     ; "slice 2 4 on a 6 elem list (middle elems)" >:: (fun _ -> *)
-(*           assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5; 6])) *)
-(*     ; "slice 2 4 on a 3 elem list (last out of bounds)" >:: (fun _ -> *)
-(*           assert_raises *)
-(*             (Failure "Last position is out of bounds") *)
-(*             (fun _ -> Lists.slice 2 4 [1; 2; 3])) *)
-(*     ; "slice on a more complex example" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             ["c"; "d"; "e"; "f"; "g"] *)
-(*             (Lists.slice 2 6 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"])) *)
-(*     ; "slice -1 2 on a 5 elem list (first negative)" >:: (fun _ -> *)
-(*           assert_raises *)
-(*             (Failure "First position must be bigger than zero") *)
-(*             (fun _ -> Lists.slice (-1) 2 [1; 2; 3; 4; 5])) *)
-(*     ; "slice 0 -2 on a 5 elem list (last negative)" >:: (fun _ -> *)
-(*           assert_raises *)
-(*             (Failure "Last position must be bigger than zero") *)
-(*             (fun _ -> Lists.slice 0 (-2) [1; 2; 3; 4; 5])) *)
-(*     ; "slice 3 2 on a 5 elem list (first bigger than last)" >:: (fun _ -> *)
-(*           assert_raises *)
-(*             (Failure "First position cannot be bigger than last position") *)
-(*             (fun _ -> Lists.slice 3 2 [1; 2; 3; 4; 5])) *)
-(*     ] *)
-(*   ) *)
+let suite19 =
+  "Lists: Problem 19" >:::
+  [ "rotate 2 on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.rotate 2 []))
+  ; "rotate 2 on a 1 elem list" >:: (fun _ ->
+        assert_equal [1] (Lists.rotate 2 [1]))
+  ; "rotate on a more complex example (positive)" >:: (fun _ ->
+        assert_equal
+          ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"]
+          (Lists.rotate 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"]))
+  ; "rotate on a more complex example (negative)" >:: (fun _ ->
+        assert_equal
+          ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"]
+          (Lists.rotate (-2) ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"]))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     "Lists: Problem 19" >::: *)
-(*     [ "rotate 2 on an empty list" >:: (fun _ -> *)
-(*           assert_equal [] (Lists.rotate 2 [])) *)
-(*     ; "rotate 2 on a 1 elem list" >:: (fun _ -> *)
-(*           assert_equal [1] (Lists.rotate 2 [1])) *)
-(*     ; "rotate on a more complex example (positive)" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"] *)
-(*             (Lists.rotate 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"])) *)
-(*     ; "rotate on a more complex example (negative)" >:: (fun _ -> *)
-(*           assert_equal *)
-(*             ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"] *)
-(*             (Lists.rotate (-2) ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"])) *)
-(*     ] *)
-(*   ) *)
+let suite20 =
+  "Lists: Problem 20" >:::
+  [ "remove_at 5 on an 3 elem list" >:: (fun _ ->
+        assert_raises (Failure "Position out of bounds") (fun _ -> Lists.remove_at 5 [1; 2; 3]))
+  ; "remove_at 3 on an empty list" >:: (fun _ ->
+        assert_raises (Failure "List is empty") (fun _ -> Lists.remove_at 3 []))
+  ; "remove_at (-3) on a 5 elem list" >:: (fun _ ->
+        assert_raises (Failure "Position negative") (fun _ -> Lists.remove_at (-3) [1; 2; 3; 4; 5]))
+  ; "remove_at 3 on a 6 elem list" >:: (fun _ ->
+        assert_equal [1; 2; 3; 5; 6] (Lists.remove_at 3 [1; 2; 3; 4; 5; 6]))
+  ; "remove_at on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["a"; "c"; "d"]
+          (Lists.remove_at 1 ["a"; "b"; "c"; "d"]))
+  ]
 
-(* (\* let _ = run_test_tt_main ( *\) *)
-(* (\*     "Lists: Problem 20" >::: *\) *)
-(* (\*     [ "remove_at 5 on an 3 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_raises (Failure "Position out of bounds") (fun _ -> Lists.remove_at 5 [1; 2; 3])) *\) *)
-(* (\*     ; "remove_at 3 on an empty list" >:: (fun _ -> *\) *)
-(* (\*           assert_raises (Failure "List is empty") (fun _ -> Lists.remove_at 3 [])) *\) *)
-(* (\*     ; "remove_at -3 on a 5 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_raises (Failure "Position negative") (fun _ -> Lists.remove_at (-3) [1; 2; 3; 4; 5])) *\) *)
-(* (\*     ] *\) *)
-(* (\*   ) *\) *)
-(* (\*   ) *\) *)
-(*     (\* [ "remove_at 3 on an empty list" >:: (fun _ -> *\) *)
-(*     (\*       assert_equal [] (Lists.remove_at 3 [])) *\) *)
-(*     (\* ; "remove_at 3 on a 1 elem list (out of bounds)" >:: (fun _ -> *\) *)
-(*     (\*       assert_equal [1] (Lists.remove_at 3 [1])) *\) *)
-(*     (\* ; "remove_at 3 on a 6 elem list" >:: (fun _ -> *\) *)
-(*     (\*       assert_equal [1; 2; 3; 5; 6] (Lists.remove_at 3 [1; 2; 3; 4; 5; 6])) *\) *)
-(*     (\* ; "remove_at on a more complex example" >:: (fun _ -> *\) *)
-(*     (\*       assert_equal *\) *)
-(*     (\*         ["a"; "c"; "d"] *\) *)
-(*     (\*         (Lists.remove_at 1 ["a"; "b"; "c"; "d"])) *\) *)
-(*     (\* ] *\) *)
+let suite21 =
+  let list4 = [1; 2; 3; 4] in
+  "Lists: Problem 21" >:::
+  [ "insert_at 0 666 on an empty list (init the list)" >:: (fun _ ->
+        assert_equal [666] (Lists.insert_at 0 666 []))
+  ; "insert_at 3 666 on a 1 elem list" >:: (fun _ ->
+        assert_raises (Failure "Insert position out of bounds") (fun _ -> Lists.insert_at 3 666 [1]))
+  ; "insert_at 3 666 on a 4 elem list" >:: (fun _ ->
+        assert_equal [1; 2; 3; 666; 4] (Lists.insert_at 3 666 list4))
+  ; "insert_at 4 666 on a 4 elem list (insert_at used as append)" >:: (fun _ ->
+        assert_equal (list4 @ [666]) (Lists.insert_at 4 666 list4))
+  ; "insert_at 0 666 on a 4 elem list (insert_at used as prepend)" >:: (fun _ ->
+        assert_equal (666 :: list4) (Lists.insert_at 0 666 list4))
+  ; "insert_at (-1) 666 on a 4 elem list (exception case negative position)" >:: (fun _ ->
+        assert_raises
+          (Failure "Negative value provided as a list position")
+          (fun _ -> Lists.insert_at (-1) 666 list4))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     let list4 = [1; 2; 3; 4] in *)
-(*     "Lists: Problem 21" >::: *)
-(*     [ "insert_at 0 666 on an empty list (init the list)" >:: (fun _ -> *)
-(*           assert_equal [666] (Lists.insert_at 0 666 [])) *)
-(*     ; "insert_at 3 666 on a 1 elem list" >:: (fun _ -> *)
-(*           assert_raises (Failure "Insert position out of bounds") (fun _ -> Lists.insert_at 3 666 [1])) *)
-(*     ; "insert_at 3 666 on a 4 elem list" >:: (fun _ -> *)
-(*           assert_equal [1; 2; 3; 666; 4] (Lists.insert_at 3 666 list4)) *)
-(*     ; "insert_at 4 666 on a 4 elem list (insert_at used as append)" >:: (fun _ -> *)
-(*           assert_equal (list4 @ [666]) (Lists.insert_at 4 666 list4)) *)
-(*     ; "insert_at 0 666 on a 4 elem list (insert_at used as prepend)" >:: (fun _ -> *)
-(*           assert_equal (666 :: list4) (Lists.insert_at 0 666 list4)) *)
-(*     ; "insert_at (-1) 666 on a 4 elem list (exception case negative position)" >:: (fun _ -> *)
-(*           assert_raises *)
-(*             (Failure "Negative value provided as a list position") *)
-(*             (fun _ -> Lists.insert_at (-1) 666 list4)) *)
-(*     ] *)
-(*   ) *)
+let suite22 =
+  "Lists: Problem 22" >:::
+  [ "range 4 9" >:: (fun _ ->
+        assert_equal [4; 5; 6; 7; 8; 9] (Lists.range 4 9))
+  ; "range 9 4" >:: (fun _ ->
+        assert_equal [9; 8; 7; 6; 5; 4] (Lists.range 9 4))
+  ]
 
-(* let _ = run_test_tt_main ( *)
-(*     "Lists: Problem 22" >::: *)
-(*     [ "range 4 9" >:: (fun _ -> *)
-(*           assert_equal [4; 5; 6; 7; 8; 9] (Lists.range 4 9)) *)
-(*     ; "range 9 4" >:: (fun _ -> *)
-(*           assert_equal [9; 8; 7; 6; 5; 4] (Lists.range 9 4)) *)
-(*     ] *)
-(*   ) *)
+let suite23 =
+  let seed = 1 in
+  let list = [1; 2; 3; 4; 5; 6; 7; 8; 9; 0] in
+  (* With 'Random.init 1' the first results for
+     Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *)
+  (* All the test here are base on the Random.init 1 *)
+  "Lists: Problem 23" >:::
+  [ "rand_select 1 on a 10 elem list" >:: (fun _ ->
+        assert_equal [5] (Lists.rand_select seed 1 list))
+  ; "rand_select 3 on a 10 elem list" >:: (fun _ ->
+        assert_equal [5; 6; 9] (Lists.rand_select seed 3 list))
+  ; "rand_select 5 on a 10 elem list" >:: (fun _ ->
+        assert_equal [5; 6; 9; 0; 3] (Lists.rand_select seed 5 list))
+  ; "rand_select 9 on a 10 elem list" >:: (fun _ ->
+        assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1] (Lists.rand_select seed 9 list))
+  ; "rand_select 10 on a 10 elem list" >:: (fun _ ->
+        assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1; 2] (Lists.rand_select seed 10 list))
+  ; "rand_select 11 on a 10 elem list" >:: (fun _ ->
+        assert_raises
+          (Failure "Invalid amount. Amount should be a integer from 0 to list length - 1")
+          (fun () -> Lists.rand_select seed 11 list))
+  ]
 
-(* (\* let _ = run_test_tt_main ( *\) *)
-(* (\*     let seed = 1 in *\) *)
-(* (\*     let list = [1; 2; 3; 4; 5; 6; 7; 8; 9; 0] in *\) *)
-(* (\*     (\\* With 'Random.init 1' the first results for *\) *)
-(* (\*        Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *\\) *\) *)
-(* (\*     (\\* All the test here are base on the Random.init 1 *\\) *\) *)
-(* (\*     "Lists: Problem 23" >::: *\) *)
-(* (\*     [ "rand_select 1 on a 10 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [5] (Lists.rand_select seed 1 list)) *\) *)
-(* (\*     ; "rand_select 3 on a 10 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [5; 6; 9] (Lists.rand_select seed 3 list)) *\) *)
-(* (\*     ; "rand_select 5 on a 10 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [5; 6; 9; 0; 3] (Lists.rand_select seed 5 list)) *\) *)
-(* (\*     ; "rand_select 9 on a 10 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1] (Lists.rand_select seed 9 list)) *\) *)
-(* (\*     ; "rand_select 10 on a 10 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1; 2] (Lists.rand_select seed 10 list)) *\) *)
-(* (\*     ; "rand_select 11 on a 10 elem list" >:: (fun _ -> *\) *)
-(* (\*           assert_raises *\) *)
-(* (\*             (Failure "Invalid amount. Amount should be a integer from 0 to list length - 1") *\) *)
-(* (\*             (fun () -> Lists.rand_select seed 11 list)) *\) *)
-(* (\*     ] *\) *)
-(* (\*   ) *\) *)
+let suite24 =
+  let seed = 1 in
+  let limit = 10 in
+  (* With 'Random.init 1' the first results for
+     Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1
+     Unique list is [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] *)
+  (* All the test here are base on the Random.init 1 *)
+  "Lists: Problem 24" >:::
+  [ "lotto seed 1 10" >:: (fun _ ->
+        assert_equal [4] (Lists.lotto seed 1 limit))
+  ; "lotto seed 3 10" >:: (fun _ ->
+        assert_equal [4; 2; 1] (Lists.lotto seed 3 limit))
+  ; "lotto seed 5 10" >:: (fun _ ->
+        assert_equal [4; 2; 1; 8; 6] (Lists.lotto seed 5 limit))
+  ; "lotto seed 10 10" >:: (fun _ ->
+        assert_equal [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] (Lists.lotto seed 10 limit))
+  ; "lotto seed 11 10" >:: (fun _ ->
+        assert_raises (Failure "Amount out of reach") (fun _ -> Lists.lotto seed 11 limit))
+  ; "lotto seed (-1) 10" >:: (fun _ ->
+        assert_raises (Failure "Amount is negative") (fun _ -> Lists.lotto seed (-1) limit))
+  ]
 
-(* (\* let _ = run_test_tt_main ( *\) *)
-(* (\*     let seed = 1 in *\) *)
-(* (\*     let limit = 10 in *\) *)
-(* (\*     (\\* With 'Random.init 1' the first results for *\) *)
-(* (\*        Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *\) *)
-(* (\*        Unique list is [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] *\\) *\) *)
-(* (\*     (\\* All the test here are base on the Random.init 1 *\\) *\) *)
-(* (\*     "Lists: Problem 24" >::: *\) *)
-(* (\*     [ "lotto seed 1 10" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [4] (Lists.lotto seed 1 limit)) *\) *)
-(* (\*     ; "lotto seed 3 10" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [4; 2; 1] (Lists.lotto seed 3 limit)) *\) *)
-(* (\*     ; "lotto seed 5 10" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [4; 2; 1; 8; 6] (Lists.lotto seed 5 limit)) *\) *)
-(* (\*     ; "lotto seed 10 10" >:: (fun _ -> *\) *)
-(* (\*           assert_equal [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] (Lists.lotto seed 10 limit)) *\) *)
-(* (\*     ; "lotto seed 11 10" >:: (fun _ -> *\) *)
-(* (\*           assert_raises (Failure "Amount out of reach") (fun _ -> Lists.lotto seed 11 limit)) *\) *)
-(* (\*     ; "lotto seed (-1) 10" >:: (fun _ -> *\) *)
-(* (\*           assert_raises (Failure "Amount is negative") (fun _ -> Lists.lotto seed (-1) limit)) *\) *)
-(* (\*     ] *\) *)
-(* (\*   ) *\) *)
-
-(* (\* This is random an hard to test. Fewer tests here *\) *)
-(* let _ = run_test_tt_main ( *)
-(*     let seed = 1 in *)
-(*     "Lists: Problem 25" >::: *)
-(*     [ "permutation on an empty list" >:: (fun _ -> *)
-(*           assert_equal [] (Lists.permutation seed [])) *)
-(*     ; "permutation on 1 elem list" >:: (fun _ -> *)
-(*           assert_equal [1] (Lists.permutation seed [1])) *)
-(*     ; "permutation on 6 elem list" >:: (fun _ -> *)
-(*           (\* Random order for seed == 1 is: 2, 4, 2, 2, 0, 0 *\) *)
-(*           assert_equal *)
-(*             ["c"; "f"; "d"; "e"; "a"; "b"] *)
-(*             (Lists.permutation seed ["a"; "b"; "c"; "d"; "e"; "f"])) *)
-
-(*     ] *)
-(*   ) *)
-
-(* let () = run_test_tt_main problem1_suite *)
-(* let () = run_test_tt_main problem2_suite *)
-
-
+(* This is random an hard to test. Fewer tests here *)
+let suite25 =
+  let seed = 1 in
+  "Lists: Problem 25" >:::
+  [ "permutation on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.permutation seed []))
+  ; "permutation on 1 elem list" >:: (fun _ ->
+        assert_equal [1] (Lists.permutation seed [1]))
+  ; "permutation on 6 elem list" >:: (fun _ ->
+        (* Random order for seed == 1 is: 2, 4, 2, 2, 0, 0 *)
+        assert_equal
+          ["c"; "f"; "d"; "e"; "a"; "b"]
+          (Lists.permutation seed ["a"; "b"; "c"; "d"; "e"; "f"]))
+  ]
 
 let rec main_run suites =
   match suites with
@@ -441,6 +415,12 @@ let rec main_run suites =
     main_run xs
 
 let () =
-  let suites = [suite1; suite2; suite3; suite4; suite5; suite6; suite7; suite8; suite9; suite10;
-                suite11; suite12; suite13] in
-  main_run suites
+  let test_all = false in (* Flag to test all or a single test easy to change *)
+  if test_all then
+    let suites = [suite1; suite2; suite3; suite4; suite5; suite6; suite7; suite8; suite9; suite10;
+                  suite11; suite12; suite13; suite14; suite15; suite16; suite17; suite18; suite19;
+                  suite20; suite21; suite22; suite23; suite24; suite25] in
+    main_run suites
+  else
+    let single_suite = suite25 in
+    run_test_tt_main single_suite

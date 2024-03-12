@@ -547,6 +547,7 @@ let rotate (n : int) (list : 'a list) : 'a list =
     - : string list = ["a"; "c"; "d"]
 *)
 
+(* With TCO *)
 let remove_at (pos : int) (list : 'a list) : 'a list =
   if length list == 0 then
     failwith "List is empty"
@@ -558,25 +559,10 @@ let remove_at (pos : int) (list : 'a list) : 'a list =
     let rec aux acc n list =
         match n, list with
         | _, [] -> failwith "Position out of bounds"
-        | 0, xs -> (rev acc) @ xs
+        | 0, _ :: xs -> (rev acc) @ xs
         | _, x :: xs -> aux (x :: acc) (n - 1) xs
     in
     aux [] pos list
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 let rec remove_at_notco (n : int) (list : 'a list) : 'a list =
   match (n, list) with
