@@ -587,7 +587,20 @@ let rec remove_at_notco (n : int) (list : 'a list) : 'a list =
     - : string list = ["a"; "b"; "c"; "d"; "alfa"]
 *)
 
-let rec insert_at (n : int) (elem : 'a) (list : 'a list) : 'a list =
+(* With TCO *)
+let insert_at (n : int) (elem : 'a) (list : 'a list) : 'a list =
+  if n < 0 then
+    failwith "Negative value provided as a list position"
+  else
+    let rec aux acc n elem list =
+      match n, list with
+      | 0, xs -> (rev acc) @ (elem :: xs)
+      | _, [] -> failwith "Insert position out of bounds"
+      | _, x :: xs -> aux (x :: acc) (n - 1) elem xs
+    in
+    aux [] n elem list
+
+let rec insert_at_notco (n : int) (elem : 'a) (list : 'a list) : 'a list =
   if n < 0 then
     failwith "Negative value provided as a list position"
   else
@@ -595,7 +608,7 @@ let rec insert_at (n : int) (elem : 'a) (list : 'a list) : 'a list =
     | (0, []) -> elem :: []
     | (_, []) -> failwith "Insert position out of bounds"
     | (0, xs) -> elem :: xs
-    | (_, x :: xs) -> x :: insert_at (n - 1) elem xs
+    | (_, x :: xs) -> x :: insert_at_notco (n - 1) elem xs
 
 let insert_at_old (n : int) (elem: 'a) (list : 'a list) : 'a list =
   let rec aux i n elem list =
@@ -620,13 +633,25 @@ let insert_at_old (n : int) (elem: 'a) (list : 'a list) : 'a list =
     - : int list = [9; 8; 7; 6; 5; 4]
 *)
 
-let rec range (first: int) (last: int) : 'a list =
+(* With TCO *)
+let range (first: int) (last : int) : 'a list =
+  let rec aux acc first last =
+    if first == last then
+      last :: acc
+    else if first < last then
+      aux (last :: acc) first (last - 1)
+    else
+      aux (last :: acc) first (last + 1)
+  in
+  aux [] first last
+
+let rec range_notco (first: int) (last: int) : 'a list =
   if first == last then
     last :: []
   else if first > last then
-    first :: range (first - 1) last
+    first :: range_notco (first - 1) last
   else
-    first :: range (first + 1) last
+    first :: range_notco (first + 1) last
 
 (*
     23. Extract a given number of randomly selected elements from a list. (medium)
