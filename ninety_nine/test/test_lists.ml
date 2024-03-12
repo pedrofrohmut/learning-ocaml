@@ -1,400 +1,446 @@
 open OUnit2
 open Ninety_nine
 
-let () = run_test_tt_main (
-    "Lists Problem 01" >:::
-    [ "last on an empty list" >:: (fun _ ->
-          assert_equal None (Lists.last []))
-    ; "last on 1 elem list" >:: (fun _ ->
-          assert_equal (Some 1) (Lists.last [1]))
-    ; "last on 5 elem list" >:: (fun _ ->
-          assert_equal (Some 5) (Lists.last [1; 2; 3; 4; 5]))
-    ]
-  )
+let suite1 =
+  "Lists Problem 01" >:::
+  [ "last on an empty list" >:: (fun _ -> assert_equal None (Lists.last []))
+  ; "last on 1 elem list" >:: (fun _ -> assert_equal (Some 1) (Lists.last [1]))
+  ; "last on 5 elem list" >:: (fun _ -> assert_equal (Some 5) (Lists.last [1; 2; 3; 4; 5]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 02" >:::
-    [ "last_two on an empty list" >:: (fun _ ->
-          assert_equal None (Lists.last_two []))
-    ; "last_two on 1 elem list" >:: (fun _ ->
-          assert_equal None (Lists.last_two [1]))
-    ; "last_two on 2 elem list" >:: (fun _ ->
-          assert_equal (Some (1, 2)) (Lists.last_two [1; 2]))
-    ;  "last_two on 5 elem list" >:: (fun _ ->
-          assert_equal (Some (4, 5)) (Lists.last_two [1; 2; 3; 4; 5]))
-    ]
-  )
+let suite2 =
+  "Lists: Problem 02" >:::
+  [ "last_two on an empty list" >:: (fun _ ->
+        assert_equal None (Lists.last_two []))
+  ; "last_two on 1 elem list" >:: (fun _ ->
+        assert_equal None (Lists.last_two [1]))
+  ; "last_two on 2 elem list" >:: (fun _ ->
+        assert_equal (Some (1, 2)) (Lists.last_two [1; 2]))
+  ;  "last_two on 5 elem list" >:: (fun _ ->
+        assert_equal (Some (4, 5)) (Lists.last_two [1; 2; 3; 4; 5]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 03" >:::
-    [ "at on an empty list pos 3" >:: (fun _ ->
-          assert_raises (Failure "Index out of bounds") (fun () -> Lists.at 3 []))
-    ; "at on 2 elem list pos 3" >:: (fun _ ->
-          assert_raises (Failure "Index out of bounds") (fun () -> Lists.at 3 [1; 2]))
-    ; "at on 5 elem list pos 3" >:: (fun _ ->
-          assert_equal 4 (Lists.at 3 [1; 2; 3; 4; 5]))
-    ; "at' on an empty list pos 3" >:: (fun _ ->
-          assert_equal None (Lists.at_opt 3 []))
-    ; "at' on 2 elem list pos 3" >:: (fun _ ->
-          assert_equal None (Lists.at_opt 3 [1; 2]))
-    ; "at' on 5 elem list pos 3" >:: (fun _ ->
-          assert_equal (Some 4) (Lists.at_opt 3 [1; 2; 3; 4; 5]))
-    ]
-  )
+let suite3 =
+  "Lists: Problem 03" >:::
+  [ "at on an empty list pos 3" >:: (fun _ ->
+        assert_raises (Failure "Index out of bounds") (fun () -> Lists.at 3 []))
+  ; "at on 2 elem list pos 3" >:: (fun _ ->
+        assert_raises (Failure "Index out of bounds") (fun () -> Lists.at 3 [1; 2]))
+  ; "at on 5 elem list pos 3" >:: (fun _ ->
+        assert_equal 4 (Lists.at 3 [1; 2; 3; 4; 5]))
+  ; "at' on an empty list pos 3" >:: (fun _ ->
+        assert_equal None (Lists.at_opt 3 []))
+  ; "at' on 2 elem list pos 3" >:: (fun _ ->
+        assert_equal None (Lists.at_opt 3 [1; 2]))
+  ; "at' on 5 elem list pos 3" >:: (fun _ ->
+        assert_equal (Some 4) (Lists.at_opt 3 [1; 2; 3; 4; 5]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 04" >:::
-    [ "length on an empty list" >:: (fun _ ->
-          assert_equal 0 (Lists.length []))
-    ; "length on a 1 elem list" >:: (fun _ ->
-          assert_equal 1 (Lists.length [1]))
-    ;  "length on a 5 elem list" >:: (fun _ ->
-          assert_equal 5 (Lists.length [1; 2; 3; 4; 5]))
-    ]
-  )
+let suite4 =
+  "Lists: Problem 04" >:::
+  [ "length on an empty list" >:: (fun _ ->
+        assert_equal 0 (Lists.length []))
+  ; "length on a 1 elem list" >:: (fun _ ->
+        assert_equal 1 (Lists.length [1]))
+  ;  "length on a 5 elem list" >:: (fun _ ->
+        assert_equal 5 (Lists.length [1; 2; 3; 4; 5]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 05" >:::
-    [ "rev on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.rev []))
-    ; "rev on 1 elem list" >:: (fun _ ->
-          assert_equal [1] (Lists.rev [1]))
-    ; "rev on 5 elem list" >:: (fun _ ->
-          assert_equal [5; 4; 3; 2; 1] (Lists.rev [1; 2; 3; 4; 5]))
-    ]
-  )
+let suite5 =
+  "Lists: Problem 05" >:::
+  [ "rev on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.rev []))
+  ; "rev on 1 elem list" >:: (fun _ ->
+        assert_equal [1] (Lists.rev [1]))
+  ; "rev on 5 elem list" >:: (fun _ ->
+        assert_equal [5; 4; 3; 2; 1] (Lists.rev [1; 2; 3; 4; 5]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 06" >:::
-    [ "is_palindrome on an empty list" >:: (fun _ ->
-          assert_equal true (Lists.is_palindrome []))
-    ; "is_palindrome on a 1 elem list" >:: (fun _ ->
-          assert_equal true (Lists.is_palindrome [1]))
-    ; "is_palindrome on a 5 elem palindrome list" >:: (fun _ ->
-          assert_equal true (Lists.is_palindrome [1; 2; 3; 2; 1]))
-    ; "is_palindrome on a 2 elem not palindrome list" >:: (fun _ ->
-          assert_equal false (Lists.is_palindrome [1; 2]))
-    ]
-  )
+let suite6 =
+  "Lists: Problem 06" >:::
+  [ "is_palindrome on an empty list" >:: (fun _ ->
+        assert_equal true (Lists.is_palindrome []))
+  ; "is_palindrome on a 1 elem list" >:: (fun _ ->
+        assert_equal true (Lists.is_palindrome [1]))
+  ; "is_palindrome on a 5 elem palindrome list" >:: (fun _ ->
+        assert_equal true (Lists.is_palindrome [1; 2; 3; 2; 1]))
+  ; "is_palindrome on a 2 elem not palindrome list" >:: (fun _ ->
+        assert_equal false (Lists.is_palindrome [1; 2]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 07" >:::
-    [ "flatten on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.flatten []))
-    ; "flatten on a 1 elem list with One x" >:: (fun _ ->
-          assert_equal [1] (Lists.flatten [One 1]))
-    ; "flatten on a 5 elem list with Many (One x; ...)" >:: (fun _ ->
-          assert_equal
-            [1; 2; 3; 4; 5]
-            (Lists.flatten [Many [One 1; One 2; One 3; One 4; One 5]]))
-    ; "flatten on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["a"; "b"; "c"; "d"; "e"]
-            (Lists.flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]]))
-    ]
-  )
+let suite7 =
+  "Lists: Problem 07" >:::
+  [ "flatten on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.flatten []))
+  ; "flatten on a 1 elem list with One x" >:: (fun _ ->
+        assert_equal [1] (Lists.flatten [One 1]))
+  ; "flatten on a 5 elem list with Many (One x; ...)" >:: (fun _ ->
+        assert_equal
+          [1; 2; 3; 4; 5]
+          (Lists.flatten [Many [One 1; One 2; One 3; One 4; One 5]]))
+  ; "flatten on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["a"; "b"; "c"; "d"; "e"]
+          (Lists.flatten [One "a"; Many [One "b"; Many [One "c" ;One "d"]; One "e"]]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 08" >:::
-    [ "compress on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.compress []))
-    ; "compress on a 1 elem list" >:: (fun _ ->
-          assert_equal [1] (Lists.compress [1]))
-    ; "compress on a 2 elem list with repeated values" >:: (fun _ ->
-          assert_equal [1] (Lists.compress [1; 1]))
-    ; "compress on a 5 elem list" >:: (fun _ ->
-          assert_equal [1; 2; 3; 4; 5] (Lists.compress [1; 2; 3; 4; 5]))
-    ; "compress on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["a"; "b"; "c"; "a"; "d"; "e"]
-            (Lists.compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
-    ]
-  )
+let suite8 =
+  "Lists: Problem 08" >:::
+  [ "compress on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.compress []))
+  ; "compress on a 1 elem list" >:: (fun _ ->
+        assert_equal [1] (Lists.compress [1]))
+  ; "compress on a 2 elem list with repeated values" >:: (fun _ ->
+        assert_equal [1] (Lists.compress [1; 1]))
+  ; "compress on a 5 elem list" >:: (fun _ ->
+        assert_equal [1; 2; 3; 4; 5] (Lists.compress [1; 2; 3; 4; 5]))
+  ; "compress on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["a"; "b"; "c"; "a"; "d"; "e"]
+          (Lists.compress ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 09" >:::
-    [ "pack on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.pack []))
-    ; "pack on a 1 elem list" >:: (fun _ ->
-          assert_equal [[1]] (Lists.pack [1]))
-    ; "pack on a 3 elem list" >:: (fun _ ->
-          assert_equal [[1]; [2]; [3]] (Lists.pack [1; 2; 3]))
-    ; "pack on a 2 elem list with repeated values" >:: (fun _ ->
-          assert_equal [[1; 1]] (Lists.pack [1; 1]))
-    ; "pack on a 5 elem list with repeated values" >:: (fun _ ->
-          assert_equal [[1; 1]; [2; 2; 2]] (Lists.pack [1; 1; 2; 2; 2]))
-    ; "pack on a more complex example" >:: (fun _ ->
-          assert_equal
-            [["a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"]; ["e"; "e"; "e"; "e"]]
-            (Lists.pack ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e"]))
-    ]
-  )
+let suite9 =
+  "Lists: Problem 09" >:::
+  [ "pack on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.pack []))
+  ; "pack on a 1 elem list" >:: (fun _ ->
+        assert_equal [[1]] (Lists.pack [1]))
+  ; "pack on a 3 elem list" >:: (fun _ ->
+        assert_equal [[1]; [2]; [3]] (Lists.pack [1; 2; 3]))
+  ; "pack on a 2 elem list with repeated values" >:: (fun _ ->
+        assert_equal [[1; 1]] (Lists.pack [1; 1]))
+  ; "pack on a 5 elem list with repeated values" >:: (fun _ ->
+        assert_equal [[1; 1]; [2; 2; 2]] (Lists.pack [1; 1; 2; 2; 2]))
+  ; "pack on a more complex example" >:: (fun _ ->
+        assert_equal
+          [["a"; "a"; "a"; "a"]; ["b"]; ["c"; "c"]; ["a"; "a"]; ["d"; "d"]; ["e"; "e"; "e"; "e"]]
+          (Lists.pack ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "d"; "e"; "e"; "e"; "e"]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 10" >:::
-    [ "encode on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.encode []))
-    ; "encode on a 1 elem list" >:: (fun _ ->
-          assert_equal [(1, "a")] (Lists.encode ["a"]))
-    ; "encode on a 3 elem list with different values" >:: (fun _ ->
-          assert_equal [(1, "a"); (1, "b"); (1, "c")] (Lists.encode ["a"; "b"; "c"]))
-    ; "encode on a 3 elem list with same values" >:: (fun _ ->
-          assert_equal [(3, "a")] (Lists.encode ["a"; "a"; "a"]))
-    ; "encode on a 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
-          assert_equal [(3, "a"); (2, "b")] (Lists.encode ["a"; "a"; "a"; "b"; "b"]))
-    ; "encode on a more complex example" >:: (fun _ ->
-          assert_equal
-            [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
-            (Lists.encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
-    ]
-  )
+let suite10 =
+  "Lists: Problem 10" >:::
+  [ "encode on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.encode []))
+  ; "encode on a 1 elem list" >:: (fun _ ->
+        assert_equal [(1, "a")] (Lists.encode ["a"]))
+  ; "encode on a 3 elem list with different values" >:: (fun _ ->
+        assert_equal [(1, "a"); (1, "b"); (1, "c")] (Lists.encode ["a"; "b"; "c"]))
+  ; "encode on a 3 elem list with same values" >:: (fun _ ->
+        assert_equal [(3, "a")] (Lists.encode ["a"; "a"; "a"]))
+  ; "encode on a 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
+        assert_equal [(3, "a"); (2, "b")] (Lists.encode ["a"; "a"; "a"; "b"; "b"]))
+  ; "encode on a more complex example" >:: (fun _ ->
+        assert_equal
+          [(4, "a"); (1, "b"); (2, "c"); (2, "a"); (1, "d"); (4, "e")]
+          (Lists.encode ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+  ]
 
-let () = run_test_tt_main (
-    let open Lists in
-    "Lists: Problem 11" >:::
-    [ "encode2 on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.encode2 []))
-    ; "encode2 on 1 elem list" >:: (fun _ ->
-          assert_equal [EncOne 1] (Lists.encode2 [1]))
-    ; "encode2 on 3 elem list no repeated values" >:: (fun _ ->
-          assert_equal [EncOne 1; EncOne 2; EncOne 3] (Lists.encode2 [1; 2; 3]))
-    ; "encode2 on 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
-          assert_equal [EncMany (3, "a"); EncMany (2, "b")] (Lists.encode2 ["a"; "a"; "a"; "b"; "b"]))
-    ; "encode2 on a more complex example" >:: (fun _ ->
-          assert_equal
-            [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a"); EncOne "d"; EncMany (4, "e")]
-            (Lists.encode2 ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
-    ]
-  )
+let suite11 =
+  let open Lists in
+  "Lists: Problem 11" >:::
+  [ "encode2 on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.encode2 []))
+  ; "encode2 on 1 elem list" >:: (fun _ ->
+        assert_equal [EncOne 1] (Lists.encode2 [1]))
+  ; "encode2 on 3 elem list no repeated values" >:: (fun _ ->
+        assert_equal [EncOne 1; EncOne 2; EncOne 3] (Lists.encode2 [1; 2; 3]))
+  ; "encode2 on 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
+        assert_equal [EncMany (3, "a"); EncMany (2, "b")] (Lists.encode2 ["a"; "a"; "a"; "b"; "b"]))
+  ; "encode2 on a more complex example" >:: (fun _ ->
+        assert_equal
+          [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a"); EncOne "d"; EncMany (4, "e")]
+          (Lists.encode2 ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 12" >:::
-    [ "decode on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.decode []))
-    ; "decode on a 1 elem list with EncOne 1" >:: (fun _ ->
-          assert_equal [1] (Lists.decode [EncOne 1]))
-    ; "decode on a 1 elem list with EncMany (3, 1)" >:: (fun _ ->
-          assert_equal [1; 1; 1] (Lists.decode [EncMany (3, 1)]))
-    ; "decode on a 3 elem list of EncOne" >:: (fun _ ->
-          assert_equal [1; 2; 3] (Lists.decode [EncOne 1; EncOne 2; EncOne 3]))
-    ; "decode on a 2 elem list of EncMany" >:: (fun _ ->
-          assert_equal ["a"; "a"; "a"; "b"; "b"] (Lists.decode [EncMany (3, "a"); EncMany (2, "b")]))
-    ; "decode on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]
-            (Lists.decode [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a");
-                           EncOne "d"; EncMany (4, "e")]))
-    ]
-  )
+let suite12 =
+  "Lists: Problem 12" >:::
+  [ "decode on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.decode []))
+  ; "decode on a 1 elem list with EncOne 1" >:: (fun _ ->
+        assert_equal [1] (Lists.decode [EncOne 1]))
+  ; "decode on a 1 elem list with EncMany (3, 1)" >:: (fun _ ->
+        assert_equal [1; 1; 1] (Lists.decode [EncMany (3, 1)]))
+  ; "decode on a 3 elem list of EncOne" >:: (fun _ ->
+        assert_equal [1; 2; 3] (Lists.decode [EncOne 1; EncOne 2; EncOne 3]))
+  ; "decode on a 2 elem list of EncMany" >:: (fun _ ->
+        assert_equal ["a"; "a"; "a"; "b"; "b"] (Lists.decode [EncMany (3, "a"); EncMany (2, "b")]))
+  ; "decode on a more complex example" >:: (fun _ ->
+        assert_equal
+          ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]
+          (Lists.decode [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a");
+                         EncOne "d"; EncMany (4, "e")]))
+  ]
 
-(* Skipped the problem 13 *)
+let suite13 =
+  let open Lists in
+  "Lists: Problem13" >:::
+  [ "encode3 on an empty list" >:: (fun _ ->
+        assert_equal [] (Lists.encode3 []))
+  ; "encode3 on 1 elem list" >:: (fun _ ->
+        assert_equal [EncOne 1] (Lists.encode3 [1]))
+  ; "encode3 on 3 elem list no repeated values" >:: (fun _ ->
+        assert_equal [EncOne 1; EncOne 2; EncOne 3] (Lists.encode3 [1; 2; 3]))
+  ; "encode3 on 5 elem list with 2 diff values but they repeat" >:: (fun _ ->
+        assert_equal [EncMany (3, "a"); EncMany (2, "b")] (Lists.encode3 ["a"; "a"; "a"; "b"; "b"]))
+  ; "encode3 on a more complex example" >:: (fun _ ->
+        assert_equal
+          [EncMany (4, "a"); EncOne "b"; EncMany (2, "c"); EncMany (2, "a"); EncOne "d"; EncMany (4, "e")]
+          (Lists.encode3 ["a"; "a"; "a"; "a"; "b"; "c"; "c"; "a"; "a"; "d"; "e"; "e"; "e"; "e"]))
+  ]
 
-let () = run_test_tt_main (
-    "Lists: Problem 14" >:::
-    [ "duplicate on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.duplicate []))
-    ; "duplicate on 1 elem list" >:: (fun _ ->
-          assert_equal [1; 1] (Lists.duplicate [1]))
-    ; "duplicate on a 3 elem" >:: (fun _ ->
-          assert_equal [1; 1; 2; 2; 3;  3] (Lists.duplicate [1; 2; 3]))
-    ; "duplicate on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"]
-            (Lists.duplicate ["a"; "b"; "c"; "c"; "d"]))
-    ]
-  )
 
-let () = run_test_tt_main (
-    "Lists: Problem 15" >:::
-    [ "replicate on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.replicate 3 []))
-    ; "replicate on 1 elem list times 3" >:: (fun _ ->
-          assert_equal [1; 1; 1] (Lists.replicate 3 [1]))
-    ; "replicate on 3 elem list times 3" >:: (fun _ ->
-          assert_equal [1; 1; 1; 2; 2; 2; 3; 3; 3] (Lists.replicate 3 [1; 2; 3]))
-    ; "replicate on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"]
-            (Lists.replicate 3 ["a"; "b"; "c"]))
-    ]
-  )
+(* (\* Skipped the problem 13 *\) *)
 
-let () = run_test_tt_main (
-    "Lists: Problem 16" >:::
-    [ "drop 3 on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.drop 3 []))
-    ; "drop 3 on 1 elem list" >:: (fun _ ->
-          assert_equal [1] (Lists.drop 3 [1]))
-    ; "drop 3 on 3 elem list" >:: (fun _ ->
-          assert_equal [1; 2] (Lists.drop 3 [1; 2; 3]))
-    ; "drop 3 on 6 elem list" >:: (fun _ ->
-          assert_equal [1; 2; 4; 5] (Lists.drop 3 [1; 2; 3; 4; 5; 6]))
-    ; "drop on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["a"; "b"; "d"; "e"; "g"; "h"; "j"]
-            (Lists.drop 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     "Lists: Problem 14" >::: *)
+(*     [ "duplicate on an empty list" >:: (fun _ -> *)
+(*           assert_equal [] (Lists.duplicate [])) *)
+(*     ; "duplicate on 1 elem list" >:: (fun _ -> *)
+(*           assert_equal [1; 1] (Lists.duplicate [1])) *)
+(*     ; "duplicate on a 3 elem" >:: (fun _ -> *)
+(*           assert_equal [1; 1; 2; 2; 3;  3] (Lists.duplicate [1; 2; 3])) *)
+(*     ; "duplicate on a more complex example" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             ["a"; "a"; "b"; "b"; "c"; "c"; "c"; "c"; "d"; "d"] *)
+(*             (Lists.duplicate ["a"; "b"; "c"; "c"; "d"])) *)
+(*     ] *)
+(*   ) *)
 
-let () = run_test_tt_main (
-    "Lists: Problem 17" >:::
-    [ "split 3 on an empty list" >:: (fun _ ->
-          assert_equal ([], []) (Lists.split 3 []))
-    ; "split 3 on a 1 elem list" >:: (fun _ ->
-          assert_equal ([1], []) (Lists.split 3 [1]))
-    ; "split 3 on a 3 elem list" >:: (fun _ ->
-          assert_equal ([1; 2; 3], []) (Lists.split 3 [1; 2; 3]))
-    ; "split 3 on a 6 elem list" >:: (fun _ ->
-          assert_equal ([1; 2; 3], [4; 5; 6]) (Lists.split 3 [1; 2; 3; 4; 5; 6]))
-    ; "split 3 on a more complex example" >:: (fun _ ->
-          assert_equal
-            (["a"; "b"; "c"], ["d"; "e"; "f"; "g"; "h"; "i"; "j"])
-            (Lists.split 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
-    ; "split 5 on a more complex example" >:: (fun _ ->
-          assert_equal
-            (["a"; "b"; "c"; "d"], [])
-            (Lists.split 5 ["a"; "b"; "c"; "d"]))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     "Lists: Problem 15" >::: *)
+(*     [ "replicate on an empty list" >:: (fun _ -> *)
+(*           assert_equal [] (Lists.replicate 3 [])) *)
+(*     ; "replicate on 1 elem list times 3" >:: (fun _ -> *)
+(*           assert_equal [1; 1; 1] (Lists.replicate 3 [1])) *)
+(*     ; "replicate on 3 elem list times 3" >:: (fun _ -> *)
+(*           assert_equal [1; 1; 1; 2; 2; 2; 3; 3; 3] (Lists.replicate 3 [1; 2; 3])) *)
+(*     ; "replicate on a more complex example" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             ["a"; "a"; "a"; "b"; "b"; "b"; "c"; "c"; "c"] *)
+(*             (Lists.replicate 3 ["a"; "b"; "c"])) *)
+(*     ] *)
+(*   ) *)
 
-let () = run_test_tt_main (
-    "Lists: Problem 18" >:::
-    [ "slice 0 2 on an empty list" >:: (fun _ ->
-        assert_equal [] (Lists.slice 0 3 []))
-    ; "slice 0 2 on a 5 elem list (first 3)" >:: (fun _ ->
-          assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3; 4; 5]))
-    ; "slice 2 4 on a 6 elem list (middle elems)" >:: (fun _ ->
-          assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5; 6]))
-    ; "slice 2 4 on a 3 elem list (end out of bounds)" >:: (fun _ ->
-          assert_equal [3] (Lists.slice 2 4 [1; 2; 3]))
-    ; "slice on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["c"; "d"; "e"; "f"; "g"]
-            (Lists.slice 2 6 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"]))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     "Lists: Problem 16" >::: *)
+(*     [ "drop 3 on an empty list" >:: (fun _ -> *)
+(*           assert_equal [] (Lists.drop 3 [])) *)
+(*     ; "drop 3 on 1 elem list" >:: (fun _ -> *)
+(*           assert_equal [1] (Lists.drop 3 [1])) *)
+(*     ; "drop 3 on 3 elem list" >:: (fun _ -> *)
+(*           assert_equal [1; 2] (Lists.drop 3 [1; 2; 3])) *)
+(*     ; "drop 3 on 6 elem list" >:: (fun _ -> *)
+(*           assert_equal [1; 2; 4; 5] (Lists.drop 3 [1; 2; 3; 4; 5; 6])) *)
+(*     ; "drop on a more complex example" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             ["a"; "b"; "d"; "e"; "g"; "h"; "j"] *)
+(*             (Lists.drop 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"])) *)
+(*     ] *)
+(*   ) *)
 
-let () = run_test_tt_main (
-    "Lists: Problem 19" >:::
-    [ "rotate 2 on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.rotate 2 []))
-    ; "rotate 2 on a 1 elem list" >:: (fun _ ->
-          assert_equal [1] (Lists.rotate 2 [1]))
-    ; "rotate on a more complex example (positive)" >:: (fun _ ->
-          assert_equal
-            ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"]
-            (Lists.rotate 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"]))
-    ; "rotate on a more complex example (negative)" >:: (fun _ ->
-          assert_equal
-            ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"]
-            (Lists.rotate (-2) ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"]))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     "Lists: Problem 17" >::: *)
+(*     [ "split 3 on an empty list" >:: (fun _ -> *)
+(*           assert_equal ([], []) (Lists.split 3 [])) *)
+(*     ; "split 3 on a 1 elem list" >:: (fun _ -> *)
+(*           assert_equal ([1], []) (Lists.split 3 [1])) *)
+(*     ; "split 3 on a 3 elem list" >:: (fun _ -> *)
+(*           assert_equal ([1; 2; 3], []) (Lists.split 3 [1; 2; 3])) *)
+(*     ; "split 3 on a 6 elem list" >:: (fun _ -> *)
+(*           assert_equal ([1; 2; 3], [4; 5; 6]) (Lists.split 3 [1; 2; 3; 4; 5; 6])) *)
+(*     ; "split 3 on a more complex example" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             (["a"; "b"; "c"], ["d"; "e"; "f"; "g"; "h"; "i"; "j"]) *)
+(*             (Lists.split 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"])) *)
+(*     ; "split 5 on a more complex example" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             (["a"; "b"; "c"; "d"], []) *)
+(*             (Lists.split 5 ["a"; "b"; "c"; "d"])) *)
+(*     ] *)
+(*   ) *)
 
-let () = run_test_tt_main (
-    "Lists: Problem 20" >:::
-    [ "remove_at 3 on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.remove_at 3 []))
-    ; "remove_at 3 on a 1 elem list (out of bounds)" >:: (fun _ ->
-          assert_equal [1] (Lists.remove_at 3 [1]))
-    ; "remove_at 3 on a 6 elem list" >:: (fun _ ->
-          assert_equal [1; 2; 3; 5; 6] (Lists.remove_at 3 [1; 2; 3; 4; 5; 6]))
-    ; "remove_at on a more complex example" >:: (fun _ ->
-          assert_equal
-            ["a"; "c"; "d"]
-            (Lists.remove_at 1 ["a"; "b"; "c"; "d"]))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     "Lists: Problem 18" >::: *)
+(*     [ "slice 0 2 on an empty list (error list is empty)" >:: (fun _ -> *)
+(*           assert_raises (Failure "List is empty") (fun _ -> Lists.slice 0 2 [])) *)
+(*     ; "slice 0 2 on a 3 elem list (slice is all the list)" >:: (fun _ -> *)
+(*           assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3])) *)
+(*     ; "slice 0 2 on a 5 elem list (slice the beggining)" >:: (fun _ -> *)
+(*           assert_equal [1; 2; 3] (Lists.slice 0 2 [1; 2; 3; 4; 5])) *)
+(*     ; "slice 2 4 on a 5 elem list (slice the end)" >:: (fun _ -> *)
+(*           assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5])) *)
+(*     ; "slice 2 4 on a 6 elem list (middle elems)" >:: (fun _ -> *)
+(*           assert_equal [3; 4; 5] (Lists.slice 2 4 [1; 2; 3; 4; 5; 6])) *)
+(*     ; "slice 2 4 on a 3 elem list (last out of bounds)" >:: (fun _ -> *)
+(*           assert_raises *)
+(*             (Failure "Last position is out of bounds") *)
+(*             (fun _ -> Lists.slice 2 4 [1; 2; 3])) *)
+(*     ; "slice on a more complex example" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             ["c"; "d"; "e"; "f"; "g"] *)
+(*             (Lists.slice 2 6 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i"; "j"])) *)
+(*     ; "slice -1 2 on a 5 elem list (first negative)" >:: (fun _ -> *)
+(*           assert_raises *)
+(*             (Failure "First position must be bigger than zero") *)
+(*             (fun _ -> Lists.slice (-1) 2 [1; 2; 3; 4; 5])) *)
+(*     ; "slice 0 -2 on a 5 elem list (last negative)" >:: (fun _ -> *)
+(*           assert_raises *)
+(*             (Failure "Last position must be bigger than zero") *)
+(*             (fun _ -> Lists.slice 0 (-2) [1; 2; 3; 4; 5])) *)
+(*     ; "slice 3 2 on a 5 elem list (first bigger than last)" >:: (fun _ -> *)
+(*           assert_raises *)
+(*             (Failure "First position cannot be bigger than last position") *)
+(*             (fun _ -> Lists.slice 3 2 [1; 2; 3; 4; 5])) *)
+(*     ] *)
+(*   ) *)
 
-let () = run_test_tt_main (
-    let list4 = [1; 2; 3; 4] in
-    "Lists: Problem 21" >:::
-    [ "insert_at 0 666 on an empty list (init the list)" >:: (fun _ ->
-          assert_equal [666] (Lists.insert_at 0 666 []))
-    ; "insert_at 3 666 on a 1 elem list" >:: (fun _ ->
-          assert_raises (Failure "Insert position out of bounds") (fun _ -> Lists.insert_at 3 666 [1]))
-    ; "insert_at 3 666 on a 4 elem list" >:: (fun _ ->
-          assert_equal [1; 2; 3; 666; 4] (Lists.insert_at 3 666 list4))
-    ; "insert_at 4 666 on a 4 elem list (insert_at used as append)" >:: (fun _ ->
-          assert_equal (list4 @ [666]) (Lists.insert_at 4 666 list4))
-    ; "insert_at 0 666 on a 4 elem list (insert_at used as prepend)" >:: (fun _ ->
-          assert_equal (666 :: list4) (Lists.insert_at 0 666 list4))
-    ; "insert_at (-1) 666 on a 4 elem list (exception case negative position)" >:: (fun _ ->
-          assert_raises
-            (Failure "Negative value provided as a list position")
-            (fun _ -> Lists.insert_at (-1) 666 list4))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     "Lists: Problem 19" >::: *)
+(*     [ "rotate 2 on an empty list" >:: (fun _ -> *)
+(*           assert_equal [] (Lists.rotate 2 [])) *)
+(*     ; "rotate 2 on a 1 elem list" >:: (fun _ -> *)
+(*           assert_equal [1] (Lists.rotate 2 [1])) *)
+(*     ; "rotate on a more complex example (positive)" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             ["d"; "e"; "f"; "g"; "h"; "a"; "b"; "c"] *)
+(*             (Lists.rotate 3 ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"])) *)
+(*     ; "rotate on a more complex example (negative)" >:: (fun _ -> *)
+(*           assert_equal *)
+(*             ["g"; "h"; "a"; "b"; "c"; "d"; "e"; "f"] *)
+(*             (Lists.rotate (-2) ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"])) *)
+(*     ] *)
+(*   ) *)
 
-let () = run_test_tt_main (
-    "Lists: Problem 22" >:::
-    [ "range 4 9" >:: (fun _ ->
-          assert_equal [4; 5; 6; 7; 8; 9] (Lists.range 4 9))
-    ; "range 9 4" >:: (fun _ ->
-          assert_equal [9; 8; 7; 6; 5; 4] (Lists.range 9 4))
-    ]
-  )
+(* (\* let _ = run_test_tt_main ( *\) *)
+(* (\*     "Lists: Problem 20" >::: *\) *)
+(* (\*     [ "remove_at 5 on an 3 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_raises (Failure "Position out of bounds") (fun _ -> Lists.remove_at 5 [1; 2; 3])) *\) *)
+(* (\*     ; "remove_at 3 on an empty list" >:: (fun _ -> *\) *)
+(* (\*           assert_raises (Failure "List is empty") (fun _ -> Lists.remove_at 3 [])) *\) *)
+(* (\*     ; "remove_at -3 on a 5 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_raises (Failure "Position negative") (fun _ -> Lists.remove_at (-3) [1; 2; 3; 4; 5])) *\) *)
+(* (\*     ] *\) *)
+(* (\*   ) *\) *)
+(* (\*   ) *\) *)
+(*     (\* [ "remove_at 3 on an empty list" >:: (fun _ -> *\) *)
+(*     (\*       assert_equal [] (Lists.remove_at 3 [])) *\) *)
+(*     (\* ; "remove_at 3 on a 1 elem list (out of bounds)" >:: (fun _ -> *\) *)
+(*     (\*       assert_equal [1] (Lists.remove_at 3 [1])) *\) *)
+(*     (\* ; "remove_at 3 on a 6 elem list" >:: (fun _ -> *\) *)
+(*     (\*       assert_equal [1; 2; 3; 5; 6] (Lists.remove_at 3 [1; 2; 3; 4; 5; 6])) *\) *)
+(*     (\* ; "remove_at on a more complex example" >:: (fun _ -> *\) *)
+(*     (\*       assert_equal *\) *)
+(*     (\*         ["a"; "c"; "d"] *\) *)
+(*     (\*         (Lists.remove_at 1 ["a"; "b"; "c"; "d"])) *\) *)
+(*     (\* ] *\) *)
 
-let () = run_test_tt_main (
-    let seed = 1 in
-    let list = [1; 2; 3; 4; 5; 6; 7; 8; 9; 0] in
-    (* With 'Random.init 1' the first results for
-       Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *)
-    (* All the test here are base on the Random.init 1 *)
-    "Lists: Problem 23" >:::
-    [ "rand_select 1 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5] (Lists.rand_select seed 1 list))
-    ; "rand_select 3 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9] (Lists.rand_select seed 3 list))
-    ; "rand_select 5 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9; 0; 3] (Lists.rand_select seed 5 list))
-    ; "rand_select 9 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1] (Lists.rand_select seed 9 list))
-    ; "rand_select 10 on a 10 elem list" >:: (fun _ ->
-          assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1; 2] (Lists.rand_select seed 10 list))
-    ; "rand_select 11 on a 10 elem list" >:: (fun _ ->
-          assert_raises
-            (Failure "Invalid amount. Amount should be a integer from 0 to list length - 1")
-            (fun () -> Lists.rand_select seed 11 list))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     let list4 = [1; 2; 3; 4] in *)
+(*     "Lists: Problem 21" >::: *)
+(*     [ "insert_at 0 666 on an empty list (init the list)" >:: (fun _ -> *)
+(*           assert_equal [666] (Lists.insert_at 0 666 [])) *)
+(*     ; "insert_at 3 666 on a 1 elem list" >:: (fun _ -> *)
+(*           assert_raises (Failure "Insert position out of bounds") (fun _ -> Lists.insert_at 3 666 [1])) *)
+(*     ; "insert_at 3 666 on a 4 elem list" >:: (fun _ -> *)
+(*           assert_equal [1; 2; 3; 666; 4] (Lists.insert_at 3 666 list4)) *)
+(*     ; "insert_at 4 666 on a 4 elem list (insert_at used as append)" >:: (fun _ -> *)
+(*           assert_equal (list4 @ [666]) (Lists.insert_at 4 666 list4)) *)
+(*     ; "insert_at 0 666 on a 4 elem list (insert_at used as prepend)" >:: (fun _ -> *)
+(*           assert_equal (666 :: list4) (Lists.insert_at 0 666 list4)) *)
+(*     ; "insert_at (-1) 666 on a 4 elem list (exception case negative position)" >:: (fun _ -> *)
+(*           assert_raises *)
+(*             (Failure "Negative value provided as a list position") *)
+(*             (fun _ -> Lists.insert_at (-1) 666 list4)) *)
+(*     ] *)
+(*   ) *)
 
-let () = run_test_tt_main (
-    let seed = 1 in
-    let limit = 10 in
-    (* With 'Random.init 1' the first results for
-       Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1
-       Unique list is [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] *)
-    (* All the test here are base on the Random.init 1 *)
-    "Lists: Problem 24" >:::
-    [ "lotto seed 1 10" >:: (fun _ ->
-          assert_equal [4] (Lists.lotto seed 1 limit))
-    ; "lotto seed 3 10" >:: (fun _ ->
-          assert_equal [4; 2; 1] (Lists.lotto seed 3 limit))
-    ; "lotto seed 5 10" >:: (fun _ ->
-          assert_equal [4; 2; 1; 8; 6] (Lists.lotto seed 5 limit))
-    ; "lotto seed 10 10" >:: (fun _ ->
-          assert_equal [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] (Lists.lotto seed 10 limit))
-    ; "lotto seed 11 10" >:: (fun _ ->
-          assert_raises (Failure "Amount out of reach") (fun _ -> Lists.lotto seed 11 limit))
-    ; "lotto seed (-1) 10" >:: (fun _ ->
-          assert_raises (Failure "Amount is negative") (fun _ -> Lists.lotto seed (-1) limit))
-    ]
-  )
+(* let _ = run_test_tt_main ( *)
+(*     "Lists: Problem 22" >::: *)
+(*     [ "range 4 9" >:: (fun _ -> *)
+(*           assert_equal [4; 5; 6; 7; 8; 9] (Lists.range 4 9)) *)
+(*     ; "range 9 4" >:: (fun _ -> *)
+(*           assert_equal [9; 8; 7; 6; 5; 4] (Lists.range 9 4)) *)
+(*     ] *)
+(*   ) *)
 
-(* This is random an hard to test. Fewer tests here *)
-let () = run_test_tt_main (
-    let seed = 1 in
-    "Lists: Problem 25" >:::
-    [ "permutation on an empty list" >:: (fun _ ->
-          assert_equal [] (Lists.permutation seed []))
-    ; "permutation on 1 elem list" >:: (fun _ ->
-          assert_equal [1] (Lists.permutation seed [1]))
-    ; "permutation on 6 elem list" >:: (fun _ ->
-          (* Random order for seed == 1 is: 2, 4, 2, 2, 0, 0 *)
-          assert_equal
-            ["c"; "f"; "d"; "e"; "a"; "b"]
-            (Lists.permutation seed ["a"; "b"; "c"; "d"; "e"; "f"]))
+(* (\* let _ = run_test_tt_main ( *\) *)
+(* (\*     let seed = 1 in *\) *)
+(* (\*     let list = [1; 2; 3; 4; 5; 6; 7; 8; 9; 0] in *\) *)
+(* (\*     (\\* With 'Random.init 1' the first results for *\) *)
+(* (\*        Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *\\) *\) *)
+(* (\*     (\\* All the test here are base on the Random.init 1 *\\) *\) *)
+(* (\*     "Lists: Problem 23" >::: *\) *)
+(* (\*     [ "rand_select 1 on a 10 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [5] (Lists.rand_select seed 1 list)) *\) *)
+(* (\*     ; "rand_select 3 on a 10 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [5; 6; 9] (Lists.rand_select seed 3 list)) *\) *)
+(* (\*     ; "rand_select 5 on a 10 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [5; 6; 9; 0; 3] (Lists.rand_select seed 5 list)) *\) *)
+(* (\*     ; "rand_select 9 on a 10 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1] (Lists.rand_select seed 9 list)) *\) *)
+(* (\*     ; "rand_select 10 on a 10 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [5; 6; 9; 0; 3; 8; 7; 4; 1; 2] (Lists.rand_select seed 10 list)) *\) *)
+(* (\*     ; "rand_select 11 on a 10 elem list" >:: (fun _ -> *\) *)
+(* (\*           assert_raises *\) *)
+(* (\*             (Failure "Invalid amount. Amount should be a integer from 0 to list length - 1") *\) *)
+(* (\*             (fun () -> Lists.rand_select seed 11 list)) *\) *)
+(* (\*     ] *\) *)
+(* (\*   ) *\) *)
 
-    ]
-  )
+(* (\* let _ = run_test_tt_main ( *\) *)
+(* (\*     let seed = 1 in *\) *)
+(* (\*     let limit = 10 in *\) *)
+(* (\*     (\\* With 'Random.init 1' the first results for *\) *)
+(* (\*        Random.int 10 are: 4, 4, 2, 1, 8, 4, 1, 6, 2, 1 *\) *)
+(* (\*        Unique list is [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] *\\) *\) *)
+(* (\*     (\\* All the test here are base on the Random.init 1 *\\) *\) *)
+(* (\*     "Lists: Problem 24" >::: *\) *)
+(* (\*     [ "lotto seed 1 10" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [4] (Lists.lotto seed 1 limit)) *\) *)
+(* (\*     ; "lotto seed 3 10" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [4; 2; 1] (Lists.lotto seed 3 limit)) *\) *)
+(* (\*     ; "lotto seed 5 10" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [4; 2; 1; 8; 6] (Lists.lotto seed 5 limit)) *\) *)
+(* (\*     ; "lotto seed 10 10" >:: (fun _ -> *\) *)
+(* (\*           assert_equal [4; 2; 1; 8; 6; 9; 7; 3; 5; 0] (Lists.lotto seed 10 limit)) *\) *)
+(* (\*     ; "lotto seed 11 10" >:: (fun _ -> *\) *)
+(* (\*           assert_raises (Failure "Amount out of reach") (fun _ -> Lists.lotto seed 11 limit)) *\) *)
+(* (\*     ; "lotto seed (-1) 10" >:: (fun _ -> *\) *)
+(* (\*           assert_raises (Failure "Amount is negative") (fun _ -> Lists.lotto seed (-1) limit)) *\) *)
+(* (\*     ] *\) *)
+(* (\*   ) *\) *)
+
+(* (\* This is random an hard to test. Fewer tests here *\) *)
+(* let _ = run_test_tt_main ( *)
+(*     let seed = 1 in *)
+(*     "Lists: Problem 25" >::: *)
+(*     [ "permutation on an empty list" >:: (fun _ -> *)
+(*           assert_equal [] (Lists.permutation seed [])) *)
+(*     ; "permutation on 1 elem list" >:: (fun _ -> *)
+(*           assert_equal [1] (Lists.permutation seed [1])) *)
+(*     ; "permutation on 6 elem list" >:: (fun _ -> *)
+(*           (\* Random order for seed == 1 is: 2, 4, 2, 2, 0, 0 *\) *)
+(*           assert_equal *)
+(*             ["c"; "f"; "d"; "e"; "a"; "b"] *)
+(*             (Lists.permutation seed ["a"; "b"; "c"; "d"; "e"; "f"])) *)
+
+(*     ] *)
+(*   ) *)
+
+(* let () = run_test_tt_main problem1_suite *)
+(* let () = run_test_tt_main problem2_suite *)
+
+
+
+let rec main_run suites =
+  match suites with
+  | [] -> ()
+  | x :: xs ->
+    run_test_tt_main x;
+    main_run xs
+
+let () =
+  let suites = [suite1; suite2; suite3; suite4; suite5; suite6; suite7; suite8; suite9; suite10;
+                suite11; suite12; suite13] in
+  main_run suites

@@ -348,17 +348,15 @@ let rec decode_notco (list: 'a encode_t list) : 'a list =
 (* With TCO *)
 let encode3 (list : 'a list) : 'a encode_t list =
   let rec aux acc i list =
-    match list with
-    | [] -> []
-
-    | x :: [] when i == 1 -> rev @@ EncOne x :: acc
-    | x :: [] -> rev @@ EncMany (i + 1, x) :: acc
-
-    | x :: y :: rest when x == y -> aux acc (i + 1) (y :: rest)
-    | x :: y :: rest when i == 1 -> aux (EncOne x :: acc) 1 (y :: rest)
-    | x :: y :: rest -> aux (EncMany (i, x) :: acc) 1 (y :: rest)
+    match i, list with
+    | _, [] -> rev acc
+    | 1, x :: [] -> rev @@ EncOne x :: acc
+    | _, x :: [] -> rev @@ EncMany (i, x) :: acc
+    | _, x :: y :: tail when x == y -> aux acc (i + 1) (y :: tail)
+    | 1, x :: y :: tail -> aux (EncOne x :: acc) 1 (y :: tail)
+    | _, x :: y :: tail -> aux (EncMany (i, x) :: acc) 1 (y :: tail)
   in
-  aux [] 0 list
+  aux [] 1 list
 
 let encode3_notco (list : 'a list) : 'a encode_t list =
   let rec aux i curr list =
@@ -482,12 +480,34 @@ let split (n : int) (list: 'a list) : ('a list * 'a list) =
     - : string list = ["c"; "d"; "e"; "f"; "g"]
 *)
 
-let rec slice (first : int) (last : int) (list : 'a list) : 'a list =
+(* With TCO *)
+let slice (first_pos : int) (last_pos : int) (list : 'a list) : 'a list =
+  if length list == 0 then
+     failwith "List is empty"
+  else if last_pos > (length list) - 1 then
+    failwith "Last position is out of bounds"
+  else if first_pos < 0 then
+    failwith "First position must be bigger than zero"
+  else if last_pos < 0 then
+    failwith "Last position must be bigger than zero"
+  else if first_pos > last_pos then
+    failwith "First position cannot be bigger than last position"
+  else
+    let rec aux acc first last list =
+      match first, last, list with
+      | _, _, [] -> failwith "List is empty"
+      | 0, 0, x :: _ -> rev @@ x :: acc
+      | 0, _, x :: xs -> aux (x :: acc) 0 (last - 1) xs
+      | _, _, _ :: xs -> aux acc (first - 1) (last - 1) xs
+    in
+    aux [] first_pos last_pos list
+
+let rec slice_notco (first : int) (last : int) (list : 'a list) : 'a list =
   match (first, last, list) with
   | (_, _, []) -> []
   | (0, 0, x :: _ ) -> x :: []
-  | (0, _, x :: xs) -> x :: slice 0 (last - 1) xs
-  | (_, _, _ :: xs) -> slice (first - 1) (last - 1) xs
+  | (0, _, x :: xs) -> x :: slice_notco 0 (last - 1) xs
+  | (_, _, _ :: xs) -> slice_notco (first - 1) (last - 1) xs
 
 let slice_old (first : int) (last : int) (list : 'a list) : 'a list =
   let rec aux i first last list =
@@ -510,14 +530,12 @@ let slice_old (first : int) (last : int) (list : 'a list) : 'a list =
 
 let rotate (n : int) (list : 'a list) : 'a list =
   let split_pos = if n < 0 then (length list) + n else n in
-
   let rec aux acc i list =
     match (i, list) with
     | (_, []) -> acc
     | (0, xs) -> xs @ (rev acc)
     | (_, x :: xs) -> aux (x :: acc) (i - 1) xs
   in
-
   aux [] split_pos list
 
 (*
@@ -529,11 +547,42 @@ let rotate (n : int) (list : 'a list) : 'a list =
     - : string list = ["a"; "c"; "d"]
 *)
 
-let rec remove_at (n : int) (list : 'a list) : 'a list =
+let remove_at (pos : int) (list : 'a list) : 'a list =
+  if length list == 0 then
+    failwith "List is empty"
+  else if pos < 0 then
+    failwith "Position negative"
+  else if pos > length list then
+    failwith "Position out of bounds"
+  else
+    let rec aux acc n list =
+        match n, list with
+        | _, [] -> failwith "Position out of bounds"
+        | 0, xs -> (rev acc) @ xs
+        | _, x :: xs -> aux (x :: acc) (n - 1) xs
+    in
+    aux [] pos list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let rec remove_at_notco (n : int) (list : 'a list) : 'a list =
   match (n, list) with
   | (_, []) -> []
   | (0, _ :: xs) -> xs
-  | (_, x :: xs) -> x :: remove_at (n - 1) xs
+  | (_, x :: xs) -> x :: remove_at_notco (n - 1) xs
 
 (*
     21. Insert an element at a given position into a list. (easy)
