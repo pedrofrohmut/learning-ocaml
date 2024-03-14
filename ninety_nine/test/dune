@@ -1,9 +1,9 @@
 (test
- (name test_hello)
- (libraries ninety_nine ounit2)
- (modules test_hello))
-
-(test
  (name test_lists)
  (libraries ninety_nine ounit2)
  (modules test_lists))
+
+(test
+ (name test_arithmetics)
+ (libraries ninety_nine ounit2)
+ (modules test_arithmetics))

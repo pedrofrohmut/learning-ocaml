@@ -407,20 +407,51 @@ let suite25 =
           (Lists.permutation seed ["a"; "b"; "c"; "d"; "e"; "f"]))
   ]
 
-let rec main_run suites =
-  match suites with
-  | [] -> ()
-  | x :: xs ->
-    run_test_tt_main x;
-    main_run xs
+let suite26 =
+  "Lists: Problem 26" >:::
+  [ "extract 1 on a 3 elem list" >:: (fun _ ->
+        assert_equal [[1]; [2]; [3]] (Lists.extract 1 [1; 2; 3]))
+  ; "extract 2 on a 3 elem list" >:: (fun _ ->
+        assert_equal [[1; 2]; [1; 3]; [2; 3]] (Lists.extract 2 [1; 2; 3]))
+  ; "extract 2 on 4 elem list" >:: (fun _ ->
+        assert_equal [[1; 2]; [1; 3]; [1; 4]; [2; 3]; [2; 4]; [3; 4]] (Lists.extract 2 [1; 2; 3; 4]))
+  ; "extract 2 on a 5 elem list" >:: (fun _ ->
+        assert_equal
+          [[1; 2]; [1; 3]; [1; 4]; [1; 5]; [2; 3]; [2; 4]; [2; 5]; [3; 4]; [3; 5]; [4; 5]]
+          (Lists.extract 2 [1; 2; 3; 4; 5]))
+  ]
+
+  (* OLDER *)
+  (* [ "extract 1 on an empty list" >:: (fun _ -> *)
+  (*       assert_raises (Failure "List is empty") (fun _ -> Lists.extract 1 [])) *)
+  (* ; "extract 0 on a 3 elem list" >:: (fun _ -> *)
+  (*       assert_raises (Failure "Cannot extract less than 1 from list") (fun _ -> Lists.extract 0 [1; 2; 3])) *)
+  (* ; "extract 4 on a 3 elem list" >:: (fun _ -> *)
+  (*       assert_raises (Failure "N cannot be bigger than the length of the list") (fun _ -> Lists.extract 4 [1; 2; 3])) *)
+  (* ; "extract 1 on a 3 elem list" >:: (fun _ -> *)
+  (*       assert_equal [[1]; [2]; [3]] (Lists.extract 1 [1; 2; 3])) *)
+  (* ; "extract 2 on a 3 elem list" >:: (fun _ -> *)
+  (*       assert_equal [[1; 2]; [1; 3]; [2; 3]] (Lists.extract 2 [1; 2; 3])) *)
+  (* ] *)
+
 
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
-  if test_all then
-    let suites = [suite1; suite2; suite3; suite4; suite5; suite6; suite7; suite8; suite9; suite10;
-                  suite11; suite12; suite13; suite14; suite15; suite16; suite17; suite18; suite19;
-                  suite20; suite21; suite22; suite23; suite24; suite25] in
-    main_run suites
-  else
-    let single_suite = suite22 in
+  if not test_all then
+    let single_suite = suite26 in
     run_test_tt_main single_suite
+  else
+    let rec main_run suites =
+      match suites with
+      | [] -> ()
+      | x :: xs ->
+        run_test_tt_main x;
+        main_run xs
+    in
+    let suites =
+      [ suite1; suite2; suite3; suite4; suite5; suite6; suite7; suite8; suite9; suite10; suite11
+      ; suite12; suite13; suite14; suite15; suite16; suite17; suite18; suite19; suite20; suite21
+      ; suite22; suite23; suite24; suite25
+      ]
+    in
+    main_run suites

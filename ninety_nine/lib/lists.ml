@@ -115,6 +115,8 @@ let rev (list : 'a list) : 'a list =
 
 let is_palindrome (list : 'a list) : bool = list = rev list
 
+(* TODO: make palindrome that make a reverse list and then compare the values one by one *)
+
 (*
     7. Flatten a nested list structure. (medium)
 
@@ -798,7 +800,38 @@ let permutation_old (seed : int) (list : 'a list) : 'a list =
     [["a"; "b"]; ["a"; "c"]; ["a"; "d"]; ["b"; "c"]; ["b"; "d"]; ["c"; "d"]]
 *)
 
-(* let extract (pos : int) (list: 'a list) : 'a list list = [[]] *)
+(* TODO: Make the lazy version with list |> spam_cases |> sort |> remove_duplicates *)
+
+let rec make_groups (elem : 'a list) (list : 'a list) : 'a list list =
+  match list with
+  | [] -> []
+  | x :: xs -> (elem @ [x]) :: make_groups elem xs
+
+(* TODO: Make later this functions that work with N > 2 *)
+let extract (n : int) (list: 'a list) : 'a list list =
+
+  let full_list = list in
+
+  (* extract 1 [1; 2; 3] => [[1]; [2]; [3]] *)
+  (* make_groups [1; 2] [3; 4; 5] => [[1; 2; 3]; [1; 2; 4]; [1; 2; 5]] *)
+
+  let rec aux (i : int) (n : int) (gs : 'a list list) (list : 'a list) : 'a list list =
+    match i, gs, list with
+    | 1, [], _ -> make_groups [] list
+
+    (* Init Case *)
+    | _, _, xs when i == n -> let new_gs = make_groups [] xs in aux (i - 1) n new_gs full_list
+
+    | 1, _, [] -> []
+    | 1, g :: gs, _ :: xs -> let new_gs = make_groups g xs in new_gs @ aux i n gs xs
+
+    | _, _, [] -> []
+    | _, g :: gs, _ :: xs -> let new_gs = make_groups g xs in new_gs @ aux i n gs xs
+
+    | _, _, _ -> failwith "Not implemented"
+  in
+
+  aux n n [] full_list
 
 (*
 
