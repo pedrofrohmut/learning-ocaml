@@ -23,15 +23,31 @@ let is_prime (n : int) : bool =
   match n with 1 -> false | _ -> is_prime 2 n
 
 (*
-32. Determine the greatest common divisor of two positive integer numbers. (medium)
+    32. Determine the greatest common divisor of two positive integer numbers. (medium)
 
-Use Euclid's algorithm.
+    In mathematics, the Euclidean algorithm, is an efficient method for computing
+    the greatest common divisor (GCD) of two integers (numbers), the largest
+    number that divides them both without a remainder.
 
-# gcd 13 27;;
-- : int = 1
-# gcd 20536 7826;;
-- : int = 2
+    # gcd 13 27;;
+    - : int = 1
 
+    # gcd 20536 7826;;
+    - : int = 2
+*)
+
+let gcd (n1 : int) (n2 : int) : int =
+  let rec gcd i res n1 n2 =
+    if i > n1 || i > n2 then
+      res
+    else if n1 mod i == 0 && n2 mod i == 0 then
+      gcd (i + 1) i n1 n2
+    else
+      gcd (i + 1) res n1 n2
+  in
+  gcd 2 2 n1 n2
+
+(*
 33. Determine whether two positive integer numbers are coprime. (easy)
 
 Two numbers are coprime if their greatest common divisor equals 1.
