@@ -45,18 +45,23 @@ let gcd (n1 : int) (n2 : int) : int =
     else
       gcd (i + 1) res n1 n2
   in
-  gcd 2 2 n1 n2
+  gcd 1 1 n1 n2
 
 (*
-33. Determine whether two positive integer numbers are coprime. (easy)
+    33. Determine whether two positive integer numbers are coprime. (easy)
 
-Two numbers are coprime if their greatest common divisor equals 1.
+    Two numbers are coprime if their greatest common divisor equals 1.
 
-# coprime 13 27;;
-- : bool = true
-# not (coprime 20536 7826);;
-- : bool = true
+    # coprime 13 27;;
+    - : bool = true
 
+    # coprime 20536 7826;;
+    - : bool = false
+*)
+
+let coprime (n1 : int) (n2 : int) : bool = gcd n1 n2 == 1
+
+(*
 34. Calculate Euler's totient function φ(m). (medium)
 
 Euler's so-called totient function φ(m) is defined as the number of positive integers r (1 ≤ r < m) that are coprime to m. We let φ(1) = 1.
