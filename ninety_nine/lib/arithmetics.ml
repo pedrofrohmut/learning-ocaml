@@ -62,31 +62,67 @@ let gcd (n1 : int) (n2 : int) : int =
 let coprime (n1 : int) (n2 : int) : bool = gcd n1 n2 == 1
 
 (*
-34. Calculate Euler's totient function φ(m). (medium)
+    34. Calculate Euler's totient function φ(m). (medium)
 
-Euler's so-called totient function φ(m) is defined as the number of positive integers r (1 ≤ r < m) that are coprime to m. We let φ(1) = 1.
+    Euler's so-called totient function φ(m) is defined as the number of positive
+    integers r (1 ≤ r < m) that are coprime to m. We let φ(1) = 1.
 
-Find out what the value of φ(m) is if m is a prime number. Euler's totient function plays an important role in one of the most widely used public key cryptography methods (RSA). In this exercise you should use the most primitive method to calculate this function (there are smarter ways that we shall discuss later).
+    Find out what the value of φ(m) is if m is a prime number. Euler's totient
+    function plays an important role in one of the most widely used public key
+    cryptography methods (RSA). In this exercise you should use the most
+    primitive method to calculate this function (there are smarter ways that we
+    shall discuss later).
 
-# phi 10;;
-- : int = 4
-# phi 13;;
-- : int = 12
+    # phi 10;;
+    - : int = 4
 
-35. Determine the prime factors of a given positive integer. (medium)
+    # phi 13;;
+    - : int = 12
+*)
 
-Construct a flat list containing the prime factors in ascending order.
+let phi (n : int) : int =
+  let rec phi acc i n =
+    if i == n then
+      acc
+    else
+      let i' = i + 1 in
+      let acc' = if coprime i n then acc + 1 else acc in
+      phi acc' i' n
+  in
+  phi 0 1 n
 
-# factors 315;;
-- : int list = [3; 3; 5; 7]
+(*
+    35. Determine the prime factors of a given positive integer. (medium)
 
-36. Determine the prime factors of a given positive integer (2). (medium)
+    Construct a flat list containing the prime factors in ascending order.
 
-Construct a list containing the prime factors and their multiplicity. Hint: The problem is similar to problem Run-length encoding of a list (direct solution).
+    # factors 315;;
+    - : int list = [3; 3; 5; 7]
+*)
 
-# factors 315;;
-- : (int * int) list = [(3, 2); (5, 1); (7, 1)]
+let factors (n : int) : int list =
+  let rec factors acc i n =
+    if n == 1 then
+      List.rev acc
+    else if is_prime i && n mod i == 0 then
+      factors (i :: acc) i (n / i)
+    else
+      factors acc (i + 1) n
+  in
+  factors [] 1 n
 
+(*
+    36. Determine the prime factors of a given positive integer (2). (medium)
+
+    Construct a list containing the prime factors and their multiplicity. Hint:
+    The problem is similar to problem Run-length encoding of a list (direct
+    solution).
+
+    # factors 315;;
+    - : (int * int) list = [(3, 2); (5, 1); (7, 1)]
+*)
+
+(*
 37. Calculate Euler's totient function φ(m) (improved). (medium)
 
 See problem "Calculate Euler's totient function φ(m)" for the definition of Euler's totient function. If the list of the prime factors of a number m is known in the form of the previous problem then the function phi(m) can be efficiently calculated as follows: Let [(p1, m1); (p2, m2); (p3, m3); ...] be the list of prime factors (and their multiplicities) of a given number m. Then φ(m) can be calculated with the following formula:

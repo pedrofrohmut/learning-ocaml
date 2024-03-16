@@ -43,10 +43,34 @@ let suite33 =
         assert_equal false (Arithmetics.coprime 20536 7826))
   ]
 
+let suite34 =
+  "Arithmetics: Problem 34" >:::
+  [ "phi 10" >:: (fun _ ->
+        assert_equal 4 (Arithmetics.phi 10))
+  ; "phi 13" >:: (fun _ ->
+        assert_equal 12 (Arithmetics.phi 13))
+  ]
+
+let suite35 =
+  "Arithmetics: Problem 35" >:::
+  [ "factors 25" >:: (fun _ ->
+        assert_equal [5; 5] (Arithmetics.factors 25))
+  ; "factors 60" >:: (fun _ ->
+        assert_equal [2; 2; 3; 5] (Arithmetics.factors 60))
+  ; "factors 100" >:: (fun _ ->
+        assert_equal [2; 2; 5; 5] (Arithmetics.factors 100))
+  ; "factors 315" >:: (fun _ ->
+        assert_equal [3; 3; 5; 7] (Arithmetics.factors 315))
+  ; "factors 1050" >:: (fun _ ->
+        assert_equal [2; 3; 5; 5; 7] (Arithmetics.factors 1050))
+  ; "factors 19110" >:: (fun _ ->
+        assert_equal [2; 3; 5; 7; 7; 13] (Arithmetics.factors 19110))
+  ]
+
 let () =
-  let test_all = true in (* Flag to test all or a single test easy to change *)
+  let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then
-    let single_suite = suite33 in
+    let single_suite = suite35 in
     run_test_tt_main single_suite
   else
     let rec main_run suites =
@@ -56,5 +80,5 @@ let () =
         run_test_tt_main x;
         main_run xs
     in
-    let suites = [suite31; suite32; suite33] in
+    let suites = [suite31; suite32; suite33; suite34; suite35] in
     main_run suites
