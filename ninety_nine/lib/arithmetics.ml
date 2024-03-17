@@ -126,10 +126,10 @@ let factors_mult (n : int) : (int * int) list =
   let expanded_factors = factors n in
   let rec to_mult acc i list =
     match list with
+    | [] -> []
     | x :: [] -> List.rev @@ (x, i) :: acc
     | x :: y :: rest when x == y -> to_mult acc (i + 1) (y :: rest)
     | x :: y :: rest -> to_mult ((x, i) :: acc) 1 (y :: rest)
-    | _ -> failwith "Not implemented"
   in
   to_mult [] 1 expanded_factors
 

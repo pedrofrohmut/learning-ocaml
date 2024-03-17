@@ -53,7 +53,9 @@ let suite34 =
 
 let suite35 =
   "Arithmetics: Problem 35" >:::
-  [ "factors 25" >:: (fun _ ->
+  [ "factors 1" >:: (fun _ ->
+        assert_equal [] (Arithmetics.factors 1))
+  ; "factors 25" >:: (fun _ ->
         assert_equal [5; 5] (Arithmetics.factors 25))
   ; "factors 60" >:: (fun _ ->
         assert_equal [2; 2; 3; 5] (Arithmetics.factors 60))
@@ -69,7 +71,9 @@ let suite35 =
 
 let suite36 =
   "Arithmetics: Problem 35" >:::
-  [ "factors_mult 25" >:: (fun _ ->
+  [ "factors_mult 1" >:: (fun _ ->
+        assert_equal [] (Arithmetics.factors_mult 1))
+  ; "factors_mult 25" >:: (fun _ ->
         assert_equal [(5, 2)] (Arithmetics.factors_mult 25))
   ; "factors_mult 60" >:: (fun _ ->
         assert_equal [(2, 2); (3, 1); (5, 1)] (Arithmetics.factors_mult 60))
