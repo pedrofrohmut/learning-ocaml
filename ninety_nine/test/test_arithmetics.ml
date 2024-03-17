@@ -95,6 +95,9 @@ let suite37 =
         assert_equal 12 (Arithmetics.phi_imp 13))
   ]
 
+(* Skipping the 38.
+   There is no consistent result for that function manual testing will be enough *)
+
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then

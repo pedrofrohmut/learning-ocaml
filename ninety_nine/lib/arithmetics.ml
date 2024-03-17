@@ -166,15 +166,28 @@ let phi_imp (n : int) : int =
   phi_imp 1.0 facs
 
 (*
-38. Compare the two methods of calculating Euler's totient function. (easy)
+    38. Compare the two methods of calculating Euler's totient function. (easy)
 
-Use the solutions of problems "Calculate Euler's totient function φ(m)" and "Calculate Euler's totient function φ(m) (improved)" to compare the algorithms. Take the number of logical inferences as a measure for efficiency. Try to calculate φ(10090) as an example.
+    Use the solutions of problems "Calculate Euler's totient function φ(m)" and
+    "Calculate Euler's totient function φ(m) (improved)" to compare the
+    algorithms. Take the number of logical inferences as a measure for
+    efficiency. Try to calculate φ(10090) as an example.
 
-# timeit phi 10090;;
-- : float = 0.242475032806396484
-# timeit phi_improved 10090;;
-- : float = 8.296966552734375e-05
+    # timeit phi 10090;;
+    - : float = 0.242475032806396484
 
+    # timeit phi_improved 10090;;
+    - : float = 8.296966552734375e-05
+*)
+
+let timeit func args =
+  (* Sys.time returns the current time in seconds *)
+  let start = Sys.time () in
+  let _ = func args in
+  let end = Sys.time () in
+  Printf.sprintf "%.4f seconds" (end -. start)
+
+(*
 39. A list of prime numbers. (easy)
 
 Given a range of integers by its lower and upper limit, construct a list of all prime numbers in that range.
