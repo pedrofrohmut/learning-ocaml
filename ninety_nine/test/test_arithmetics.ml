@@ -98,10 +98,20 @@ let suite37 =
 (* Skipping the 38.
    There is no consistent result for that function manual testing will be enough *)
 
+let suite39 =
+  "Arithmetics: Problem 39" >:::
+  [ "all_primes 1 10" >:: (fun _ ->
+        assert_equal [2; 3; 5; 7] (Arithmetics.all_primes 1 10))
+  ; "all_primes 10 20" >:: (fun _ ->
+        assert_equal [11; 13; 17; 19] (Arithmetics.all_primes 10 20))
+  ; "all_primes 100 120" >:: (fun _ ->
+        assert_equal [101; 103; 107; 109; 113] (Arithmetics.all_primes 100 120))
+  ]
+
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then
-    let single_suite = suite37 in
+    let single_suite = suite39 in
     run_test_tt_main single_suite
   else
     let rec main_run suites =
@@ -111,5 +121,5 @@ let () =
         run_test_tt_main x;
         main_run xs
     in
-    let suites = [suite31; suite32; suite33; suite34; suite35; suite36; suite37] in
+    let suites = [suite31; suite32; suite33; suite34; suite35; suite36; suite37; suite39] in
     main_run suites

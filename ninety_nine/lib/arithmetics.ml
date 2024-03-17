@@ -182,18 +182,33 @@ let phi_imp (n : int) : int =
 
 let timeit func args =
   (* Sys.time returns the current time in seconds *)
-  let start = Sys.time () in
+  let start_time = Sys.time () in
   let _ = func args in
-  let end = Sys.time () in
-  Printf.sprintf "%.4f seconds" (end -. start)
+  let end_time = Sys.time () in
+  Printf.sprintf "%.4f seconds" (end_time -. start_time)
 
 (*
-39. A list of prime numbers. (easy)
+    39. A list of prime numbers. (easy)
 
-Given a range of integers by its lower and upper limit, construct a list of all prime numbers in that range.
+    Given a range of integers by its lower and upper limit, construct a list of
+    all prime numbers in that range.
 
-# List.length (all_primes 2 7920);;
-- : int = 1000
+    # List.length (all_primes 2 7920);;
+    - : int = 1000
+*)
+
+let all_primes n m =
+  let rec all_primes acc n m =
+    if n == m then
+      List.rev acc
+    else
+      let acc' = if is_prime n then n :: acc else acc in
+      let n' = n + 1 in
+      all_primes acc' n' m
+  in
+  all_primes [] n m
+
+(*
 
 40. Goldbach's conjecture. (medium)
 
