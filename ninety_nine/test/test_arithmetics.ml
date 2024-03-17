@@ -70,7 +70,7 @@ let suite35 =
   ]
 
 let suite36 =
-  "Arithmetics: Problem 35" >:::
+  "Arithmetics: Problem 36" >:::
   [ "factors_mult 1" >:: (fun _ ->
         assert_equal [] (Arithmetics.factors_mult 1))
   ; "factors_mult 25" >:: (fun _ ->
@@ -87,10 +87,18 @@ let suite36 =
         assert_equal [(2, 1); (3, 1); (5, 1); (7, 2); (13, 1)] (Arithmetics.factors_mult 19110))
   ]
 
+let suite37 =
+  "Arithmetics: Problem 37" >:::
+  [ "phi_imp 10" >:: (fun _ ->
+        assert_equal 4 (Arithmetics.phi_imp 10))
+  ; "phi_imp 13" >:: (fun _ ->
+        assert_equal 12 (Arithmetics.phi_imp 13))
+  ]
+
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then
-    let single_suite = suite36 in
+    let single_suite = suite37 in
     run_test_tt_main single_suite
   else
     let rec main_run suites =
@@ -100,5 +108,5 @@ let () =
         run_test_tt_main x;
         main_run xs
     in
-    let suites = [suite31; suite32; suite33; suite34; suite35; suite36] in
+    let suites = [suite31; suite32; suite33; suite34; suite35; suite36; suite37] in
     main_run suites

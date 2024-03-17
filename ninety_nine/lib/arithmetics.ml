@@ -143,7 +143,9 @@ let factors_mult (n : int) : (int * int) list =
     the list of prime factors (and their multiplicities) of a given number
     m. Then φ(m) can be calculated with the following formula:
 
-    φ(m) = (p1 - 1) × p1m1 - 1 × (p2 - 1) × p2m2 - 1 × (p3 - 1) × p3m3 - 1 × ⋯
+    phi(m) = (p1 - 1) * p1 ** (m1 - 1) *
+             (p2 - 1) * p2 ** (m2 - 1) *
+             (p3 - 1) * p3 ** (m3 - 1) * ...
 
     # phi_improved 10;;
     - : int = 4
@@ -152,7 +154,16 @@ let factors_mult (n : int) : (int * int) list =
     - : int = 12
 *)
 
-
+let phi_imp (n : int) : int =
+  let facs = factors_mult n |> List.map (fun (a, b) -> (float_of_int a, float_of_int b)) in
+  let rec phi_imp acc list =
+    match list with
+    | [] -> int_of_float acc
+    | (x, m) :: xs ->
+      let t = (x -. 1.0) *. (x ** (m -. 1.0)) in
+      phi_imp (t *. acc) xs
+  in
+  phi_imp 1.0 facs
 
 (*
 38. Compare the two methods of calculating Euler's totient function. (easy)
