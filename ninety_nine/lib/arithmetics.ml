@@ -122,18 +122,39 @@ let factors (n : int) : int list =
     - : (int * int) list = [(3, 2); (5, 1); (7, 1)]
 *)
 
+let factors_mult (n : int) : (int * int) list =
+  let expanded_factors = factors n in
+  let rec to_mult acc i list =
+    match list with
+    | x :: [] -> List.rev @@ (x, i) :: acc
+    | x :: y :: rest when x == y -> to_mult acc (i + 1) (y :: rest)
+    | x :: y :: rest -> to_mult ((x, i) :: acc) 1 (y :: rest)
+    | _ -> failwith "Not implemented"
+  in
+  to_mult [] 1 expanded_factors
+
 (*
-37. Calculate Euler's totient function φ(m) (improved). (medium)
+    37. Calculate Euler's totient function φ(m) (improved). (medium)
 
-See problem "Calculate Euler's totient function φ(m)" for the definition of Euler's totient function. If the list of the prime factors of a number m is known in the form of the previous problem then the function phi(m) can be efficiently calculated as follows: Let [(p1, m1); (p2, m2); (p3, m3); ...] be the list of prime factors (and their multiplicities) of a given number m. Then φ(m) can be calculated with the following formula:
+    See problem "Calculate Euler's totient function φ(m)" for the definition of
+    Euler's totient function. If the list of the prime factors of a number m is
+    known in the form of the previous problem then the function phi(m) can be
+    efficiently calculated as follows: Let [(p1, m1); (p2, m2); (p3, m3); ...] be
+    the list of prime factors (and their multiplicities) of a given number
+    m. Then φ(m) can be calculated with the following formula:
 
-φ(m) = (p1 - 1) × p1m1 - 1 × (p2 - 1) × p2m2 - 1 × (p3 - 1) × p3m3 - 1 × ⋯
+    φ(m) = (p1 - 1) × p1m1 - 1 × (p2 - 1) × p2m2 - 1 × (p3 - 1) × p3m3 - 1 × ⋯
 
-# phi_improved 10;;
-- : int = 4
-# phi_improved 13;;
-- : int = 12
+    # phi_improved 10;;
+    - : int = 4
 
+    # phi_improved 13;;
+    - : int = 12
+*)
+
+
+
+(*
 38. Compare the two methods of calculating Euler's totient function. (easy)
 
 Use the solutions of problems "Calculate Euler's totient function φ(m)" and "Calculate Euler's totient function φ(m) (improved)" to compare the algorithms. Take the number of logical inferences as a measure for efficiency. Try to calculate φ(10090) as an example.

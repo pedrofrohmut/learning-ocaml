@@ -67,10 +67,26 @@ let suite35 =
         assert_equal [2; 3; 5; 7; 7; 13] (Arithmetics.factors 19110))
   ]
 
+let suite36 =
+  "Arithmetics: Problem 35" >:::
+  [ "factors_mult 25" >:: (fun _ ->
+        assert_equal [(5, 2)] (Arithmetics.factors_mult 25))
+  ; "factors_mult 60" >:: (fun _ ->
+        assert_equal [(2, 2); (3, 1); (5, 1)] (Arithmetics.factors_mult 60))
+  ; "factors_mult 100" >:: (fun _ ->
+        assert_equal [(2, 2); (5, 2)] (Arithmetics.factors_mult 100))
+  ; "factors_mult 315" >:: (fun _ ->
+        assert_equal [(3, 2); (5, 1); (7, 1)] (Arithmetics.factors_mult 315))
+  ; "factors_mult 1050" >:: (fun _ ->
+        assert_equal [(2, 1); (3, 1); (5, 2); (7, 1)] (Arithmetics.factors_mult 1050))
+  ; "factors_mult 19110" >:: (fun _ ->
+        assert_equal [(2, 1); (3, 1); (5, 1); (7, 2); (13, 1)] (Arithmetics.factors_mult 19110))
+  ]
+
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then
-    let single_suite = suite35 in
+    let single_suite = suite36 in
     run_test_tt_main single_suite
   else
     let rec main_run suites =
@@ -80,5 +96,5 @@ let () =
         run_test_tt_main x;
         main_run xs
     in
-    let suites = [suite31; suite32; suite33; suite34; suite35] in
+    let suites = [suite31; suite32; suite33; suite34; suite35; suite36] in
     main_run suites
