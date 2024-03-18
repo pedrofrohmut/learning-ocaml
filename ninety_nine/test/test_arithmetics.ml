@@ -108,10 +108,30 @@ let suite39 =
         assert_equal [101; 103; 107; 109; 113] (Arithmetics.all_primes 100 120))
   ]
 
+let suite40 =
+  "Arithmetics: Problem 40" >:::
+  [ "goldbach 28" >:: (fun _ ->
+        assert_equal (5, 23) (Arithmetics.goldbach 28))
+  ; "goldbach 30" >:: (fun _ ->
+        assert_equal (7, 23) (Arithmetics.goldbach 30))
+  ; "goldbach 47" >:: (fun _ ->
+        assert_raises
+          (Failure "Only work on even numbers bigger than 2")
+          (fun _ -> Arithmetics.goldbach 47))
+  ; "goldbach2 28" >:: (fun _ ->
+        assert_equal (5, 23) (Arithmetics.goldbach2 28))
+  ; "goldbach2 30" >:: (fun _ ->
+        assert_equal (7, 23) (Arithmetics.goldbach2 30))
+  ; "goldbach2 47" >:: (fun _ ->
+        assert_raises
+          (Failure "Only work on even numbers bigger than 2")
+          (fun _ -> Arithmetics.goldbach2 47))
+  ]
+
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then
-    let single_suite = suite39 in
+    let single_suite = suite40 in
     run_test_tt_main single_suite
   else
     let rec main_run suites =
@@ -121,5 +141,9 @@ let () =
         run_test_tt_main x;
         main_run xs
     in
-    let suites = [suite31; suite32; suite33; suite34; suite35; suite36; suite37; suite39] in
+    let suites =
+      [ suite31; suite32; suite33; suite34; suite35; suite36; suite37; suite39
+      ; suite40
+      ]
+    in
     main_run suites

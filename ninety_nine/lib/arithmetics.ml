@@ -197,7 +197,7 @@ let timeit func args =
     - : int = 1000
 *)
 
-let all_primes n m =
+let all_primes (n : int) (m : int) : int list =
   let rec all_primes acc n m =
     if n == m then
       List.rev acc
@@ -209,14 +209,53 @@ let all_primes n m =
   all_primes [] n m
 
 (*
+    40. Goldbach's conjecture. (medium)
 
-40. Goldbach's conjecture. (medium)
+    Goldbach's conjecture says that every positive even number greater than 2 is
+    the sum of two prime numbers. Example: 28 = 5 + 23. It is one of the most
+    famous facts in number theory that has not been proved to be correct in the
+    general case. It has been numerically confirmed up to very large
+    numbers. Write a function to find the two prime numbers that sum up to a
+    given even integer.
 
-Goldbach's conjecture says that every positive even number greater than 2 is the sum of two prime numbers. Example: 28 = 5 + 23. It is one of the most famous facts in number theory that has not been proved to be correct in the general case. It has been numerically confirmed up to very large numbers. Write a function to find the two prime numbers that sum up to a given even integer.
+    # goldbach 28;;
+    - : int * int = (5, 23)
+*)
 
-# goldbach 28;;
-- : int * int = (5, 23)
+let goldbach (n : int) : (int * int) =
+  if not (n mod 2 == 0) then
+    failwith "Only work on even numbers bigger than 2"
+  else
+    let rec goldbach i n =
+      if not (is_prime i) then
+        goldbach (i - 1) n
+      else
+        let diff = n - i in
+        if is_prime diff then
+          (diff, i)
+        else
+          goldbach (i - 1) n
+    in
+    goldbach n n
 
+(* TODO: make goldbach with the result of all_primes instead of checking for primes
+   so much *)
+
+let goldbach2 (n : int) : (int * int) =
+  if (n mod 2) != 0 then
+    failwith "Only work on even numbers bigger than 2"
+  else
+    let primes = all_primes 2 n in
+    let rec goldbach2 primes1 primes2 n all_primes =
+        match primes1, primes2 with
+        | x :: _, y :: _ when x != y && x + y == n -> (x, y)
+        | x :: xs, _ :: ys -> goldbach2 (x :: xs) ys n all_primes
+        | _ :: xs, [] -> goldbach2 xs all_primes n all_primes
+        | [], _ -> failwith "Unreachable case"
+    in
+    goldbach2 primes primes n primes
+
+(*
 41. A list of Goldbach compositions. (medium)
 
 Given a range of integers by its lower and upper limit, print a list of all even numbers and their Goldbach composition.
