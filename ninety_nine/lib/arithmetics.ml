@@ -224,6 +224,7 @@ let all_primes_before (n : int) : int list = all_primes 2 n
     - : int * int = (5, 23)
 *)
 
+(* This one is way faster than the goldbach2 (not even close) *)
 let goldbach (n : int) : (int * int) =
   if not (n mod 2 == 0) || n <= 2 then
     failwith "Only work on even numbers bigger than 2"
@@ -233,14 +234,6 @@ let goldbach (n : int) : (int * int) =
         (n - i, i)
       else
         goldbach (i - 1) n
-      (* if not (is_prime i) then *)
-      (*   goldbach (i - 1) n *)
-      (* else *)
-      (*   let diff = n - i in *)
-      (*   if is_prime diff then *)
-      (*     (diff, i) *)
-      (*   else *)
-      (*     goldbach (i - 1) n *)
     in
     goldbach n n
 
@@ -285,7 +278,7 @@ let goldbach_list (n : int) (m : int) : (int * (int * int)) list =
     if n > m then
       List.rev acc
     else
-      let res = goldbach2 n in
+      let res = goldbach n in
       let t = (n, res) in
       let n' = n + 2 in
       goldbach_list (t :: acc) n' m
