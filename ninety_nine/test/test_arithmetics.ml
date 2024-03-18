@@ -110,7 +110,11 @@ let suite39 =
 
 let suite40 =
   "Arithmetics: Problem 40" >:::
-  [ "goldbach 28" >:: (fun _ ->
+  [ "goldbach 2" >:: (fun _ ->
+        assert_raises
+          (Failure "Only work on even numbers bigger than 2")
+          (fun _ -> Arithmetics.goldbach 2))
+  ; "goldbach 28" >:: (fun _ ->
         assert_equal (5, 23) (Arithmetics.goldbach 28))
   ; "goldbach 30" >:: (fun _ ->
         assert_equal (7, 23) (Arithmetics.goldbach 30))
@@ -118,6 +122,10 @@ let suite40 =
         assert_raises
           (Failure "Only work on even numbers bigger than 2")
           (fun _ -> Arithmetics.goldbach 47))
+  ; "goldbach2 2" >:: (fun _ ->
+        assert_raises
+          (Failure "Only work on even numbers bigger than 2")
+          (fun _ -> Arithmetics.goldbach2 2))
   ; "goldbach2 28" >:: (fun _ ->
         assert_equal (5, 23) (Arithmetics.goldbach2 28))
   ; "goldbach2 30" >:: (fun _ ->
@@ -128,10 +136,22 @@ let suite40 =
           (fun _ -> Arithmetics.goldbach2 47))
   ]
 
+let suite41 =
+  "Arithmetics: Problem 41" >:::
+  [ "goldbach_list 9 20" >:: (fun _ ->
+        assert_equal
+          [(10, (3, 7)); (12, (5, 7)); (14, (3, 11)); (16, (3, 13)); (18, (5, 13)); (20, (3, 17))]
+          (Arithmetics.goldbach_list 9 20))
+  ; "goldbach_limit 1 2000 50" >:: (fun _ ->
+        assert_equal
+          [(992, (73, 919)); (1382, (61, 1321)); (1856, (67, 1789)); (1928, (61, 1867))]
+          (Arithmetics.goldbach_limit 1 2000 50))
+  ]
+
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then
-    let single_suite = suite40 in
+    let single_suite = suite41 in
     run_test_tt_main single_suite
   else
     let rec main_run suites =
@@ -143,7 +163,7 @@ let () =
     in
     let suites =
       [ suite31; suite32; suite33; suite34; suite35; suite36; suite37; suite39
-      ; suite40
+      ; suite40; suite41
       ]
     in
     main_run suites

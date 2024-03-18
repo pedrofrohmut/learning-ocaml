@@ -208,6 +208,8 @@ let all_primes (n : int) (m : int) : int list =
   in
   all_primes [] n m
 
+let all_primes_before (n : int) : int list = all_primes 2 n
+
 (*
     40. Goldbach's conjecture. (medium)
 
@@ -223,32 +225,34 @@ let all_primes (n : int) (m : int) : int list =
 *)
 
 let goldbach (n : int) : (int * int) =
-  if not (n mod 2 == 0) then
+  if not (n mod 2 == 0) || n <= 2 then
     failwith "Only work on even numbers bigger than 2"
   else
     let rec goldbach i n =
-      if not (is_prime i) then
-        goldbach (i - 1) n
+      if is_prime i && is_prime (n - i) then
+        (n - i, i)
       else
-        let diff = n - i in
-        if is_prime diff then
-          (diff, i)
-        else
-          goldbach (i - 1) n
+        goldbach (i - 1) n
+      (* if not (is_prime i) then *)
+      (*   goldbach (i - 1) n *)
+      (* else *)
+      (*   let diff = n - i in *)
+      (*   if is_prime diff then *)
+      (*     (diff, i) *)
+      (*   else *)
+      (*     goldbach (i - 1) n *)
     in
     goldbach n n
 
-(* TODO: make goldbach with the result of all_primes instead of checking for primes
-   so much *)
-
+(* goldbach with the result of all_primes instead of checking for primes *)
 let goldbach2 (n : int) : (int * int) =
-  if (n mod 2) != 0 then
+  if (n mod 2) != 0 || n <= 2 then
     failwith "Only work on even numbers bigger than 2"
   else
-    let primes = all_primes 2 n in
+    let primes = all_primes_before n in
     let rec goldbach2 primes1 primes2 n all_primes =
         match primes1, primes2 with
-        | x :: _, y :: _ when x != y && x + y == n -> (x, y)
+        | x :: _, y :: _ when x + y == n -> (x, y)
         | x :: xs, _ :: ys -> goldbach2 (x :: xs) ys n all_primes
         | _ :: xs, [] -> goldbach2 xs all_primes n all_primes
         | [], _ -> failwith "Unreachable case"
@@ -256,38 +260,46 @@ let goldbach2 (n : int) : (int * int) =
     goldbach2 primes primes n primes
 
 (*
-41. A list of Goldbach compositions. (medium)
+    41. A list of Goldbach compositions. (medium)
 
-Given a range of integers by its lower and upper limit, print a list of all even numbers and their Goldbach composition.
+    Given a range of integers by its lower and upper limit, print a list of all
+    even numbers and their Goldbach composition.
 
-In most cases, if an even number is written as the sum of two prime numbers, one of them is very small. Very rarely, the primes are both bigger than say 50. Try to find out how many such cases there are in the range 2..3000.
+    In most cases, if an even number is written as the sum of two prime numbers,
+    one of them is very small. Very rarely, the primes are both bigger than say
+    50. Try to find out how many such cases there are in the range 2..3000.
 
-# goldbach_list 9 20;;
-- : (int * (int * int)) list =
-[(10, (3, 7)); (12, (5, 7)); (14, (3, 11)); (16, (3, 13)); (18, (5, 13));
- (20, (3, 17))]
-# goldbach_limit 1 2000 50;;
-- : (int * (int * int)) list =
-[(992, (73, 919)); (1382, (61, 1321)); (1856, (67, 1789));
- (1928, (61, 1867))]
+    # goldbach_list 9 20;;
+    - : (int * (int * int)) list =
+    [(10, (3, 7)); (12, (5, 7)); (14, (3, 11)); (16, (3, 13)); (18, (5, 13));
+    (20, (3, 17))]
 
-Logic and Codes
-
-Let us define a small "language" for boolean expressions containing variables:
-
-# type bool_expr =
-    | Var of string
-    | Not of bool_expr
-    | And of bool_expr * bool_expr
-    | Or of bool_expr * bool_expr;;
-type bool_expr =
-    Var of string
-  | Not of bool_expr
-  | And of bool_expr * bool_expr
-  | Or of bool_expr * bool_expr
-
-A logical expression in two variables can then be written in prefix notation. For example, (a ∨ b) ∧ (a ∧ b) is written:
-
-# And (Or (Var "a", Var "b"), And (Var "a", Var "b"));;
-- : bool_expr = And (Or (Var "a", Var "b"), And (Var "a", Var "b"))
+    # goldbach_limit 1 2000 50;;
+    - : (int * (int * int)) list =
+    [(992, (73, 919)); (1382, (61, 1321)); (1856, (67, 1789));
+    (1928, (61, 1867))]
 *)
+
+let goldbach_list (n : int) (m : int) : (int * (int * int)) list =
+  let rec goldbach_list acc n m =
+    if n > m then
+      List.rev acc
+    else
+      let res = goldbach2 n in
+      let t = (n, res) in
+      let n' = n + 2 in
+      goldbach_list (t :: acc) n' m
+  in
+  let n' = if n < 3 then 4 else if n mod 2 == 1 then n + 1 else n in
+  let m' = if m mod 2 == 1 then m - 1 else m in
+  goldbach_list [] n' m'
+
+let goldbach_limit (n : int) (m : int) (limit : int) : (int * (int * int)) list =
+  let result = goldbach_list n m in
+  let rec goldbach_limit acc n m limit list =
+    match list with
+    | [] -> List.rev acc
+    | (_, (y, z)) :: rest when y <= limit || z <= limit -> goldbach_limit acc n m limit rest
+    | (x, (y, z)) :: rest -> goldbach_limit ((x, (y, z)) :: acc) n m limit rest
+  in
+  goldbach_limit [] n m limit result
