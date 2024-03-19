@@ -114,6 +114,8 @@ let suite40 =
         assert_raises
           (Failure "Only work on even numbers bigger than 2")
           (fun _ -> Arithmetics.goldbach 2))
+  ; "goldbach 4" >:: (fun _ ->
+        assert_equal (2, 2) (Arithmetics.goldbach 4))
   ; "goldbach 28" >:: (fun _ ->
         assert_equal (5, 23) (Arithmetics.goldbach 28))
   ; "goldbach 30" >:: (fun _ ->
@@ -151,7 +153,7 @@ let suite41 =
 let () =
   let test_all = false in (* Flag to test all or a single test easy to change *)
   if not test_all then
-    let single_suite = suite41 in
+    let single_suite = suite40 in
     run_test_tt_main single_suite
   else
     let rec main_run suites =
