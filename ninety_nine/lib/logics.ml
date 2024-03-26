@@ -111,20 +111,33 @@ let truth_table (symbols : string list) (expr : bool_expr) : (truth_table_sample
   aux [] table expr
 
 (*
-49. Gray code. (medium)
+  49. Gray code. (medium)
 
-An n-bit Gray code is a sequence of n-bit strings constructed according to certain rules. For example,
+  An n-bit Gray code is a sequence of n-bit strings constructed according to
+  certain rules. For example,
 
-n = 1: C(1) = ['0', '1'].
-n = 2: C(2) = ['00', '01', '11', '10'].
-n = 3: C(3) = ['000', '001', '011', '010', '110', '111', '101', '100'].
+  n = 1: C(1) = ['0', '1'].
+  n = 2: C(2) = ['00', '01', '11', '10'].
+  n = 3: C(3) = ['000', '001', '011', '010', '110', '111', '101', '100'].
 
-Find out the construction rules and write a function with the following specification: gray n returns the n-bit Gray code.
+  Find out the construction rules and write a function with the following
+  specification: gray n returns the n-bit Gray code.
 
-# gray 1;;
-- : string list = ["0"; "1"]
-# gray 2;;
-- : string list = ["00"; "01"; "11"; "10"]
-# gray 3;;
-- : string list = ["000"; "001"; "011"; "010"; "110"; "111"; "101"; "100"]
+  # gray 1;;
+  - : string list = ["0"; "1"]
+
+  # gray 2;;
+  - : string list = ["00"; "01"; "11"; "10"]
+
+  # gray 3;;
+  - : string list = ["000"; "001"; "011"; "010"; "110"; "111"; "101"; "100"]
 *)
+
+let gray (n : int) : string list =
+  let rec aux tmp n =
+    if n <= 0 then
+      tmp :: []
+    else
+      aux (tmp ^ "0") (n - 1) @ aux (tmp ^ "1") (n - 1)
+  in
+  aux "" n
