@@ -113,9 +113,18 @@ let rev (list : 'a list) : 'a list =
     - : bool = true
 *)
 
-let is_palindrome (list : 'a list) : bool = list = rev list
+let is_palindrome (list: 'a list) : bool =
+  let reversed = List.rev list in
+  let rec aux list1 list2 =
+    match list1, list2 with
+    | [], [] -> true
+    | x :: _, y :: _  when x <> y -> false
+    | _ :: xs, _ :: ys -> aux xs ys
+    | [], _ | _, [] -> failwith "Lists of different lengths"
+  in
+  aux list reversed
 
-(* TODO: make palindrome that make a reverse list and then compare the values one by one *)
+let is_palindrome_old (list : 'a list) : bool = list = rev list
 
 (*
     7. Flatten a nested list structure. (medium)
