@@ -14,12 +14,14 @@ module StringMap = Map.Make(String)
 let print_single_arg (key: int) (value: string): unit =
   Printf.printf "Arg[%d] = %s\n" key Sys.argv.(key)
 
+
 let print_args (args: string array): unit =
   print_endline "Printing args:";
   let len = Array.length args in
   for i = 1 to len - 1 do
     print_single_arg i args.(i)
   done
+
 
 let print_help (): unit =
   print_endline {|Usage: temperature_converter [FLAGS] [temperature_value]
@@ -36,34 +38,44 @@ List of options/flags:
   -f,--fahrenheit number	Provide a temperature in fahrenheit.
 |}
 
+
 let print_version_info (): unit =
   print_endline {|temperature_converter 1.0
 Pedro Frohmut 2026 Copyrights.
 License MIT.|}
 
+
 let print_fail_number (): unit =
   print_endline "[Invalid] A number is required after a temperature flag to convert."
+
 
 let print_temperatures (c: float) (k: float) (f: float): unit =
   Printf.printf "Celcius: %.2f, Kelvin: %.2f, Fahrenheit: %.2f\n" c k f
 
+
 let kelvin_from_celcius (c: float): float =
   c +. 273.15
+
 
 let fahrenheit_from_celcius (c: float): float =
   (c *. 1.8) +. 32.0
 
+
 let celcius_from_fahrenheit (f: float): float =
   (f -. 32.0) *. (5.0 /. 9.0)
+
 
 let kelvin_from_fahrenheit (f: float): float =
   ((f -. 32.0) *. (5.0 /. 9.0)) +. 273.15
 
+
 let celcius_from_kelvin (k: float): float =
   k -. 273.15
 
+
 let fahrenheit_from_kelvin (k: float): float =
   ((k -. 273.15) *. 1.8) +. 32.0
+
 
 let print_convert_from (name: string) (n: float option): unit =
   match name, n with
@@ -72,6 +84,7 @@ let print_convert_from (name: string) (n: float option): unit =
   | "kelvin", Some x      -> print_temperatures (celcius_from_kelvin x) x (fahrenheit_from_kelvin x)
   | "fahrenheit", Some x  -> print_temperatures (celcius_from_fahrenheit x) (kelvin_from_fahrenheit x) x
   | _, Some x             -> print_endline "Invalid name for temperature."
+
 
 let process_args (args: string array): unit =
   let len = Array.length args in
@@ -90,8 +103,10 @@ let process_args (args: string array): unit =
     | "-k" | "--kelvin"      -> print_convert_from "kelvin" opt_number
     | _                      -> print_endline "Unknown option"
 
+
 let main () =
   let args = Sys.argv in
   process_args args
+
 
 let () = main ()

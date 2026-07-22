@@ -33,19 +33,36 @@ let rec list_primes (n: int): int list =
   in
   aux n []
 
+
 (* With optional argument you dont need the aux function *)
-let rec primes ?(acc: int list = []) (n: int): int list =
+let rec primes2 ?(acc: int list = []) (n: int): int list =
   if n = 1 then
     acc
   else
     let new_acc = if is_prime n then (n :: acc) else acc in
-    primes ~acc:new_acc (dec n) (* You need to label optional arguments *)
+    primes2 ~acc:new_acc (dec n) (* You need to label optional arguments *)
 
 
-let () =
+(* Regular recursion without. No tail call recursion.
+  Obs: Without auxiliar function the order will be reversed. *)
+let primes3 (n: int): int list =
+  let rec primes3 n =
+    if n = 1 then
+      []
+    else if not (is_prime n) then
+      primes3 (dec n)
+    else
+      n :: primes3 (dec n)
+  in List.rev (primes3 n)
+
+
+let main (): unit =
   let lst = list_primes 100 in
   let str_lst = List.map string_of_int lst in
-  Printf.printf "List Primes: [%s]\n" (String.concat ", " str_lst);
+  Printf.printf "Primes:  [%s]\n" (String.concat ", " str_lst);
 
-  let primes = List.map string_of_int (primes 100) in
-  Printf.printf "Primes:      [%s]\n" (String.concat ", " primes)
+  let primes2_res = List.map string_of_int (primes2 100) in
+  Printf.printf "Primes2: [%s]\n" (String.concat ", " primes2_res);
+
+  let primes3_res = List.map string_of_int (primes3 100) in
+  Printf.printf "Primes3: [%s]\n" (String.concat ", " primes3_res)

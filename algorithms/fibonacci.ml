@@ -10,11 +10,13 @@ let fibonacci (n : int) : int list =
   in
   aux 1 1 []
 
+
 let print_fibonacci (n : int) : string =
   let fibo_seq = fibonacci n in
   let str_seq = List.map string_of_int fibo_seq in
   let str_result = String.concat ", " str_seq in
   Printf.sprintf "Fibonacci of %d is [%s]" n str_result
+
 
 let () =
   print_endline (print_fibonacci 100);

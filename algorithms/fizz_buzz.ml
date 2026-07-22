@@ -54,7 +54,27 @@ let rec fizz_buzz3 ?(n=1) (limit) =
     fizz_buzz_str n :: fizz_buzz3 ~n:(n + 1) limit
 
 
-let () =
+let fizz_buzz4 limit =
+  (* No accumulator, no auxiliar counter and prepending the order will be reversed *)
+  let rec get_numbers ?(acc=[]) n =
+    if n = 0 then
+      acc
+    else
+      get_numbers ~acc:(n :: acc) (n - 1)
+  in
+  (* Returning a string for the cases of fizz buzz, only converts otherwise *)
+  let fizz_buzz n =
+    match n with
+    | n when n mod 15 = 0 -> "FizzBuzz"
+    | n when n mod 5 = 0 -> "Buzz"
+    | n when n mod 3 = 0 -> "Fizz"
+    | _ -> string_of_int n
+  in
+  let numbers = get_numbers limit in
+  List.map (fun n -> fizz_buzz n) numbers
+
+
+let main (): unit =
   let fizz_buzzed = fizz_buzz 100 in
   Printf.printf "Fizz_Buzz: [%s]\n" (String.concat ", " fizz_buzzed);
 
